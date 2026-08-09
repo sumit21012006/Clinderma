@@ -1,0 +1,434 @@
+[
+  {
+    "idx": 0,
+    "id": "faq_1",
+    "question": "Protocol / Guideline (General FAQs)",
+    "category": "General FAQs"
+  },
+  {
+    "idx": 1,
+    "id": "faq_2",
+    "question": "What is Clinderma?",
+    "category": "About Clinderma"
+  },
+  {
+    "idx": 2,
+    "id": "faq_3",
+    "question": "How is Clinderma different from other skincare brands?",
+    "category": "Acne – Timeline & Expectations"
+  },
+  {
+    "idx": 3,
+    "id": "faq_4",
+    "question": "How long does acne treatment take?",
+    "category": "Acne – Timeline & Expectations"
+  },
+  {
+    "idx": 4,
+    "id": "faq_5",
+    "question": "What is purging?",
+    "category": "Acne – Timeline & Expectations"
+  },
+  {
+    "idx": 5,
+    "id": "faq_6",
+    "question": "Will acne come back?",
+    "category": "Pigmentation – Timeline & Expectations"
+  },
+  {
+    "idx": 6,
+    "id": "faq_7",
+    "question": "How long does pigmentation treatment take?",
+    "category": "Pigmentation – Timeline & Expectations"
+  },
+  {
+    "idx": 7,
+    "id": "faq_8",
+    "question": "Why does pigmentation take longer than acne?",
+    "category": "Pigmentation – Timeline & Expectations"
+  },
+  {
+    "idx": 8,
+    "id": "faq_9",
+    "question": "Why is sunscreen mandatory in pigmentation treatment?",
+    "category": "Common Concerns"
+  },
+  {
+    "idx": 9,
+    "id": "faq_10",
+    "question": "Can acne and pigmentation be treated together?",
+    "category": "Common Concerns"
+  },
+  {
+    "idx": 10,
+    "id": "faq_11",
+    "question": "Are Ayurvedic supplements safe?",
+    "category": "Communication Rules For One Point One"
+  },
+  {
+    "idx": 11,
+    "id": "faq_12",
+    "question": "Is acne normal during teenage years?",
+    "category": "This Document Contains The Faqs Specifically For Teens, Women And Men. Faqs For Teen"
+  },
+  {
+    "idx": 12,
+    "id": "faq_13",
+    "question": "Is this treatment safe for my age?",
+    "category": "This Document Contains The Faqs Specifically For Teens, Women And Men. Faqs For Teen"
+  },
+  {
+    "idx": 13,
+    "id": "faq_14",
+    "question": "Will my parents be involved in the treatment?",
+    "category": "Faqs For Women"
+  },
+  {
+    "idx": 14,
+    "id": "faq_15",
+    "question": "Can I use makeup during treatment?",
+    "category": "Faqs For Women"
+  },
+  {
+    "idx": 15,
+    "id": "faq_16",
+    "question": "Are these treatments truly safe for pregnancy and breastfeeding?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 16,
+    "id": "faq_17",
+    "question": "Will this treatment actually work for men?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 17,
+    "id": "faq_18",
+    "question": "Is this treatment safe for men with sensitive skin?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 18,
+    "id": "faq_19",
+    "question": "Can I continue shaving while on this treatment?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 19,
+    "id": "faq_20",
+    "question": "Will this affect my daily routine or work schedule?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 20,
+    "id": "faq_21",
+    "question": "Do I need to stop going to the gym or sweating?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 21,
+    "id": "faq_22",
+    "question": "Will this affect my beard growth or hormones?",
+    "category": "Faqs For Men"
+  },
+  {
+    "idx": 22,
+    "id": "mod_1",
+    "question": "Topic: Clinderma Clinical Philosophy & Protocols",
+    "category": "Clinderma Clinical Philosophy & Protocols"
+  },
+  {
+    "idx": 23,
+    "id": "mod_2",
+    "question": "Topic: 1. Clinderma Clinical Philosophy",
+    "category": "1. Clinderma Clinical Philosophy"
+  },
+  {
+    "idx": 24,
+    "id": "mod_3",
+    "question": "Topic: 2. Role Definition & Boundaries",
+    "category": "2. Role Definition & Boundaries"
+  },
+  {
+    "idx": 25,
+    "id": "mod_4",
+    "question": "Topic: 3. Skin & Disease Basics (Non-Clinical)",
+    "category": "3. Skin & Disease Basics (Non-Clinical)"
+  },
+  {
+    "idx": 26,
+    "id": "mod_5",
+    "question": "Topic: 4. Understanding a Dermatology Prescription",
+    "category": "4. Understanding a Dermatology Prescription"
+  },
+  {
+    "idx": 27,
+    "id": "mod_6",
+    "question": "Topic: 5. Reading & Explaining Prescriptions",
+    "category": "5. Reading & Explaining Prescriptions"
+  },
+  {
+    "idx": 28,
+    "id": "mod_7",
+    "question": "Topic: 6. Topical Medications – Explanation Framework",
+    "category": "6. Topical Medications – Explanation Framework"
+  },
+  {
+    "idx": 29,
+    "id": "mod_8",
+    "question": "Topic: 7. Oral Medications – Explanation Framework",
+    "category": "7. Oral Medications – Explanation Framework"
+  },
+  {
+    "idx": 30,
+    "id": "mod_9",
+    "question": "Topic: 8. Explaining Treatment Phases",
+    "category": "8. Explaining Treatment Phases"
+  },
+  {
+    "idx": 31,
+    "id": "mod_10",
+    "question": "Topic: 9. Managing Expectations & Timelines",
+    "category": "9. Managing Expectations & Timelines"
+  },
+  {
+    "idx": 32,
+    "id": "mod_11",
+    "question": "Topic: 10. Side Effects & Safety Communication",
+    "category": "10. Side Effects & Safety Communication"
+  },
+  {
+    "idx": 33,
+    "id": "mod_12",
+    "question": "Topic: GENERAL ADVICE FOR PATIENTS",
+    "category": "GENERAL ADVICE FOR PATIENTS"
+  },
+  {
+    "idx": 34,
+    "id": "mod_13",
+    "question": "Topic: 11. Adherence & Compliance Education",
+    "category": "11. Adherence & Compliance Education"
+  },
+  {
+    "idx": 35,
+    "id": "mod_14",
+    "question": "Topic: Why it matters:",
+    "category": "Why it matters:"
+  },
+  {
+    "idx": 36,
+    "id": "mod_15",
+    "question": "Topic: Here's why consistency is important:",
+    "category": "Here's why consistency is important:"
+  },
+  {
+    "idx": 37,
+    "id": "mod_16",
+    "question": "Topic: 12. Lifestyle & Root-Cause Context",
+    "category": "12. Lifestyle & Root-Cause Context"
+  },
+  {
+    "idx": 38,
+    "id": "mod_17",
+    "question": "Topic: Stress:",
+    "category": "Stress:"
+  },
+  {
+    "idx": 39,
+    "id": "mod_18",
+    "question": "Topic: Sleep:",
+    "category": "Sleep:"
+  },
+  {
+    "idx": 40,
+    "id": "mod_19",
+    "question": "Topic: 13. Objection Handling (Clinical Tone)",
+    "category": "13. Objection Handling (Clinical Tone)"
+  },
+  {
+    "idx": 41,
+    "id": "mod_20",
+    "question": "Topic: 14. Clinderma Differentiation Talking Points",
+    "category": "14. Clinderma Differentiation Talking Points"
+  },
+  {
+    "idx": 42,
+    "id": "mod_21",
+    "question": "Topic: 15. Call Flow Structure",
+    "category": "15. Call Flow Structure"
+  },
+  {
+    "idx": 43,
+    "id": "mod_22",
+    "question": "Topic: 16. Ethical Closing & Payment Conversations",
+    "category": "16. Ethical Closing & Payment Conversations"
+  },
+  {
+    "idx": 44,
+    "id": "mod_23",
+    "question": "Topic: 17. Follow-ups & Continuity of Care",
+    "category": "17. Follow-ups & Continuity of Care"
+  },
+  {
+    "idx": 45,
+    "id": "mod_24",
+    "question": "Topic: 18. Escalation & Emergency SOPs",
+    "category": "18. Escalation & Emergency SOPs"
+  },
+  {
+    "idx": 46,
+    "id": "mod_25",
+    "question": "Topic: ACNETROL CLEANSER - INGREDIENT LIST",
+    "category": "ACNETROL CLEANSER - INGREDIENT LIST"
+  },
+  {
+    "idx": 47,
+    "id": "mod_26",
+    "question": "Topic: AQUASOFT DAY CREAM",
+    "category": "AQUASOFT DAY CREAM"
+  },
+  {
+    "idx": 48,
+    "id": "mod_27",
+    "question": "Topic: ACNETROL AC – INGREDIENT LIST",
+    "category": "ACNETROL AC – INGREDIENT LIST"
+  },
+  {
+    "idx": 49,
+    "id": "mod_28",
+    "question": "Topic: EPIFADE CREAM — INGREDIENTS",
+    "category": "EPIFADE CREAM — INGREDIENTS"
+  },
+  {
+    "idx": 50,
+    "id": "mod_29",
+    "question": "Topic: ANTIBIOTICS",
+    "category": "ANTIBIOTICS"
+  },
+  {
+    "idx": 51,
+    "id": "mod_30",
+    "question": "Topic: 1. Azithromycin — 500 mg",
+    "category": "1. Azithromycin — 500 mg"
+  },
+  {
+    "idx": 52,
+    "id": "mod_31",
+    "question": "Topic: 2. Doxynec- LB 100 mg",
+    "category": "2. Doxynec- LB 100 mg"
+  },
+  {
+    "idx": 53,
+    "id": "mod_32",
+    "question": "Topic: DETOZYL TABLETS — INGREDIENT LIST",
+    "category": "DETOZYL TABLETS — INGREDIENT LIST"
+  },
+  {
+    "idx": 54,
+    "id": "mod_33",
+    "question": "Topic: ISOTRETINOIN CAPSULES – INGREDIENT LIST",
+    "category": "ISOTRETINOIN CAPSULES – INGREDIENT LIST"
+  },
+  {
+    "idx": 55,
+    "id": "mod_34",
+    "question": "Topic: Active & Functional Ingredients:",
+    "category": "Active & Functional Ingredients:"
+  },
+  {
+    "idx": 56,
+    "id": "mod_35",
+    "question": "Topic: CALMXO – INGREDIENT LIST",
+    "category": "CALMXO – INGREDIENT LIST"
+  },
+  {
+    "idx": 57,
+    "id": "mod_36",
+    "question": "Topic: EUCEE CHEWABLE TABLET – INGREDIENTS",
+    "category": "EUCEE CHEWABLE TABLET – INGREDIENTS"
+  },
+  {
+    "idx": 58,
+    "id": "mod_37",
+    "question": "Topic: AQUASOFT FC – INGREDIENT LIST",
+    "category": "AQUASOFT FC – INGREDIENT LIST"
+  },
+  {
+    "idx": 59,
+    "id": "mod_38",
+    "question": "Topic: 1. Glycolic Acid — 6%",
+    "category": "1. Glycolic Acid — 6%"
+  },
+  {
+    "idx": 60,
+    "id": "mod_39",
+    "question": "Topic: 1. Glycolic Acid — 12%",
+    "category": "1. Glycolic Acid — 12%"
+  },
+  {
+    "idx": 61,
+    "id": "mod_40",
+    "question": "Topic: ACNESTAR GEL – INGREDIENT LIST",
+    "category": "ACNESTAR GEL – INGREDIENT LIST"
+  },
+  {
+    "idx": 62,
+    "id": "mod_41",
+    "question": "Topic: PEROCLIN GEL – INGREDIENT LIST",
+    "category": "PEROCLIN GEL – INGREDIENT LIST"
+  },
+  {
+    "idx": 63,
+    "id": "mod_42",
+    "question": "Topic: PERODUO GEL – INGREDIENT LIST",
+    "category": "PERODUO GEL – INGREDIENT LIST"
+  },
+  {
+    "idx": 64,
+    "id": "mod_43",
+    "question": "Topic: CIVADERM SHAMPOO – INGREDIENT LIST",
+    "category": "CIVADERM SHAMPOO – INGREDIENT LIST"
+  },
+  {
+    "idx": 65,
+    "id": "mod_44",
+    "question": "Topic: EYEBLISS UNDER EYE CREAM – INGREDIENT LIST",
+    "category": "EYEBLISS UNDER EYE CREAM – INGREDIENT LIST"
+  },
+  {
+    "idx": 66,
+    "id": "mod_45",
+    "question": "Topic: AZIDERM 10",
+    "category": "AZIDERM 10"
+  },
+  {
+    "idx": 67,
+    "id": "mod_46",
+    "question": "Topic: AZIDERM 20",
+    "category": "AZIDERM 20"
+  },
+  {
+    "idx": 68,
+    "id": "mod_47",
+    "question": "Topic: SCAREND GEL – INGREDIENT LIST",
+    "category": "SCAREND GEL – INGREDIENT LIST"
+  },
+  {
+    "idx": 69,
+    "id": "mod_48",
+    "question": "Topic: TRETIN 0.05% – INGREDIENT LIST",
+    "category": "TRETIN 0.05% – INGREDIENT LIST"
+  },
+  {
+    "idx": 70,
+    "id": "mod_49",
+    "question": "Topic: HEXILAK ACNESCAR SERUM",
+    "category": "HEXILAK ACNESCAR SERUM"
+  },
+  {
+    "idx": 71,
+    "id": "mod_50",
+    "question": "Topic: SALISIA KT SHAMPOO – INGREDIENT LIST",
+    "category": "SALISIA KT SHAMPOO – INGREDIENT LIST"
+  }
+]

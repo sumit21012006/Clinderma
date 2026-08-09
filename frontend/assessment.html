@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skin Assessment Form — Clinderma</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 40px 20px;
+    }
+    .form-box {
+      max-width: 640px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .form-box h2 {
+      color: #0f766e;
+      margin-bottom: 8px;
+    }
+    .banner-alert {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #92400e;
+    }
+    .field {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+    }
+    .btn-submit {
+      background: #0f766e;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-box" id="skin-assessment-form">
+    <h2>Clinderma Dermatological Skin Assessment</h2>
+    <p style="margin-bottom: 16px; color: #64748b;">Please complete this confidential medical questionnaire for your dermatologist review.</p>
+
+    <div class="banner-alert">
+      <strong>⚠️ Route Protection Guarantee:</strong> The chatbot widget script is embedded on this page, but it automatically detects the <code>/assessment</code> route and suppresses itself so as not to interrupt your assessment flow.
+    </div>
+
+    <form onsubmit="event.preventDefault(); alert('Assessment submitted! A Skin Coach will contact you.');">
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" placeholder="e.g. Ananya Sharma" required>
+      </div>
+
+      <div class="field">
+        <label>Phone Number (WhatsApp)</label>
+        <input type="tel" placeholder="+91 98765 43210" required>
+      </div>
+
+      <div class="field">
+        <label>Primary Skin Concern</label>
+        <select required>
+          <option value="">Select Concern...</option>
+          <option value="acne">Active Acne / Breakouts</option>
+          <option value="pigmentation">Pigmentation / Dark Spots / Melasma</option>
+          <option value="both">Both Acne and Pigmentation</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>How long have you had this concern?</label>
+        <select>
+          <option>Less than 1 month</option>
+          <option>1 to 6 months</option>
+          <option>More than 6 months</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit">Submit Assessment for Doctor Review</button>
+    </form>
+    <p style="text-align: center; margin-top: 16px;"><a href="/" style="color: #0284c7;">← Back to Homepage</a></p>
+  </div>
+
+  <!-- Chat Widget script embedded — route guard will suppress it -->
+  <script src="/widget/chat-widget.js"></script>
+
+</body>
+</html>

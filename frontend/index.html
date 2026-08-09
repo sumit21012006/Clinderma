@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinderma — Dermatologist-Led Skincare & Treatment Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f766e;
+      --primary-dark: #0d5e58;
+      --secondary: #0284c7;
+      --accent: #e36414;
+      --bg: #f8fafc;
+      --text: #0f172a;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    header {
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo span { color: var(--accent); }
+    nav { display: flex; gap: 24px; align-items: center; }
+    nav a {
+      text-decoration: none;
+      color: #475569;
+      font-weight: 500;
+      font-size: 15px;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--primary); }
+    .btn-assess {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 10px 20px;
+      border-radius: 24px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    }
+    .hero {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: #ccfbf1;
+      color: #0f766e;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-size: 48px;
+      line-height: 1.2;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 20px;
+    }
+    .hero p {
+      font-size: 18px;
+      color: #475569;
+      margin-bottom: 30px;
+    }
+    .hero-buttons { display: flex; gap: 16px; }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .btn-outline {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 16px;
+    }
+    .hero-card {
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+      border: 1px solid #f1f5f9;
+    }
+    .hero-card h3 {
+      color: var(--primary);
+      margin-bottom: 16px;
+      font-size: 22px;
+    }
+    .pill-list { display: flex; flex-direction: column; gap: 12px; }
+    .pill-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border-radius: 12px;
+    }
+    .pill-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #ccfbf1;
+      color: #0f766e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    .products-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 20px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 40px;
+      color: #0f172a;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      border: 1px solid #e2e8f0;
+    }
+    .card-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card h4 { font-size: 20px; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: #64748b; margin-bottom: 16px; }
+    .card-price { font-size: 18px; font-weight: 700; color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/" class="logo">CLINDERMA <span>.</span></a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="#products">Products</a>
+      <a href="/dashboard.html" target="_blank" style="color: var(--accent); font-weight: 600;">Skin Coach Dashboard ↗</a>
+      <a href="/assessment.html" class="btn-assess">Take Skin Assessment ➔</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <span class="hero-badge">Medical Skincare Protocol</span>
+      <h1>Dermatologist-Led Skincare & Root-Cause Treatment</h1>
+      <p>We treat acne and pigmentation as medical conditions — not cosmetic problems. Combining Modern Dermatology, Ayurveda, and Targeted Nutrition.</p>
+      <div class="hero-buttons">
+        <a href="/assessment.html" class="btn-primary">Start Skin Test</a>
+        <a href="#products" class="btn-outline">Explore Products</a>
+      </div>
+    </div>
+
+    <div class="hero-card">
+      <h3>The Clinderma 4-Pillar Care</h3>
+      <div class="pill-list">
+        <div class="pill-item">
+          <div class="pill-icon">1</div>
+          <div><strong>Scientific Diagnosis</strong> — Custom skin analysis by dermatologists.</div>
+        </div>
+        <div class="pill-item">
+          <div class="pill-icon">2</div>
+          <div><strong>Precision Actives</strong> — Dermatologist formulas in right concentration.</div>
+        </div>
+        <div class="pill-item">
+          <div class="pill-icon">3</div>
+          <div><strong>Ayurvedic Root Cause</strong> — Gut, hormone, sleep & stress correction.</div>
+        </div>
+        <div class="pill-item">
+          <div class="pill-icon">4</div>
+          <div><strong>Dedicated Skin Coach</strong> — Weekly monitoring & live guidance.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products-section" id="products">
+    <h2 class="section-title">Dermatologist-Crafted Regimens</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="card-tag">Acne Protocol</div>
+        <h4>Clinderma Clarifying Serum</h4>
+        <p>Targeted active treatment reducing active acne breakouts and controlling sebum production.</p>
+        <div class="card-price">₹1,299</div>
+      </div>
+      <div class="card">
+        <div class="card-tag">Pigmentation Protocol</div>
+        <h4>Melanin Defence Cream</h4>
+        <p>Reduces dark spots, sun tanning, and melasma with prescription-strength active botanicals.</p>
+        <div class="card-price">₹1,499</div>
+      </div>
+      <div class="card">
+        <div class="card-tag">Root Cause Support</div>
+        <h4>Ayurvedic Gut Balance</h4>
+        <p>Herbal formulation targeting internal inflammation, gut dysbiosis, and hormonal acne triggers.</p>
+        <div class="card-price">₹899</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clinderma Customer Support Chatbot Widget Embed -->
+  <script src="/widget/chat-widget.js"></script>
+</body>
+</html>
