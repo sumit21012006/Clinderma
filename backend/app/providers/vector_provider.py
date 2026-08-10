@@ -56,12 +56,13 @@ class LocalJSONVectorStore(AbstractVectorStore):
             a_words_doc = set(re.findall(r'\w+', a_text))
             all_doc_words = q_words_doc.union(a_words_doc)
             common_words = query_words.intersection(all_doc_words)
-            stopwords = {"what", "is", "the", "how", "long", "does", "do", "it", "to", "take", "can", "and", "a", "an", "in", "for", "of", "my", "with", "on", "are", "you"}
+            stopwords = {"what", "is", "the", "how", "long", "does", "do", "it", "to", "take", "can", "and", "a", "an", "in", "for", "of", "my", "with", "on", "are", "you", "who", "where", "when", "why", "which", "pm", "president", "capital", "weather", "city", "country", "name", "tell", "give", "me"}
             important_common = common_words - stopwords
             bonus = len(important_common) * 15.0
             final_score = min(max_base + bonus, 100.0)
 
-            if final_score >= 30.0:
+            # Require at least one non-stopword match and minimum score threshold
+            if len(important_common) > 0 and final_score >= 45.0:
                 results.append({
                     "id": doc.get("id"),
                     "source": doc.get("source"),

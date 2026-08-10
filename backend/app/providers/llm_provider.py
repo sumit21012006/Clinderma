@@ -167,6 +167,16 @@ Answer the user's question ONLY using the context above. Follow all grounding an
                     else:
                         raise retry_err
 
+            # If top score is below threshold, return ungrounded refusal response
+            if top_score < settings.GROUNDING_THRESHOLD:
+                return {
+                    "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                    "grounded": False,
+                    "confidence": round(top_score, 4),
+                    "handoff_recommended": True,
+                    "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
+                }
+
             # Instant Fallback: Return exact grounded KB text when LLM is rate-limited
             fallback_q = context_chunks[0].get("question", "")
             fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
@@ -180,6 +190,14 @@ Answer the user's question ONLY using the context above. Follow all grounding an
 
         except Exception as e:
             print(f"[GeminiLLM] Generation error: {e}")
+            if top_score < settings.GROUNDING_THRESHOLD or not context_chunks:
+                return {
+                    "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                    "grounded": False,
+                    "confidence": 0.0,
+                    "handoff_recommended": True,
+                    "handoff_reason": "Out of scope query."
+                }
             fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES["en"])
             return {
                 "answer": f"**{context_chunks[0].get('question', '')}**\n\n{fallback_answer}",
