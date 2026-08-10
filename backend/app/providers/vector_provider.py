@@ -1,8 +1,9 @@
 """
-Clinderma Vector Store Provider — V2 (FAISS Semantic Search + Gemini Embeddings)
+Clinderma Vector Store Provider — V2 (FAISS Semantic Search + Gemini Embeddings + Local Fallback)
 
 Pluggable provider architecture:
   - FAISSVectorStore: Production-grade semantic search using Gemini embeddings + FAISS
+                      (Automatically falls back to Local JSON keyword search on API rate limits / offline)
   - LocalJSONVectorStore: Fallback keyword matching using RapidFuzz (zero external deps)
   - ProductionVectorStore: Stub for Qdrant/Pinecone cloud migration
 """
@@ -16,80 +17,8 @@ from app.providers.base import AbstractVectorStore
 from app.core.config import settings
 
 
-class FAISSVectorStore(AbstractVectorStore):
-    """
-    Semantic vector search using Gemini text-embedding-004 embeddings + FAISS index.
-    Supports cosine similarity retrieval over the full Clinderma Knowledge Base.
-    """
-
-    def __init__(self):
-        self.index = None
-        self.documents = []
-        self.client = None
-        self._load()
-
-    def _load(self):
-        import faiss
-        from google import genai
-
-        # Load FAISS index
-        if os.path.exists(settings.FAISS_INDEX_PATH):
-            self.index = faiss.read_index(settings.FAISS_INDEX_PATH)
-            print(f"[VectorStore] Loaded FAISS index: {self.index.ntotal} vectors")
-        else:
-            print(f"[VectorStore] WARNING: FAISS index not found at {settings.FAISS_INDEX_PATH}")
-            print(f"[VectorStore] Run 'python backend/scripts/ingest_kb.py' to build the index.")
-
-        # Load KB documents (for answer retrieval after vector search)
-        if os.path.exists(settings.KB_INDEX_PATH):
-            with open(settings.KB_INDEX_PATH, "r", encoding="utf-8") as f:
-                self.documents = json.load(f)
-
-        # Initialize Gemini client for query embedding
-        self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
-
-    def _embed_query(self, query: str) -> np.ndarray:
-        """Generate embedding for user query using Gemini text-embedding-004."""
-        result = self.client.models.embed_content(
-            model=settings.EMBEDDING_MODEL,
-            contents=[query]
-        )
-        vec = np.array(result.embeddings[0].values, dtype='float32').reshape(1, -1)
-        import faiss
-        faiss.normalize_L2(vec)
-        return vec
-
-    def search(self, query: str, top_k: int = 3) -> List[Dict[str, Any]]:
-        if not self.index or not self.documents or not query.strip():
-            return []
-
-        try:
-            query_vec = self._embed_query(query)
-            scores, indices = self.index.search(query_vec, top_k)
-
-            results = []
-            for score, idx in zip(scores[0], indices[0]):
-                if idx < 0 or idx >= len(self.documents):
-                    continue
-                doc = self.documents[idx]
-                results.append({
-                    "id": doc.get("id"),
-                    "source": doc.get("source"),
-                    "category": doc.get("category"),
-                    "question": doc.get("question"),
-                    "answer": doc.get("answer"),
-                    "score": float(score)  # Cosine similarity (0 to 1)
-                })
-
-            return results
-
-        except Exception as e:
-            print(f"[VectorStore] FAISS search error: {e}")
-            return []
-
-
 class LocalJSONVectorStore(AbstractVectorStore):
-    """Fallback keyword search using RapidFuzz (no external API needed)."""
+    """Local keyword & fuzzy search using RapidFuzz (100% offline, zero API dependency)."""
 
     def __init__(self, kb_path: str = None):
         from rapidfuzz import fuzz
@@ -132,8 +61,7 @@ class LocalJSONVectorStore(AbstractVectorStore):
             bonus = len(important_common) * 15.0
             final_score = min(max_base + bonus, 100.0)
 
-            if final_score >= 35.0 and len(important_common) > 0:
-                # Normalize to 0-1 scale for compatibility with FAISS scoring
+            if final_score >= 30.0:
                 results.append({
                     "id": doc.get("id"),
                     "source": doc.get("source"),
@@ -147,14 +75,89 @@ class LocalJSONVectorStore(AbstractVectorStore):
         return results[:top_k]
 
 
-class ProductionVectorStore(AbstractVectorStore):
-    """Stub for Qdrant / Pinecone production migration (swap via .env)."""
+class FAISSVectorStore(AbstractVectorStore):
+    """
+    Semantic vector search using Gemini embeddings + FAISS index.
+    Automatically falls back to LocalJSONVectorStore if API rate limit occurs.
+    """
+
+    def __init__(self):
+        self.index = None
+        self.documents = []
+        self.client = None
+        self.fallback_store = LocalJSONVectorStore()
+        self._load()
+
+    def _load(self):
+        import faiss
+        from google import genai
+
+        # Load FAISS index
+        if os.path.exists(settings.FAISS_INDEX_PATH):
+            self.index = faiss.read_index(settings.FAISS_INDEX_PATH)
+            print(f"[VectorStore] Loaded FAISS index: {self.index.ntotal} vectors")
+        else:
+            print(f"[VectorStore] WARNING: FAISS index not found at {settings.FAISS_INDEX_PATH}")
+
+        # Load KB documents
+        if os.path.exists(settings.KB_INDEX_PATH):
+            with open(settings.KB_INDEX_PATH, "r", encoding="utf-8") as f:
+                self.documents = json.load(f)
+
+        # Initialize Gemini client
+        self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
+    def _embed_query(self, query: str) -> np.ndarray:
+        result = self.client.models.embed_content(
+            model=settings.EMBEDDING_MODEL,
+            contents=[query]
+        )
+        vec = np.array(result.embeddings[0].values, dtype='float32').reshape(1, -1)
+        import faiss
+        faiss.normalize_L2(vec)
+        return vec
+
     def search(self, query: str, top_k: int = 3) -> List[Dict[str, Any]]:
-        raise NotImplementedError("Production Qdrant/Pinecone driver not configured. Set API keys in .env.")
+        if not query.strip():
+            return []
+
+        try:
+            if not self.index or not self.documents:
+                return self.fallback_store.search(query, top_k)
+
+            query_vec = self._embed_query(query)
+            scores, indices = self.index.search(query_vec, top_k)
+
+            results = []
+            for score, idx in zip(scores[0], indices[0]):
+                if idx < 0 or idx >= len(self.documents):
+                    continue
+                doc = self.documents[idx]
+                results.append({
+                    "id": doc.get("id"),
+                    "source": doc.get("source"),
+                    "category": doc.get("category"),
+                    "question": doc.get("question"),
+                    "answer": doc.get("answer"),
+                    "score": float(score)
+                })
+
+            if results:
+                return results
+
+        except Exception as e:
+            print(f"[VectorStore] FAISS search error ({e}) — switching to local keyword search.")
+
+        # Fallback to local keyword store on rate limit or API error
+        return self.fallback_store.search(query, top_k)
+
+
+class ProductionVectorStore(AbstractVectorStore):
+    def search(self, query: str, top_k: int = 3) -> List[Dict[str, Any]]:
+        raise NotImplementedError("Production Qdrant/Pinecone store driver not configured.")
 
 
 def get_vector_store() -> AbstractVectorStore:
-    """Factory function — selects provider based on .env configuration."""
     provider = settings.VECTOR_STORE_PROVIDER
     if provider == "faiss":
         return FAISSVectorStore()
