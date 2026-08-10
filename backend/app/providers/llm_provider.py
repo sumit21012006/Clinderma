@@ -6,6 +6,7 @@ Pluggable provider architecture:
   - LocalGroundedLLMProvider: Fallback text formatter (no external LLM needed)
 """
 
+import time
 from typing import List, Dict, Any
 from app.providers.base import AbstractLLMProvider
 from app.core.config import settings
@@ -73,7 +74,7 @@ class GeminiLLMProvider(AbstractLLMProvider):
 
         lang = language.lower() if language in ["en", "hi", "mr"] else "en"
 
-        # If no context chunks found, return grounded fallback immediately
+        # ── STRICT GROUNDING CHECK: Enforce threshold BEFORE calling LLM API ──
         if not context_chunks:
             return {
                 "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
@@ -83,16 +84,16 @@ class GeminiLLMProvider(AbstractLLMProvider):
                 "handoff_reason": "No relevant KB context found for this query."
             }
 
-        top_score = context_chunks[0].get("score", 0.0)
+        top_score = float(context_chunks[0].get("score", 0.0))
 
-        # If top score is below grounding threshold, don't even send to LLM
+        # Refuse queries whose vector similarity is below the grounding threshold (e.g. 0.60)
         if top_score < settings.GROUNDING_THRESHOLD:
             return {
                 "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
                 "grounded": False,
                 "confidence": round(top_score, 4),
                 "handoff_recommended": True,
-                "handoff_reason": f"Top retrieval score ({top_score:.2f}) below threshold ({settings.GROUNDING_THRESHOLD})."
+                "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
             }
 
         # Build context from retrieved KB chunks
@@ -112,7 +113,6 @@ class GeminiLLMProvider(AbstractLLMProvider):
                 role = "user" if msg.get("sender") == "user" else "model"
                 messages.append({"role": role, "parts": [{"text": msg.get("message", "")}]})
 
-        # Current user query with context
         user_prompt = f"""## RETRIEVED CONTEXT FROM CLINDERMA KNOWLEDGE BASE:
 
 {context_text}
@@ -124,10 +124,8 @@ Answer the user's question ONLY using the context above. Follow all grounding an
 
         messages.append({"role": "user", "parts": [{"text": user_prompt}]})
 
+        # Try generating response with Gemini LLM
         try:
-            import time
-
-            # Quick retry for temporary rate-limiting, then instant grounded fallback
             max_retries = 1
             for attempt in range(max_retries + 1):
                 try:
@@ -142,8 +140,6 @@ Answer the user's question ONLY using the context above. Follow all grounding an
                     )
 
                     answer = response.text.strip() if response.text else FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"])
-
-                    # Determine handoff recommendation based on confidence
                     handoff_rec = top_score < 0.65
                     handoff_reason = "Moderate confidence — human verification available." if handoff_rec else None
 
@@ -158,54 +154,28 @@ Answer the user's question ONLY using the context above. Follow all grounding an
                 except Exception as retry_err:
                     err_str = str(retry_err)
                     if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and attempt < max_retries:
-                        print(f"[GeminiLLM] Free tier rate limit hit — retrying once in 1.5s...")
+                        print(f"[GeminiLLM] Rate limit hit — retrying in 1.5s...")
                         time.sleep(1.5)
                         continue
                     elif "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                        print(f"[GeminiLLM] Rate limit active — using instant grounded KB fallback.")
+                        print(f"[GeminiLLM] Rate limit active — using grounded KB fallback.")
                         break
                     else:
                         raise retry_err
 
-            # If top score is below threshold, return ungrounded refusal response
-            if top_score < settings.GROUNDING_THRESHOLD:
-                return {
-                    "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
-                    "grounded": False,
-                    "confidence": round(top_score, 4),
-                    "handoff_recommended": True,
-                    "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
-                }
-
-            # Instant Fallback: Return exact grounded KB text when LLM is rate-limited
-            fallback_q = context_chunks[0].get("question", "")
-            fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
-            return {
-                "answer": f"**{fallback_q}**\n\n{fallback_answer}",
-                "grounded": True,
-                "confidence": round(top_score, 4),
-                "handoff_recommended": False,
-                "handoff_reason": "Gemini rate limited — instant grounded KB response returned."
-            }
-
         except Exception as e:
             print(f"[GeminiLLM] Generation error: {e}")
-            if top_score < settings.GROUNDING_THRESHOLD or not context_chunks:
-                return {
-                    "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
-                    "grounded": False,
-                    "confidence": 0.0,
-                    "handoff_recommended": True,
-                    "handoff_reason": "Out of scope query."
-                }
-            fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES["en"])
-            return {
-                "answer": f"**{context_chunks[0].get('question', '')}**\n\n{fallback_answer}",
-                "grounded": True,
-                "confidence": round(top_score, 4),
-                "handoff_recommended": False,
-                "handoff_reason": f"LLM generation failed ({e}), returning raw KB text."
-            }
+
+        # Grounded Fallback: Return raw KB text ONLY if query passed grounding threshold (top_score >= 0.60)
+        fallback_q = context_chunks[0].get("question", "")
+        fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
+        return {
+            "answer": f"**{fallback_q}**\n\n{fallback_answer}",
+            "grounded": True,
+            "confidence": round(top_score, 4),
+            "handoff_recommended": False,
+            "handoff_reason": "Gemini rate limited — grounded KB fallback returned."
+        }
 
 
 class LocalGroundedLLMProvider(AbstractLLMProvider):
@@ -231,7 +201,7 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
             }
 
         top_match = context_chunks[0]
-        score = top_match.get("score", 0.0)
+        score = float(top_match.get("score", 0.0))
 
         if score < settings.GROUNDING_THRESHOLD:
             return {
@@ -239,7 +209,7 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
                 "grounded": False,
                 "confidence": round(score, 4),
                 "handoff_recommended": True,
-                "handoff_reason": f"Score ({score}) below threshold."
+                "handoff_reason": f"Score ({score:.2f}) below threshold ({settings.GROUNDING_THRESHOLD})."
             }
 
         answer_text = top_match.get("answer", "")
@@ -254,10 +224,113 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
         }
 
 
+class GroqLLMProvider(AbstractLLMProvider):
+    """
+    Production LLM provider using Groq's ultra-fast inference.
+    Default model: llama-3.3-70b-versatile (best free tier quality).
+    Drop-in replacement for Gemini — same grounding, same zero-hallucination guarantees.
+    """
+
+    def __init__(self):
+        from groq import Groq
+        self.client = Groq(api_key=settings.GROQ_API_KEY)
+        self.model = settings.LLM_MODEL  # e.g. 'llama-3.3-70b-versatile'
+
+    def generate_grounded_answer(
+        self,
+        query: str,
+        context_chunks: List[Dict[str, Any]],
+        language: str = "en",
+        conversation_history: List[Dict[str, str]] = None
+    ) -> Dict[str, Any]:
+
+        lang = language.lower() if language in ["en", "hi", "mr"] else "en"
+
+        if not context_chunks:
+            return {
+                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                "grounded": False,
+                "confidence": 0.0,
+                "handoff_recommended": True,
+                "handoff_reason": "No relevant KB context found for this query."
+            }
+
+        top_score = float(context_chunks[0].get("score", 0.0))
+
+        if top_score < settings.GROUNDING_THRESHOLD:
+            return {
+                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                "grounded": False,
+                "confidence": round(top_score, 4),
+                "handoff_recommended": True,
+                "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
+            }
+
+        # Build context from KB chunks
+        context_parts = []
+        for i, chunk in enumerate(context_chunks):
+            context_parts.append(
+                f"--- Source {i+1} (Category: {chunk.get('category', 'N/A')}) ---\n"
+                f"Question: {chunk.get('question', '')}\n"
+                f"Answer: {chunk.get('answer', '')}\n"
+            )
+        context_text = "\n".join(context_parts)
+
+        # Build Groq messages array (OpenAI-compatible format)
+        messages = [{"role": "system", "content": CLINDERMA_SYSTEM_PROMPT}]
+
+        if conversation_history:
+            for msg in conversation_history[-settings.MAX_HISTORY_TURNS:]:
+                role = "user" if msg.get("sender") == "user" else "assistant"
+                messages.append({"role": role, "content": msg.get("message", "")})
+
+        user_prompt = f"""## RETRIEVED CONTEXT FROM CLINDERMA KNOWLEDGE BASE:
+
+{context_text}
+
+## USER'S QUESTION:
+{query}
+
+Answer ONLY using the context above. Follow all grounding and language rules."""
+
+        messages.append({"role": "user", "content": user_prompt})
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                temperature=0.3,
+                max_tokens=1024,
+            )
+            answer = response.choices[0].message.content.strip()
+            handoff_rec = top_score < 0.65
+            return {
+                "answer": answer,
+                "grounded": True,
+                "confidence": round(top_score, 4),
+                "handoff_recommended": handoff_rec,
+                "handoff_reason": "Moderate confidence — human verification available." if handoff_rec else None
+            }
+
+        except Exception as e:
+            print(f"[GroqLLM] Generation error: {e}")
+            fallback_q = context_chunks[0].get("question", "")
+            fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
+            return {
+                "answer": f"**{fallback_q}**\n\n{fallback_answer}",
+                "grounded": True,
+                "confidence": round(top_score, 4),
+                "handoff_recommended": False,
+                "handoff_reason": f"LLM error ({e}), returning raw KB text."
+            }
+
+
 def get_llm_provider() -> AbstractLLMProvider:
     """Factory function — selects LLM provider based on .env configuration."""
     provider = settings.LLM_PROVIDER
-    if provider == "gemini":
+    if provider == "groq":
+        return GroqLLMProvider()
+    elif provider == "gemini":
         return GeminiLLMProvider()
     else:
         return LocalGroundedLLMProvider()
