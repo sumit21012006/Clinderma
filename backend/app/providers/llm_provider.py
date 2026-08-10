@@ -127,9 +127,9 @@ Answer the user's question ONLY using the context above. Follow all grounding an
         try:
             import time
 
-            # Retry with exponential backoff for rate limit errors
-            max_retries = 3
-            for attempt in range(max_retries):
+            # Quick retry for temporary rate-limiting, then instant grounded fallback
+            max_retries = 1
+            for attempt in range(max_retries + 1):
                 try:
                     response = self.client.models.generate_content(
                         model=self.model,
@@ -157,23 +157,25 @@ Answer the user's question ONLY using the context above. Follow all grounding an
 
                 except Exception as retry_err:
                     err_str = str(retry_err)
-                    if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                        wait_time = (attempt + 1) * 5
-                        print(f"[GeminiLLM] Rate limited, retrying in {wait_time}s (attempt {attempt+1}/{max_retries})...")
-                        time.sleep(wait_time)
+                    if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and attempt < max_retries:
+                        print(f"[GeminiLLM] Free tier rate limit hit — retrying once in 1.5s...")
+                        time.sleep(1.5)
                         continue
+                    elif "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                        print(f"[GeminiLLM] Rate limit active — using instant grounded KB fallback.")
+                        break
                     else:
                         raise retry_err
 
-            # All retries exhausted — fall back to raw KB text
-            print(f"[GeminiLLM] All retries exhausted, returning raw KB text")
-            fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES["en"])
+            # Instant Fallback: Return exact grounded KB text when LLM is rate-limited
+            fallback_q = context_chunks[0].get("question", "")
+            fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
             return {
-                "answer": f"**{context_chunks[0].get('question', '')}**\n\n{fallback_answer}",
+                "answer": f"**{fallback_q}**\n\n{fallback_answer}",
                 "grounded": True,
                 "confidence": round(top_score, 4),
                 "handoff_recommended": False,
-                "handoff_reason": "LLM rate limited, returning raw KB answer."
+                "handoff_reason": "Gemini rate limited — instant grounded KB response returned."
             }
 
         except Exception as e:
