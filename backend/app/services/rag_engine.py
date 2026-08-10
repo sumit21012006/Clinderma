@@ -11,6 +11,7 @@ Orchestrates:
 
 import re
 from typing import Dict, Any
+from app.core.config import settings
 from app.providers.vector_provider import get_vector_store
 from app.providers.llm_provider import get_llm_provider
 from app.providers.crm_provider import get_crm_provider
