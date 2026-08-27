@@ -1,0 +1,920 @@
+import json
+import os
+import re
+import sys
+import docx
+
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
+DOC_PATH = "Dataset/CLINDERMA – MASTER FAQs DOCUMENT (1).docx"
+
+
+def clean_text(text: str) -> str:
+    if not text:
+        return ""
+    # Normalize unicode quotes and spaces
+    text = text.replace('\xa0', ' ').replace('\u2028', '\n').replace('\u2018', "'").replace('\u2019', "'").replace('\u201c', '"').replace('\u201d', '"').replace('\u2013', '-').replace('\u2014', '-').replace('', "'")
+    lines = [line.strip() for line in text.split('\n')]
+    return "\n".join(lines).strip()
+
+
+def build_faqs_dataset(doc_path: str):
+    doc = docx.Document(doc_path)
+    
+    # We will build structured FAQ list by analyzing sections and paragraphs
+    faqs = []
+    
+    # Static structured extraction from the master document
+    # 1. ABOUT CLINDERMA
+    faqs.append({
+        "id": "faq_01",
+        "category": "About Clinderma",
+        "cohort": "General",
+        "question": "What is Clinderma?",
+        "answer": (
+            "Clinderma is a dermatologist-led skin treatment platform that combines Modern Dermatology, Ayurveda, and targeted Nutrition with lifestyle corrections.\n\n"
+            "We treat acne and pigmentation as medical conditions - not cosmetic problems.\n\n"
+            "Our approach focuses on correct diagnosis, right actives in right concentration, root-cause correction (gut, hormones, stress, sleep, etc.), and continuous monitoring.\n\n"
+            "We are not a cosmetic brand. We are a structured treatment program."
+        ),
+        "key_points": [
+            "Dermatologist-led platform combining Modern Dermatology, Ayurveda, and targeted Nutrition with lifestyle corrections.",
+            "Treats acne and pigmentation as medical conditions, not cosmetic issues.",
+            "Addresses root-cause (gut, hormones, stress, sleep) with continuous monitoring.",
+            "Structured treatment program, not a cosmetic brand."
+        ],
+        "keywords": ["what is clinderma", "dermatologist", "ayurveda", "nutrition", "treatment program", "medical condition", "root-cause"]
+    })
+
+    faqs.append({
+        "id": "faq_02",
+        "category": "About Clinderma",
+        "cohort": "General",
+        "question": "How is Clinderma different from other skincare brands?",
+        "answer": (
+            "Most brands sell products. Clinderma provides personalized skin tests, dermatologist-supervised treatment, "
+            "Ayurvedic root-cause support, nutrition guidance, and weekly follow-ups through a skin coach.\n\n"
+            "We don't experiment with products. We treat systematically as per standard protocols."
+        ),
+        "key_points": [
+            "Personalized skin test and dermatologist-supervised treatment.",
+            "Combines Ayurvedic root-cause support and nutrition guidance.",
+            "Weekly follow-ups with a dedicated skin coach.",
+            "Systematic medical protocols instead of random product experimentation."
+        ],
+        "keywords": ["difference", "different from other brands", "skin coach", "ayurvedic root cause", "dermatologist supervised", "protocol"]
+    })
+
+    # 2. ACNE - TIMELINE & EXPECTATIONS
+    faqs.append({
+        "id": "faq_03",
+        "category": "Acne - Timeline & Expectations",
+        "cohort": "General",
+        "question": "How long does acne treatment take?",
+        "answer": (
+            "Acne starts showing results in 3-4 weeks, however we continue treatment for at least 3 months to provide optimal results and prevent recurrence.\n\n"
+            "Active acne usually improves faster than pigmentation. Consistency is critical."
+        ),
+        "key_points": [
+            "Starts showing visible results in 3-4 weeks.",
+            "Minimum 3 months required for optimal results and preventing recurrence.",
+            "Active acne improves faster than pigmentation.",
+            "Consistency is critical."
+        ],
+        "keywords": ["acne timeline", "how long", "acne treatment duration", "3-4 weeks", "3 months", "recurrence"]
+    })
+
+    faqs.append({
+        "id": "faq_04",
+        "category": "Acne - Timeline & Expectations",
+        "cohort": "General",
+        "question": "What is purging?",
+        "answer": (
+            "Purging is a temporary increase in acne when treatment starts.\n\n"
+            "Certain active ingredients like oral/topical retinoids, AHAs, BHAs increase skin cell turnover, bringing hidden clogged pores to the surface faster.\n\n"
+            "Purging usually happens in the first 2-4 weeks, is temporary, and settles with continued treatment."
+        ),
+        "key_points": [
+            "Temporary breakout when active ingredients (retinoids, AHAs, BHAs) speed up skin cell turnover.",
+            "Brings hidden clogged pores to the surface faster.",
+            "Occurs in the first 2-4 weeks (can last 3-6 weeks) and settles with continued treatment."
+        ],
+        "keywords": ["purging", "what is purging", "retinoids", "AHAs", "BHAs", "cell turnover", "temporary breakouts", "2-4 weeks"]
+    })
+
+    faqs.append({
+        "id": "faq_05",
+        "category": "Acne - Timeline & Expectations",
+        "cohort": "General",
+        "question": "Will acne come back?",
+        "answer": (
+            "If only products are used and root cause is not treated, acne often returns.\n\n"
+            "That is why we address gut health, sleep, stress, and monitor regularly. Thereafter follow lifestyle modifications to prevent recurrence."
+        ),
+        "key_points": [
+            "Acne returns if root causes are ignored and only topical products are used.",
+            "Clinderma treats internal root causes (gut health, stress, sleep, hormones).",
+            "Maintenance plan and lifestyle modifications prevent relapse."
+        ],
+        "keywords": ["acne relapse", "come back", "acne return", "root cause", "gut health", "prevent recurrence"]
+    })
+
+    # 3. PIGMENTATION - TIMELINE & EXPECTATIONS
+    faqs.append({
+        "id": "faq_06",
+        "category": "Pigmentation - Timeline & Expectations",
+        "cohort": "General",
+        "question": "How long does pigmentation treatment take?",
+        "answer": (
+            "Pigmentation takes longer than acne.\n\n"
+            "- Mild tanning / post-acne marks: 6-8 weeks\n"
+            "- Melasma / deeper pigmentation: 3-6 months\n"
+            "- Long-standing pigmentation: may take longer\n\n"
+            "Consistency is essential."
+        ),
+        "key_points": [
+            "Pigmentation takes longer to treat than active acne.",
+            "Mild tanning / post-acne marks: 6-8 weeks.",
+            "Melasma / deeper pigmentation: 3-6 months.",
+            "Long-standing pigmentation may take longer."
+        ],
+        "keywords": ["pigmentation timeline", "how long for pigmentation", "dark spots", "melasma", "post-acne marks", "6-8 weeks", "3-6 months"]
+    })
+
+    faqs.append({
+        "id": "faq_07",
+        "category": "Pigmentation - Timeline & Expectations",
+        "cohort": "General",
+        "question": "Why does pigmentation take longer than acne?",
+        "answer": (
+            "Pigmentation involves excess melanin production that sits in deeper layers of skin.\n\n"
+            "Treatment requires reducing melanin production, controlling triggers (sun exposure, hormones, inflammation), and allowing gradual skin turnover.\n\n"
+            "Safe results take time."
+        ),
+        "key_points": [
+            "Melanin deposits sit in deeper skin layers.",
+            "Requires suppressing melanin production, managing triggers (UV, hormones), and awaiting cellular turnover.",
+            "Safe, long-lasting clinical results require gradual skin turnover."
+        ],
+        "keywords": ["why pigmentation takes longer", "melanin", "deeper layers", "skin turnover", "hormones", "inflammation"]
+    })
+
+    faqs.append({
+        "id": "faq_08",
+        "category": "Pigmentation - Timeline & Expectations",
+        "cohort": "General",
+        "question": "Why is sunscreen mandatory in pigmentation treatment?",
+        "answer": (
+            "Without sunscreen, UV exposure stimulates more melanin and reverses progress.\n\n"
+            "Sunscreen is compulsory in pigmentation treatment."
+        ),
+        "key_points": [
+            "UV radiation directly triggers melanin synthesis, reversing treatment progress.",
+            "Sunscreen is non-negotiable and compulsory."
+        ],
+        "keywords": ["sunscreen mandatory", "why sunscreen", "pigmentation", "UV exposure", "melanin stimulation"]
+    })
+
+    # 4. COMMON CONCERNS
+    faqs.append({
+        "id": "faq_09",
+        "category": "Common Concerns",
+        "cohort": "General",
+        "question": "Can acne and pigmentation be treated together?",
+        "answer": "Yes. Acne control is prioritized first along with treatment of pigmentation.",
+        "key_points": [
+            "Yes, both can be managed concurrently.",
+            "Active acne inflammation is brought under control first alongside pigmentation actives."
+        ],
+        "keywords": ["acne and pigmentation together", "combined treatment", "both acne and dark spots"]
+    })
+
+    faqs.append({
+        "id": "faq_10",
+        "category": "Common Concerns",
+        "cohort": "General",
+        "question": "Are Ayurvedic supplements safe?",
+        "answer": (
+            "Yes, when prescribed properly.\n\n"
+            "We use Ayurveda to address the root cause - gut correction, stress management, sleep disturbances."
+        ),
+        "key_points": [
+            "Safe when formulated and prescribed appropriately under medical guidance.",
+            "Targets root causes: gut correction, stress regulation, sleep quality."
+        ],
+        "keywords": ["ayurvedic supplements safe", "ayurveda safety", "gut correction", "herbal supplements"]
+    })
+
+    # 5. COHORT - TEENS
+    faqs.append({
+        "id": "faq_11",
+        "category": "Cohort Specific - Teens",
+        "cohort": "Teens",
+        "question": "Is acne normal during teenage years?",
+        "answer": "Yes. Acne is quite common during the teenage years due to hormonal changes and excess oil production on the face.",
+        "key_points": ["Common during puberty due to hormonal fluctuations and increased sebum production."],
+        "keywords": ["teenage acne normal", "puberty", "teen pimples", "hormonal surge"]
+    })
+
+    faqs.append({
+        "id": "faq_12",
+        "category": "Cohort Specific - Teens",
+        "cohort": "Teens",
+        "question": "Is this treatment safe for my age?",
+        "answer": "Yes. All treatments are dermatologist-prescribed, age-appropriate, and designed specifically for teenage skin.",
+        "key_points": ["Dermatologist-prescribed, gentle, age-appropriate formulations for teen skin."],
+        "keywords": ["safe for teens", "teen treatment safety", "age appropriate"]
+    })
+
+    faqs.append({
+        "id": "faq_13",
+        "category": "Cohort Specific - Teens",
+        "cohort": "Teens",
+        "question": "Will my parents be involved in the treatment?",
+        "answer": "Yes. For users under 18, parental consent is required and treatment details are shared for transparency and safety.",
+        "key_points": ["Parental consent required for minors under 18 for medical safety and transparency."],
+        "keywords": ["parents involved", "parental consent", "under 18", "teens"]
+    })
+
+    # 6. COHORT - WOMEN
+    faqs.append({
+        "id": "faq_14",
+        "category": "Cohort Specific - Women",
+        "cohort": "Women",
+        "question": "Can I use makeup during treatment?",
+        "answer": "We recommend using non-comedogenic makeup that won't clog pores. If you're unsure, your skin coach can guide you on which products to use while undergoing treatment.",
+        "key_points": ["Non-comedogenic makeup is allowed; skin coach can review current makeup items."],
+        "keywords": ["makeup during treatment", "cosmetics", "non-comedogenic", "foundation"]
+    })
+
+    faqs.append({
+        "id": "faq_15",
+        "category": "Cohort Specific - Women",
+        "cohort": "Women",
+        "question": "Are these treatments truly safe for pregnancy and breastfeeding?",
+        "answer": (
+            "Your plan is created with ingredient safety in mind. We avoid retinoids and other ingredients not advised during pregnancy planning, pregnancy, or nursing. "
+            "Every recommendation is reviewed under dermatologist supervision to align with your current life stage."
+        ),
+        "key_points": [
+            "Customized plans avoiding retinoids and contraindicated molecules.",
+            "Safe for pregnancy planning, pregnant women, and lactating mothers.",
+            "Dermatologist verified according to current life stage."
+        ],
+        "keywords": ["pregnancy safe", "breastfeeding", "nursing", "retinoids avoidance", "pregnancy planning"]
+    })
+
+    # 7. COHORT - MEN
+    faqs.append({
+        "id": "faq_16",
+        "category": "Cohort Specific - Men",
+        "cohort": "Men",
+        "question": "Will this treatment actually work for men?",
+        "answer": (
+            "Yes. This treatment is designed specifically for men's skin, which tends to be thicker, oilier, and more prone to sweat and pollution. "
+            "Your plan is personalized based on your assessment, so it targets the actual cause of your acne, not just the symptoms."
+        ),
+        "key_points": [
+            "Tailored for thicker, oilier male skin subjected to sweat and pollution.",
+            "Personalized plan targeting root cause."
+        ],
+        "keywords": ["treatment for men", "men skin", "male acne", "thick oily skin"]
+    })
+
+    faqs.append({
+        "id": "faq_17",
+        "category": "Cohort Specific - Men",
+        "cohort": "Men",
+        "question": "Is this treatment safe for men with sensitive skin?",
+        "answer": "Yes. The treatment is dermatologist-prescribed and adjusted based on your skin sensitivity, lifestyle, and acne severity. If your skin reacts, the plan can be modified.",
+        "key_points": ["Dermatologist customizes formula based on skin sensitivity and modifies if reaction occurs."],
+        "keywords": ["sensitive skin men", "male sensitive skin", "irritation"]
+    })
+
+    faqs.append({
+        "id": "faq_18",
+        "category": "Cohort Specific - Men",
+        "cohort": "Men",
+        "question": "Can I continue shaving while on this treatment?",
+        "answer": (
+            "Yes. You can shave normally, but we recommend:\n"
+            "- Using a gentle, non-irritating shaving product\n"
+            "- Avoiding shaving over active inflamed acne\n"
+            "- Shaving after cleansing, not on dry skin\n"
+            "Your routine will support this."
+        ),
+        "key_points": [
+            "Shaving is permitted with gentle products.",
+            "Do not shave over active inflamed cysts/pustules.",
+            "Shave on damp, cleansed skin."
+        ],
+        "keywords": ["shaving", "shaving while on treatment", "beard razor", "inflamed acne"]
+    })
+
+    faqs.append({
+        "id": "faq_19",
+        "category": "Cohort Specific - Men",
+        "cohort": "Men",
+        "question": "Will this affect my daily routine or work schedule?",
+        "answer": "Not at all. The routine is simple and designed to fit into a busy lifestyle. You'll have clear AM and PM steps, each taking only a few minutes.",
+        "key_points": ["Streamlined AM/PM routine taking only 5 minutes."],
+        "keywords": ["work schedule", "daily routine", "busy lifestyle", "time needed"]
+    })
+
+    faqs.append({
+        "id": "faq_20",
+        "category": "Cohort Specific - Men",
+        "cohort": "Men",
+        "question": "Do I need to stop going to the gym or sweating?",
+        "answer": "No. You can continue your workouts. We only recommend:\n- Washing your face after heavy sweating\n- Following the routine consistently.",
+        "key_points": ["Workouts and gym are fine; cleanse face after sweating."],
+        "keywords": ["gym", "workout", "sweating", "exercise acne"]
+    })
+
+    faqs.append({
+        "id": "faq_21",
+        "category": "Cohort Specific - Men",
+        "cohort": "Men",
+        "question": "Will this affect my beard growth or hormones?",
+        "answer": "No. The treatment does not affect beard growth or male hormones. It focuses only on improving skin health.",
+        "key_points": ["No negative impact on facial hair or testosterone/hormones."],
+        "keywords": ["beard growth", "male hormones", "testosterone", "facial hair"]
+    })
+
+    # 8. COMMON PROTOCOL FAQS
+    faqs.append({
+        "id": "faq_22",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "How does this recommendation work?",
+        "answer": (
+            "After you fill the assessment form, our system analyses your skin type, acne/pigmentation severity, lifestyle factors, and medical history. "
+            "Based on this, a dermatologist verifies the results and creates a customized treatment plan for you."
+        ),
+        "key_points": ["Online skin assessment -> automated clinical analysis -> dermatologist verification -> customized treatment plan."],
+        "keywords": ["how recommendation works", "assessment form", "customized treatment plan"]
+    })
+
+    faqs.append({
+        "id": "faq_23",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Will a real dermatologist review my plan?",
+        "answer": "Yes. Every plan is reviewed and approved by a qualified dermatologist before it is shared with you.",
+        "key_points": ["Every single plan is reviewed and signed off by a qualified dermatologist."],
+        "keywords": ["real dermatologist", "qualified doctor", "doctor review"]
+    })
+
+    faqs.append({
+        "id": "faq_24",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Is this treatment safe for me?",
+        "answer": (
+            "Yes, all the medicines used in your treatment are dermatologist-prescribed and FDA-approved. "
+            "We use only safe, effective products that are suited to your skin type and condition. Our team ensures that your treatment is customized and carefully monitored."
+        ),
+        "key_points": ["Dermatologist-prescribed, FDA-approved actives, tailored to skin condition and monitored."],
+        "keywords": ["treatment safety", "FDA approved", "safe medicines"]
+    })
+
+    faqs.append({
+        "id": "faq_25",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "What if this treatment doesn't work for me?",
+        "answer": (
+            "Acne treatment requires consistency. We stay with you throughout the full program and adjust your plan as needed. "
+            "If you're not seeing results, we'll review your treatment with a dermatologist and make the necessary changes."
+        ),
+        "key_points": ["Continuous monitoring; dermatologist adjusts formula/actives if progress is suboptimal."],
+        "keywords": ["if treatment doesn't work", "no results", "adjust plan", "review treatment"]
+    })
+
+    faqs.append({
+        "id": "faq_26",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Will my acne get worse before it gets better?",
+        "answer": "In some cases, mild flare-ups can happen initially due to purging. Your dermatologist monitors your progress and adjusts treatment to manage this safely.",
+        "key_points": ["Temporary purging flare-up is possible initially; actively managed by dermatologist."],
+        "keywords": ["get worse before better", "initial breakout", "purging flare up"]
+    })
+
+    faqs.append({
+        "id": "faq_27",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Do I need oral medicines to treat acne?",
+        "answer": "Not always. Mild acne may improve with topicals alone. Moderate to severe acne may need oral prescribed medicines.",
+        "key_points": ["Mild acne: topicals only. Moderate/severe/cystic acne: oral medications may be prescribed."],
+        "keywords": ["oral medicines", "pills", "antibiotics", "isotretinoin", "topicals only"]
+    })
+
+    faqs.append({
+        "id": "faq_28",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Who will guide me during the treatment?",
+        "answer": "You'll have a dermatologist overseeing your care and a skin coach supporting you with follow-ups and guidance.",
+        "key_points": ["Dedicated dual support: Dermatologist (medical oversight) + Skin Coach (daily support/follow-up)."],
+        "keywords": ["who will guide me", "skin coach", "dermatologist", "support team"]
+    })
+
+    faqs.append({
+        "id": "faq_29",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Will this help prevent acne in the future?",
+        "answer": "Yes. Our approach focuses on long-term skin health, not just short-term fixes, to reduce future breakouts.",
+        "key_points": ["Addresses root causes and provides maintenance plan to prevent future breakouts."],
+        "keywords": ["prevent future acne", "long term results", "no relapse"]
+    })
+
+    faqs.append({
+        "id": "faq_30",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Is my personal information and photos safe?",
+        "answer": "Absolutely. Your data and images are handled securely and used only for medical evaluation.",
+        "key_points": ["100% confidential and secure, strictly used for clinical evaluation."],
+        "keywords": ["privacy", "photos safe", "data security", "confidentiality"]
+    })
+
+    faqs.append({
+        "id": "faq_31",
+        "category": "Treatment Kit & Pricing",
+        "cohort": "General",
+        "question": "What's included in my treatment plan?",
+        "answer": (
+            "Your plan will include:\n"
+            "- Dermatologist-prescribed medicines (Topicals + Oral if needed)\n"
+            "- Skincare products (cleanser, sunscreen, moisturizer, etc.)\n"
+            "- Root-cause supplements (diet, gut health, lifestyle)\n"
+            "- Weekly follow-ups with a Skin Coach\n"
+            "- Continuous support on WhatsApp\n"
+            "- Diet plan"
+        ),
+        "key_points": [
+            "Prescription topicals and oral medicines (if required)",
+            "Essential barrier skincare (cleanser, moisturizer, sunscreen)",
+            "Ayurvedic root-cause supplements & customized diet plan",
+            "Weekly skin coach check-ins and WhatsApp support"
+        ],
+        "keywords": ["whats included", "treatment kit contents", "package", "plan inclusions"]
+    })
+
+    faqs.append({
+        "id": "faq_32",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Is it safe to follow this plan without visiting a clinic?",
+        "answer": (
+            "Absolutely. Our plans are designed to be safe and effective at home. "
+            "All products are dermatologist-verified and FDA-approved. In case of complications, you can instantly connect with our doctors online."
+        ),
+        "key_points": ["Safe for at-home use with instant doctor access online if complications arise."],
+        "keywords": ["safe without clinic visit", "online dermatology", "at home treatment"]
+    })
+
+    faqs.append({
+        "id": "faq_33",
+        "category": "Treatment Kit & Pricing",
+        "cohort": "General",
+        "question": "Do I have to buy all the products from you?",
+        "answer": "Not really. But to avail the free consultation, follow-ups, and skin coach support we're offering right now, you would need to purchase the products from us.",
+        "key_points": ["Free doctor consultation and skin coach support are bundled with the Clinderma kit purchase."],
+        "keywords": ["buy all products from you", "mandatory purchase", "free consultation bundle"]
+    })
+
+    faqs.append({
+        "id": "faq_34",
+        "category": "Skin Coach & Support",
+        "cohort": "General",
+        "question": "What does a Skin Coach do?",
+        "answer": (
+            "Your personal Skin Coach will:\n"
+            "- Help you stick to the plan\n"
+            "- Remind you of medications and skincare routine\n"
+            "- Answer daily doubts on WhatsApp\n"
+            "- Connect you to the doctor if required\n"
+            "- Regular followups for checking improvement"
+        ),
+        "key_points": [
+            "Routine adherence & medication reminders",
+            "Resolving daily skincare doubts on WhatsApp",
+            "Escalating to dermatologist when necessary",
+            "Weekly visual progress tracking"
+        ],
+        "keywords": ["what does skin coach do", "role of skin coach", "whatsapp support", "progress tracking"]
+    })
+
+    faqs.append({
+        "id": "faq_35",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "How often will I talk to the doctor?",
+        "answer": "You'll get a doctor consultation every 45 days. You can also request additional doctor reviews if your condition changes.",
+        "key_points": ["Routine doctor review every 45 days, plus on-demand reviews if condition changes."],
+        "keywords": ["how often doctor", "consultation frequency", "every 45 days"]
+    })
+
+    faqs.append({
+        "id": "faq_36",
+        "category": "Acne & Pigmentation Timeline",
+        "cohort": "General",
+        "question": "How soon can I expect to see results?",
+        "answer": "Most users start seeing improvements in 3-4 weeks, depending on acne/pigmentation severity. Full results may take 3–6 months with consistent use.",
+        "key_points": ["Visible improvement in 3-4 weeks; full stabilization and clearance in 3-6 months."],
+        "keywords": ["how soon results", "when will I see changes", "3-4 weeks", "3-6 months"]
+    })
+
+    faqs.append({
+        "id": "faq_37",
+        "category": "Process & Consultations",
+        "cohort": "General",
+        "question": "Can I stop the plan midway if I feel better?",
+        "answer": "No, we strongly advise completing the plan to prevent relapse or scars. Your doctor/coach will guide you on tapering safely.",
+        "key_points": ["Must complete full protocol to prevent relapse, rebound breakouts, or post-acne scarring."],
+        "keywords": ["stop midway", "quit treatment early", "relapse risk", "tapering"]
+    })
+
+    faqs.append({
+        "id": "faq_38",
+        "category": "Treatment Kit & Pricing",
+        "cohort": "General",
+        "question": "Do I need to pay separately for doctor consultations and skin coach support?",
+        "answer": "No. Both are included free when you purchase your treatment kit from Clinderma.",
+        "key_points": ["Zero extra fees for doctor reviews and skin coach support; included with treatment kit."],
+        "keywords": ["pay separately for doctor", "consultation fee", "skin coach charge", "free support"]
+    })
+
+    faqs.append({
+        "id": "faq_39",
+        "category": "Skincare Routine",
+        "cohort": "General",
+        "question": "Can I continue my current skincare products?",
+        "answer": "Yes, but your dermatologist will guide you on which ones to keep and which to stop, so they don't clash with your treatment.",
+        "key_points": ["Dermatologist reviews existing products to eliminate clashing actives or pore-clogging formulas."],
+        "keywords": ["continue existing products", "use my current skincare", "routine conflict"]
+    })
+
+    # 9. ON CALL / PATIENT ADVISORY FAQS
+    faqs.append({
+        "id": "faq_40",
+        "category": "Onboarding & Delivery",
+        "cohort": "General",
+        "question": "How will we contact the skin coach once the kit is received?",
+        "answer": (
+            "Once your kit is delivered, you will receive a message introducing your dedicated support team — your Skin Coach and Medical Lead.\n\n"
+            "Your Skin Coach will guide you on how to start the routine, monitor your progress weekly, and answer day-to-day queries."
+        ),
+        "key_points": ["Automatic welcome message on delivery introducing dedicated Skin Coach & Medical Lead on WhatsApp."],
+        "keywords": ["contact skin coach after kit", "delivery onboarding", "whatsapp introduction"]
+    })
+
+    faqs.append({
+        "id": "faq_41",
+        "category": "Brand Trust & Transparency",
+        "cohort": "General",
+        "question": "There are no reviews on Google and Instagram — we are trusting your words.",
+        "answer": (
+            "That's completely fair.\n\n"
+            "We are not a cosmetic brand built around influencer marketing and paid reviews. We are a healthcare company handling clinical acne, pigmentation, hormonal cases, and post-inflammatory marks.\n\n"
+            "Many of our patients are dealing with medical skin conditions - and not everyone is comfortable putting that publicly on Google or Instagram.\n\n"
+            "That said, you don't have to blindly trust us. We can share:\n"
+            "- Genuine before-after cases\n"
+            "- Case studies approved by our doctors\n"
+            "- Full treatment plan before starting\n\n"
+            "Trust should come from transparency, process, and clinical supervision - not just star ratings."
+        ),
+        "key_points": [
+            "Healthcare/clinical focus over paid influencer marketing.",
+            "Medical privacy keeps many patients from posting public reviews.",
+            "Provides verifiable before-after cases, doctor-approved case studies, and transparent treatment plans."
+        ],
+        "keywords": ["no reviews on google", "instagram reviews", "trusting words", "before after cases", "clinical transparency"]
+    })
+
+    faqs.append({
+        "id": "faq_42",
+        "category": "Acne & Treatment Protocols",
+        "cohort": "General",
+        "question": "We have tried multiple products — what if acne comes back again?",
+        "answer": (
+            "Acne returns when:\n"
+            "- Root cause is not addressed\n"
+            "- Actives are used in wrong concentrations\n"
+            "- No follow-up\n"
+            "- Treatment stopped midway\n\n"
+            "Clinderma works in phases:\n"
+            "1. Restore → Control active acne\n"
+            "2. Remodel → Stabilise skin biology\n"
+            "3. Regenerate → Prevent relapse\n\n"
+            "If full protocol is completed properly, relapse risk reduces significantly.\n"
+            "Acne is a medical condition - not a facewash problem."
+        ),
+        "key_points": [
+            "Acne relapses due to unaddressed root causes, improper actives, lack of follow-up, or early termination.",
+            "Three clinical phases: Restore (Control), Remodel (Stabilize), Regenerate (Prevent Relapse).",
+            "Medical condition requiring root-cause correction."
+        ],
+        "keywords": ["tried multiple products", "what if acne returns", "restore remodel regenerate", "phases of treatment", "relapse prevention"]
+    })
+
+    faqs.append({
+        "id": "faq_43",
+        "category": "Medications & Side Effects",
+        "cohort": "General",
+        "question": "Are there any side effects of oral medications?",
+        "answer": (
+            "Some oral medicines may have mild dryness & temporary purging.\n\n"
+            "But:\n"
+            "- Not everyone is given oral medicine\n"
+            "- It is prescribed only if required\n"
+            "- Doctor supervision is compulsory\n"
+            "- We adjust the dose if needed\n\n"
+            "With oral medicines, we also give skincare products to manage side effects like dryness. If there are other problems, like gastric/stomach issues, our doctor will guide you accordingly."
+        ),
+        "key_points": [
+            "Possible mild dryness or initial purging, managed with barrier skincare.",
+            "Only prescribed when necessary under strict dermatologist supervision.",
+            "Dosage adjustments and medical guidance provided for any gastric/other sensitivities."
+        ],
+        "keywords": ["side effects oral medications", "dryness", "purging", "doctor supervision", "gastric issues"]
+    })
+
+    faqs.append({
+        "id": "faq_44",
+        "category": "Sun Protection & Pigmentation",
+        "cohort": "General",
+        "question": "After using sunscreen, patches won't come on the face — what's the guarantee of that?",
+        "answer": (
+            "No sunscreen can give 100% 'guarantee.'\n\n"
+            "But without sunscreen:\n"
+            "- Pigmentation worsens\n"
+            "- Acne marks darken\n"
+            "- Treatment slows down\n\n"
+            "We use pharmaceutical-grade sunscreen with proper SPF and PA rating. Consistency gives protection."
+        ),
+        "key_points": [
+            "No product offers 100% guarantee, but sunscreen prevents UV-induced melanin spikes and dark spot deepening.",
+            "Pharmaceutical-grade high SPF/PA sunscreen ensures clinical protection."
+        ],
+        "keywords": ["sunscreen guarantee", "patches on face", "pigmentation worsening", "pharmaceutical grade sunscreen"]
+    })
+
+    faqs.append({
+        "id": "faq_45",
+        "category": "Treatment Kit & Pricing",
+        "cohort": "General",
+        "question": "Can we take only the diet plan? If yes, what's the price?",
+        "answer": "Yes, you can absolutely opt for just the diet plan. The price for the diet plan is ₹250.",
+        "key_points": ["Standalone diet plan is available for ₹250."],
+        "keywords": ["only diet plan", "diet plan price", "250", "standalone diet"]
+    })
+
+    faqs.append({
+        "id": "faq_46",
+        "category": "Skin Conditions & Procedures",
+        "cohort": "General",
+        "question": "What is the treatment process for treating open pores?",
+        "answer": (
+            "We use topicals like AHAs, retinoids, etc to treat open pores, however complete closure is not possible as they are natural openings over the skin. "
+            "If required, we may guide you for clinical procedures."
+        ),
+        "key_points": [
+            "Topical AHAs and retinoids reduce appearance of enlarged pores.",
+            "Pores cannot be permanently closed (they are natural anatomical structures).",
+            "In-clinic procedures recommended for deep scarring/enlargement."
+        ],
+        "keywords": ["open pores treatment", "minimize pores", "AHAs", "retinoids", "pore closure"]
+    })
+
+    faqs.append({
+        "id": "faq_47",
+        "category": "Acne - Timeline & Expectations",
+        "cohort": "General",
+        "question": "How long will it take for purging to settle down?",
+        "answer": (
+            "Purging usually lasts 3 to 6 weeks.\n\n"
+            "It happens because actives like retinoids accelerate skin turnover.\n\n"
+            "If purging is severe:\n"
+            "- We adjust frequency\n"
+            "- We modify actives\n"
+            "- You stay under supervision\n\n"
+            "Not every breakout is purging - we differentiate clinically."
+        ),
+        "key_points": [
+            "Purging typically lasts 3 to 6 weeks.",
+            "Caused by accelerated cellular turnover from retinoids/exfoliants.",
+            "Severe purging is managed by adjusting frequency or active strength under medical supervision."
+        ],
+        "keywords": ["purging duration", "how long purging", "3 to 6 weeks", "retinoids turnover", "breakout vs purging"]
+    })
+
+    faqs.append({
+        "id": "faq_48",
+        "category": "Lifestyle & Routine",
+        "cohort": "Students / Busy Routine",
+        "question": "Will I be able to follow the routine since I go to college?",
+        "answer": (
+            "Yes.\n\n"
+            "The routine is simple:\n"
+            "- Morning: Cleanser → Treatment → Moisturiser → Sunscreen\n"
+            "- Night: Cleanser → Treatment → Moisturiser\n\n"
+            "Takes only 5–7 minutes."
+        ),
+        "key_points": ["Quick 5-7 minute AM/PM routine suitable for students and busy college schedules."],
+        "keywords": ["college student routine", "busy schedule", "5-7 minutes", "morning night steps"]
+    })
+
+    faqs.append({
+        "id": "faq_49",
+        "category": "Lifestyle & Routine",
+        "cohort": "Hostel / PG",
+        "question": "If I live in a hostel or PG, will following the diet be possible? Will it affect my treatment?",
+        "answer": (
+            "Yes.\n\n"
+            "We don't give extreme diet charts. We suggest:\n"
+            "- Smarter swaps\n"
+            "- Portion control\n"
+            "- Trigger identification\n"
+            "- Hydration\n"
+            "- Sleep correction\n\n"
+            "Even in PG/hostel — 70% compliance is enough to see impact. Perfection is not required. Consistency is."
+        ),
+        "key_points": [
+            "Realistic guidelines with food swaps and trigger reduction, not restrictive meal plans.",
+            "70% dietary compliance in PG/hostel is sufficient for noticeable clinical results."
+        ],
+        "keywords": ["hostel diet", "PG food", "mess food", "70% compliance", "food swaps"]
+    })
+
+    faqs.append({
+        "id": "faq_50",
+        "category": "Acne & Treatment Protocols",
+        "cohort": "General",
+        "question": "Do we have to continue this for a lifetime?",
+        "answer": (
+            "No.\n\n"
+            "Treatment phases usually last 3–6 months (depending on severity) for acne & pigmentation. "
+            "Once the active acne & pigmentation is brought under control, only a maintenance skincare routine is needed to prevent relapse and maintain skin health."
+        ),
+        "key_points": [
+            "Active treatment lasts 3-6 months.",
+            "After clearance, transition to a simple maintenance routine to sustain healthy skin."
+        ],
+        "keywords": ["lifetime treatment", "continue forever", "3-6 months treatment", "maintenance routine"]
+    })
+
+    faqs.append({
+        "id": "faq_51",
+        "category": "Acne & Treatment Protocols",
+        "cohort": "General",
+        "question": "What is the process once the treatment is over?",
+        "answer": (
+            "After the treatment phase is over:\n"
+            "- Doctor reviews final skin status\n"
+            "- Maintenance plan is given\n"
+            "- High-risk triggers explained\n"
+            "- If needed, mild maintenance actives are given"
+        ),
+        "key_points": [
+            "Final doctor consultation and assessment.",
+            "Customized maintenance plan with trigger avoidance education."
+        ],
+        "keywords": ["process after treatment", "treatment completion", "maintenance plan", "final review"]
+    })
+
+    faqs.append({
+        "id": "faq_52",
+        "category": "Customization & Sensitivities",
+        "cohort": "General",
+        "question": "What happens if I have sensitivity to niacinamide or salicylic acid? What products will I receive?",
+        "answer": (
+            "Then we don't use them.\n\n"
+            "We customise based on:\n"
+            "- Skin type\n"
+            "- Sensitivity history\n"
+            "- Barrier status\n"
+            "- Previous reactions\n\n"
+            "There are alternatives to almost every ingredient."
+        ),
+        "key_points": [
+            "Allergies and sensitivities are strictly excluded.",
+            "Dermatologist prescribes alternative actives tailored to compromised barriers."
+        ],
+        "keywords": ["niacinamide sensitivity", "salicylic acid allergy", "ingredient alternatives", "customized formulations"]
+    })
+
+    faqs.append({
+        "id": "faq_53",
+        "category": "Customization & Sensitivities",
+        "cohort": "General",
+        "question": "Ayurvedic medicine doesn't suit me — how will you treat my root cause?",
+        "answer": (
+            "If Ayurvedic supplements don't suit you, we don't give them. We treat the root cause with the help of:\n"
+            "- Diet modification\n"
+            "- Sleep correction\n"
+            "- Stress regulation\n"
+            "- Nutritional support"
+        ),
+        "key_points": ["Ayurvedic supplements are optional; root causes are addressed via clinical nutrition, sleep, and lifestyle."],
+        "keywords": ["ayurvedic medicine doesn't suit", "no ayurveda", "lifestyle root cause", "diet sleep stress"]
+    })
+
+    faqs.append({
+        "id": "faq_54",
+        "category": "Customization & Sensitivities",
+        "cohort": "General",
+        "question": "Are your products fragrance-free? Will I be given fragrance-free products if I'm allergic?",
+        "answer": (
+            "Most treatment products are fragrance-free.\n\n"
+            "If you have:\n"
+            "- Fragrance allergy\n"
+            "- Sensitive skin\n"
+            "- Barrier damage\n\n"
+            "We specifically choose fragrance-free options. We always ask allergy history before prescription."
+        ),
+        "key_points": [
+            "Most products are fragrance-free.",
+            "Strictly fragrance-free formulations selected for sensitive/allergic skin."
+        ],
+        "keywords": ["fragrance free", "perfume allergy", "sensitive skin", "scent free"]
+    })
+
+    faqs.append({
+        "id": "faq_55",
+        "category": "About Clinderma",
+        "cohort": "General",
+        "question": "We are already using cleanser, sunscreen, and moisturizer — how is your treatment different?",
+        "answer": (
+            "Using basic skincare products and undergoing structured acne treatment are two very different things.\n\n"
+            "Most people already use a cleanser, sunscreen, and moisturizer. But acne and pigmentation are medical skin conditions - they require the right molecules, in the right concentration, in the right sequence, under supervision.\n\n"
+            "Clinderma products are specifically designed for acne- and pigmentation-prone skin. They are:\n"
+            "- Formulated with clinically effective actives under the supervision of the dermatologist\n"
+            "- Balanced to protect the skin barrier\n"
+            "- Designed to work in combination with prescription treatments\n"
+            "- Structured according to your acne grade and skin response"
+        ),
+        "key_points": [
+            "Basic CMS (cleanser, moisturizer, sunscreen) is not medical treatment.",
+            "Acne & pigmentation require targeted actives in precise concentrations under clinical supervision.",
+            "Formulations protect barrier while delivering active treatment."
+        ],
+        "keywords": ["already using cleanser sunscreen moisturizer", "how is treatment different", "medical vs cosmetic", "barrier protection"]
+    })
+
+    # Summary metadata
+    dataset = {
+        "metadata": {
+            "title": "Clinderma Master FAQs Database",
+            "source_document": "Dataset/CLINDERMA – MASTER FAQs DOCUMENT (1).docx",
+            "total_faqs": len(faqs),
+            "version": "1.0",
+            "description": "Ground-truth database of Clinderma clinical FAQs and answers for chatbot evaluation and benchmarking."
+        },
+        "communication_guidelines": [
+            "Never promise guaranteed results for pigmentation. Acne has structured guarantee parameters.",
+            "Never promise instant results.",
+            "Never stop medicines without doctor approval.",
+            "Escalate immediately in case of severe swelling, fever, allergy, or adverse reaction.",
+            "Always set expectations clearly: Acne improves faster than pigmentation.",
+            "Under-promise and over-deliver results to meet client expectations."
+        ],
+        "faqs": faqs
+    }
+
+    return dataset
+
+
+def main():
+    dataset = build_faqs_dataset(DOC_PATH)
+    
+    # Save to Dataset/master_faqs.json
+    out_dataset = "Dataset/master_faqs.json"
+    with open(out_dataset, "w", encoding="utf-8") as f:
+        json.dump(dataset, f, indent=2, ensure_ascii=False)
+    print(f"✅ Generated Master FAQs JSON in: {out_dataset} ({len(dataset['faqs'])} FAQs)")
+
+    # Save to WEBSCRAPPER/master_faqs.json
+    out_webscrapper = "WEBSCRAPPER/master_faqs.json"
+    with open(out_webscrapper, "w", encoding="utf-8") as f:
+        json.dump(dataset, f, indent=2, ensure_ascii=False)
+    print(f"✅ Generated Master FAQs JSON in: {out_webscrapper}")
+
+    # Save to data/master_faqs.json
+    out_data = "data/master_faqs.json"
+    with open(out_data, "w", encoding="utf-8") as f:
+        json.dump(dataset, f, indent=2, ensure_ascii=False)
+    print(f"✅ Generated Master FAQs JSON in: {out_data}")
+
+
+if __name__ == "__main__":
+    main()

@@ -9,9 +9,13 @@ class HandoffManager:
         self.db_path = db_path or settings.DB_PATH
         self._init_db()
 
+    def _get_conn(self):
+        return sqlite3.connect(self.db_path, timeout=30.0)
+
     def _init_db(self):
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_conn()
         cursor = conn.cursor()
+        cursor.execute("PRAGMA journal_mode=WAL;")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS handoffs (
                 session_id TEXT PRIMARY KEY,
@@ -36,7 +40,7 @@ class HandoffManager:
         conn.close()
 
     def add_transcript(self, session_id: str, sender: str, message: str):
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_conn()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO transcripts (session_id, sender, message, timestamp)
@@ -45,11 +49,34 @@ class HandoffManager:
         conn.commit()
         conn.close()
 
+    def update_user_contact(self, session_id: str, user_name: Optional[str] = None, user_phone: Optional[str] = None):
+        """Update contact info on an existing handoff record or initialize it."""
+        conn = self._get_conn()
+        cursor = conn.cursor()
+        cursor.execute("SELECT session_id, user_name, user_phone FROM handoffs WHERE session_id = ?", (session_id,))
+        row = cursor.fetchone()
+
+        if row:
+            new_name = user_name if user_name and user_name != "Anonymous" else row[1]
+            new_phone = user_phone if user_phone else row[2]
+            cursor.execute("""
+                UPDATE handoffs SET user_name = ?, user_phone = ? WHERE session_id = ?
+            """, (new_name, new_phone, session_id))
+        else:
+            created_at = datetime.datetime.now().isoformat()
+            cursor.execute("""
+                INSERT INTO handoffs (session_id, user_name, user_phone, reason, channel, status, created_at)
+                VALUES (?, ?, ?, 'Lead Captured in Chat', 'website', 'pending', ?)
+            """, (session_id, user_name or "Anonymous", user_phone or "", created_at))
+
+        conn.commit()
+        conn.close()
+
     def create_handoff(
         self, session_id: str, user_name: str = "Anonymous", user_phone: Optional[str] = None, reason: str = "Human Agent Request", channel: str = "website"
     ) -> Dict[str, Any]:
         created_at = datetime.datetime.now().isoformat()
-        conn = sqlite3.connect(self.db_path)
+        conn = self._get_conn()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT OR REPLACE INTO handoffs (session_id, user_name, user_phone, reason, channel, status, created_at)
@@ -66,8 +93,8 @@ class HandoffManager:
             "created_at": created_at
         }
 
-    def get_all_handoffs() -> List[Dict[str, Any]]:
-        conn = sqlite3.connect(settings.DB_PATH)
+    def get_all_handoffs(self) -> List[Dict[str, Any]]:
+        conn = self._get_conn()
         conn.row_factory = sqlite3.Row
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM handoffs ORDER BY created_at DESC")
@@ -94,7 +121,7 @@ class HandoffManager:
         return handoffs
 
     def resolve_handoff(self, session_id: str):
-        conn = sqlite3.connect(settings.DB_PATH)
+        conn = self._get_conn()
         cursor = conn.cursor()
         cursor.execute("UPDATE handoffs SET status = 'resolved' WHERE session_id = ?", (session_id,))
         conn.commit()

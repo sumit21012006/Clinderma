@@ -1,0 +1,84 @@
+{
+  "metadata": {
+    "timestamp": "20260822_204326",
+    "total_evaluated": 2,
+    "faqs_source": "E:\\Projects\\Clinderma\\WEBSCRAPPER\\master_faqs.json",
+    "average_alignment_score": 70.0
+  },
+  "results": [
+    {
+      "id": "faq_14",
+      "category": "Cohort Specific - Women",
+      "cohort": "Women",
+      "question": "Can I use makeup during treatment?",
+      "ground_truth_answer": "We recommend using non-comedogenic makeup that won't clog pores. If you're unsure, your skin coach can guide you on which products to use while undergoing treatment.",
+      "chatbot_response": "Yes, makeup can usually be continued during treatment. Non-comedogenic makeup is preferred because it’s less likely to clog pores or worsen acne.\n\nIt’s also important to:\n- Remove makeup gently before sleeping\n- Avoid heavy or irritating products during active breakouts\n- Use sunscreen daily, especially if acne or pigmentation treatments are being used\n\nA dermatologist or Skin Coach can guide which products are safer for your skin type.\n\n",
+      "duration_seconds": 9.93,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "makeup during treatment",
+          "non-comedogenic"
+        ],
+        "missing_keywords": [
+          "cosmetics",
+          "foundation"
+        ],
+        "coverage_percent": 50.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Non-comedogenic makeup is allowed; skin coach can review current makeup items."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 80.0
+    },
+    {
+      "id": "faq_15",
+      "category": "Cohort Specific - Women",
+      "cohort": "Women",
+      "question": "Are these treatments truly safe for pregnancy and breastfeeding?",
+      "ground_truth_answer": "Your plan is created with ingredient safety in mind. We avoid retinoids and other ingredients not advised during pregnancy planning, pregnancy, or nursing. Every recommendation is reviewed under dermatologist supervision to align with your current life stage.",
+      "chatbot_response": "Yes, pregnancy and breastfeeding cases are handled differently for safety. Dermatologists review these cases separately, and ingredients that are not considered suitable during pregnancy or nursing, such as retinoids, are avoided.\n\nThe treatment plan is customized based on your stage, skin concern, and medical history before anything is prescribed.\n\n",
+      "duration_seconds": 7.93,
+      "products_recommended": [],
+      "follow_ups": [
+        {
+          "question": "What skin concern are you dealing with right now?",
+          "options": [
+            "I have acne during pregnancy",
+            "I have pigmentation or melasma",
+            "I have sensitive skin and irritation",
+            "I want a safe skin assessment"
+          ],
+          "id": "SsewAGcx2dpNw12DIdu1d"
+        }
+      ],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "pregnancy safe",
+          "breastfeeding",
+          "nursing",
+          "retinoids avoidance",
+          "pregnancy planning"
+        ],
+        "missing_keywords": [],
+        "coverage_percent": 100.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Dermatologist verified according to current life stage."
+        ],
+        "uncovered_key_points": [
+          "Customized plans avoiding retinoids and contraindicated molecules.",
+          "Safe for pregnancy planning, pregnant women, and lactating mothers."
+        ],
+        "score_percent": 33.3
+      },
+      "alignment_score": 60.0
+    }
+  ]
+}

@@ -11,14 +11,14 @@ class Settings:
 
     # ── Gemini Configuration ──
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "llama-3.3-70b-versatile")
+    LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini-3.6-flash")
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
 
     # ── Groq Configuration ──
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
 
     # ── Pluggable Provider Toggles (Environment Controlled) ──
-    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "groq")             # 'groq', 'gemini', 'local_grounded'
+    LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "gemini")             # 'gemini', 'groq', 'local_grounded'
     VECTOR_STORE_PROVIDER: str = os.getenv("VECTOR_STORE_PROVIDER", "faiss")  # 'local_json', 'faiss', 'qdrant', 'pinecone'
     CRM_PROVIDER: str = os.getenv("CRM_PROVIDER", "mock_kylas")      # 'mock_kylas', 'kylas_api'
     ORDER_PROVIDER: str = os.getenv("ORDER_PROVIDER", "mock_orders")  # 'mock_orders', 'clinderma_db'

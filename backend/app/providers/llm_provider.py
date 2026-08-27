@@ -1,9 +1,11 @@
 """
-Clinderma LLM Provider — V2 (Gemini 2.0 Flash + Grounded System Prompt)
+Clinderma LLM Provider — V3 (Gemini 2.0 Flash + Strict Multi-Source Grounding)
 
 Pluggable provider architecture:
-  - GeminiLLMProvider: Production Gemini 2.0 Flash with strict grounding & multi-lingual
-  - LocalGroundedLLMProvider: Fallback text formatter (no external LLM needed)
+  - GeminiLLMProvider: Production Gemini 2.0 Flash with strict anti-hallucination grounding,
+                       multi-source clinical context (FAQs, Module, Blogs, Kandid),
+                       and natural multi-lingual capabilities.
+  - LocalGroundedLLMProvider: Fallback text formatter (100% offline).
 """
 
 import time
@@ -12,44 +14,51 @@ from app.providers.base import AbstractLLMProvider
 from app.core.config import settings
 
 # ── Clinderma Grounded System Prompt ──
-CLINDERMA_SYSTEM_PROMPT = """You are Clinderma's official AI dermatology assistant. You MUST follow these rules strictly:
+CLINDERMA_SYSTEM_PROMPT = """You are Clinderma's official AI Dermatology & Customer Support Assistant.
 
-## IDENTITY
-- You represent Clinderma, a dermatologist-led skin treatment platform combining Modern Dermatology, Ayurveda, and Targeted Nutrition.
-- You are warm, professional, empathetic, and medically precise.
+## IDENTITY & PHILOSOPHY
+- You represent Clinderma, a premier dermatologist-led skin treatment platform in India.
+- Clinderma treats acne, pigmentation, and barrier concerns as medical conditions (not cosmetic issues) by combining Modern Dermatology, Ayurveda, and Targeted Nutrition.
+- You are warm, empathetic, medically accurate, and conversational.
 
-## GROUNDING RULES (CRITICAL — ZERO HALLUCINATION POLICY)
-- You MUST answer ONLY using the CONTEXT provided below. Do NOT use any external knowledge.
-- If the context does not contain enough information to answer the question, you MUST say:
-  "I don't have that specific information in my knowledge base. Would you like me to connect you with a Clinderma Skin Coach for personalized assistance?"
-- NEVER guess, assume, or make up medical information.
-- NEVER recommend specific medicines, dosages, or treatments not mentioned in the context.
+## ZERO-HALLUCINATION & STRICT GROUNDING RULES
+1. Answer ONLY using the provided RETRIEVED CONTEXT below (comprising Master FAQs, Clinical Modules, Clinderma Clinical Blogs, and Verified Product Guides).
+2. NEVER guess, assume, or fabricate medical advice, diagnoses, or ingredient recommendations that are not present in the context.
+3. If the context does not contain sufficient details to answer the user's specific question, DO NOT invent facts. Acknowledge what you can, and clearly state that a Clinderma Skin Coach can provide direct personalized guidance.
+4. For general skin guidance (e.g. sunscreen, moisturizers, comedones, pregnancy acne, eyebrow pimples, forehead bumps), provide the clinical facts explained in the context clearly and encouragingly.
 
-## RESPONSE STYLE
-- Keep answers concise (2-4 sentences for simple questions, more for complex ones).
-- Use bullet points for lists.
-- Be encouraging and supportive about the treatment journey.
-- Address the patient's concern directly without unnecessary preamble.
+## TONE & COMMUNICATION
+- Warm, polite, and encouraging. Never sound like a robotic search engine.
+- Address the user's concern directly in 2 to 4 concise paragraphs or clean bullet points.
+- Under-promise and over-deliver: Acne improves faster (typically 6-8 weeks for initial changes, 3-4 months for stability); Pigmentation takes longer (3-6 months). Never guarantee 100% instant cures.
 
-## LANGUAGE
-- Respond in the SAME language the user writes in.
-- If the user writes in Hindi (हिन्दी), respond naturally in Hindi.
-- If the user writes in Marathi (मराठी), respond naturally in Marathi.
-- If the user writes in English, respond in English.
-- If the user writes in Hinglish (mixed Hindi-English), respond in Hinglish.
-
-## TONE
-- Never promise guaranteed results for pigmentation.
-- For acne, you can mention the money-back guarantee if relevant.
-- Never promise instant results.
-- Under-promise and over-deliver.
-- Always set expectations: Acne improves faster than pigmentation.
+## LANGUAGE ADAPTATION
+- Always respond in the EXACT same language as the user's message:
+  - English -> English
+  - Hindi (हिन्दी) -> Natural, fluent Hindi
+  - Marathi (मराठी) -> Natural, fluent Marathi
+  - Hinglish -> Conversational Hinglish
 """
 
-FALLBACK_RESPONSES = {
-    "en": "I don't have that specific information in my knowledge base. Would you like me to connect you with a Clinderma Skin Coach for personalized assistance?",
-    "hi": "मेरे पास मेरे ज्ञान कोष में यह विशिष्ट जानकारी नहीं है। क्या आप चाहेंगे कि मैं आपको व्यक्तिगत सहायता के लिए क्लिंडरमा स्किन कोच से जोड़ूं?",
-    "mr": "माझ्याकडे माझ्या ज्ञानकोशात ही विशिष्ट माहिती नाही. तुम्हाला वैयक्तिक मदतीसाठी क्लिंडरमा स्किन कोचशी जोडू इच्छिता का?"
+OUT_OF_KB_MESSAGES = {
+    "en": (
+        "I specialize in Clinderma's dermatologist-led skin treatments, acne, pigmentation, and routine guidance. "
+        "I don't have verified clinical information regarding that specific query in my knowledge base.\n\n"
+        "I'd be glad to connect you with one of our Clinderma Skin Coaches for personalized assistance! "
+        "Could you please share your **Name** and **Mobile Number** so our customer care team can reach out to you? 🩺"
+    ),
+    "hi": (
+        "मैं क्लिंडरमा के त्वचा विशेषज्ञ उपचार, मुँहासे, पिगमेंटेशन और स्किनकेयर रूटीन में माहिर हूँ। "
+        "मेरे ज्ञानकोष में इस विशिष्ट विषय के बारे में सत्यापित जानकारी उपलब्ध नहीं है।\n\n"
+        "मुझे खुशी होगी अगर हमारे क्लिंडरमा स्किन कोच सीधे आपकी मदद करें! "
+        "क्या आप अपना **नाम** और **मोबाइल नंबर** साझा कर सकते हैं ताकि हमारी टीम आपसे संपर्क कर सके? 🩺"
+    ),
+    "mr": (
+        "मी क्लिंडरमाच्या त्वचातज्ज्ञ उपचार, मुरुम, पिगमेंटेशन आणि स्किनकेअर मार्गदर्शनात मदत करतो. "
+        "माझ्या ज्ञानकोशात या विशिष्ट विषयाबद्दल माहिती उपलब्ध नाही.\n\n"
+        "आमच्या क्लिंडरमा स्किन कोचकडून थेट वैयक्तिक मार्गदर्शन मिळवण्यासाठी, "
+        "कृपया तुमचे **नाव** आणि **मोबाईल नंबर** शेअर करू शकता का? 🩺"
+    )
 }
 
 
@@ -73,11 +82,12 @@ class GeminiLLMProvider(AbstractLLMProvider):
     ) -> Dict[str, Any]:
 
         lang = language.lower() if language in ["en", "hi", "mr"] else "en"
+        fallback_text = OUT_OF_KB_MESSAGES.get(lang, OUT_OF_KB_MESSAGES["en"])
 
         # ── STRICT GROUNDING CHECK: Enforce threshold BEFORE calling LLM API ──
         if not context_chunks:
             return {
-                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                "answer": fallback_text,
                 "grounded": False,
                 "confidence": 0.0,
                 "handoff_recommended": True,
@@ -86,23 +96,25 @@ class GeminiLLMProvider(AbstractLLMProvider):
 
         top_score = float(context_chunks[0].get("score", 0.0))
 
-        # Refuse queries whose vector similarity is below the grounding threshold (e.g. 0.60)
+        # Refuse queries whose vector similarity is below the grounding threshold (e.g. 0.58)
         if top_score < settings.GROUNDING_THRESHOLD:
             return {
-                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                "answer": fallback_text,
                 "grounded": False,
                 "confidence": round(top_score, 4),
                 "handoff_recommended": True,
                 "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
             }
 
-        # Build context from retrieved KB chunks
+        # Build rich context from retrieved KB chunks
         context_parts = []
         for i, chunk in enumerate(context_chunks):
+            source_label = chunk.get('source', 'Knowledge Base')
+            category_label = chunk.get('category', 'Clinical Knowledge')
             context_parts.append(
-                f"--- Source {i+1} (Category: {chunk.get('category', 'N/A')}) ---\n"
-                f"Question: {chunk.get('question', '')}\n"
-                f"Answer: {chunk.get('answer', '')}\n"
+                f"--- Source {i+1}: [{source_label} | {category_label}] ---\n"
+                f"Question / Topic: {chunk.get('question', '')}\n"
+                f"Content: {chunk.get('answer', '')}\n"
             )
         context_text = "\n".join(context_parts)
 
@@ -120,11 +132,11 @@ class GeminiLLMProvider(AbstractLLMProvider):
 ## USER'S QUESTION:
 {query}
 
-Answer the user's question ONLY using the context above. Follow all grounding and language rules from your system instructions."""
+Answer the user's question accurately, naturally, and warmly using ONLY the context provided above. Follow all grounding, clinical nuance, and language matching rules from your system instructions."""
 
         messages.append({"role": "user", "parts": [{"text": user_prompt}]})
 
-        # Try generating response with Gemini LLM
+        # Generate response with Gemini LLM
         try:
             max_retries = 1
             for attempt in range(max_retries + 1):
@@ -139,7 +151,7 @@ Answer the user's question ONLY using the context above. Follow all grounding an
                         }
                     )
 
-                    answer = response.text.strip() if response.text else FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"])
+                    answer = response.text.strip() if response.text else fallback_text
                     handoff_rec = top_score < 0.65
                     handoff_reason = "Moderate confidence — human verification available." if handoff_rec else None
 
@@ -154,11 +166,9 @@ Answer the user's question ONLY using the context above. Follow all grounding an
                 except Exception as retry_err:
                     err_str = str(retry_err)
                     if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and attempt < max_retries:
-                        print(f"[GeminiLLM] Rate limit hit — retrying in 1.5s...")
                         time.sleep(1.5)
                         continue
                     elif "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                        print(f"[GeminiLLM] Rate limit active — using grounded KB fallback.")
                         break
                     else:
                         raise retry_err
@@ -166,9 +176,9 @@ Answer the user's question ONLY using the context above. Follow all grounding an
         except Exception as e:
             print(f"[GeminiLLM] Generation error: {e}")
 
-        # Grounded Fallback: Return raw KB text ONLY if query passed grounding threshold (top_score >= 0.60)
+        # Grounded Fallback: Return raw KB text ONLY if query passed grounding threshold
         fallback_q = context_chunks[0].get("question", "")
-        fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
+        fallback_answer = context_chunks[0].get("answer", fallback_text)
         return {
             "answer": f"**{fallback_q}**\n\n{fallback_answer}",
             "grounded": True,
@@ -190,10 +200,11 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
     ) -> Dict[str, Any]:
 
         lang = language.lower() if language in ["en", "hi", "mr"] else "en"
+        fallback_text = OUT_OF_KB_MESSAGES.get(lang, OUT_OF_KB_MESSAGES["en"])
 
         if not context_chunks:
             return {
-                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                "answer": fallback_text,
                 "grounded": False,
                 "confidence": 0.0,
                 "handoff_recommended": True,
@@ -205,7 +216,7 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
 
         if score < settings.GROUNDING_THRESHOLD:
             return {
-                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
+                "answer": fallback_text,
                 "grounded": False,
                 "confidence": round(score, 4),
                 "handoff_recommended": True,
@@ -219,118 +230,14 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
             "answer": formatted_answer,
             "grounded": True,
             "confidence": round(score, 4),
-            "handoff_recommended": score < 0.65,
-            "handoff_reason": "Moderate confidence." if score < 0.65 else None
+            "handoff_recommended": False,
+            "handoff_reason": None
         }
 
 
-class GroqLLMProvider(AbstractLLMProvider):
-    """
-    Production LLM provider using Groq's ultra-fast inference.
-    Default model: llama-3.3-70b-versatile (best free tier quality).
-    Drop-in replacement for Gemini — same grounding, same zero-hallucination guarantees.
-    """
-
-    def __init__(self):
-        from groq import Groq
-        self.client = Groq(api_key=settings.GROQ_API_KEY)
-        self.model = settings.LLM_MODEL  # e.g. 'llama-3.3-70b-versatile'
-
-    def generate_grounded_answer(
-        self,
-        query: str,
-        context_chunks: List[Dict[str, Any]],
-        language: str = "en",
-        conversation_history: List[Dict[str, str]] = None
-    ) -> Dict[str, Any]:
-
-        lang = language.lower() if language in ["en", "hi", "mr"] else "en"
-
-        if not context_chunks:
-            return {
-                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
-                "grounded": False,
-                "confidence": 0.0,
-                "handoff_recommended": True,
-                "handoff_reason": "No relevant KB context found for this query."
-            }
-
-        top_score = float(context_chunks[0].get("score", 0.0))
-
-        if top_score < settings.GROUNDING_THRESHOLD:
-            return {
-                "answer": FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]),
-                "grounded": False,
-                "confidence": round(top_score, 4),
-                "handoff_recommended": True,
-                "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
-            }
-
-        # Build context from KB chunks
-        context_parts = []
-        for i, chunk in enumerate(context_chunks):
-            context_parts.append(
-                f"--- Source {i+1} (Category: {chunk.get('category', 'N/A')}) ---\n"
-                f"Question: {chunk.get('question', '')}\n"
-                f"Answer: {chunk.get('answer', '')}\n"
-            )
-        context_text = "\n".join(context_parts)
-
-        # Build Groq messages array (OpenAI-compatible format)
-        messages = [{"role": "system", "content": CLINDERMA_SYSTEM_PROMPT}]
-
-        if conversation_history:
-            for msg in conversation_history[-settings.MAX_HISTORY_TURNS:]:
-                role = "user" if msg.get("sender") == "user" else "assistant"
-                messages.append({"role": role, "content": msg.get("message", "")})
-
-        user_prompt = f"""## RETRIEVED CONTEXT FROM CLINDERMA KNOWLEDGE BASE:
-
-{context_text}
-
-## USER'S QUESTION:
-{query}
-
-Answer ONLY using the context above. Follow all grounding and language rules."""
-
-        messages.append({"role": "user", "content": user_prompt})
-
-        try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=messages,
-                temperature=0.3,
-                max_tokens=1024,
-            )
-            answer = response.choices[0].message.content.strip()
-            handoff_rec = top_score < 0.65
-            return {
-                "answer": answer,
-                "grounded": True,
-                "confidence": round(top_score, 4),
-                "handoff_recommended": handoff_rec,
-                "handoff_reason": "Moderate confidence — human verification available." if handoff_rec else None
-            }
-
-        except Exception as e:
-            print(f"[GroqLLM] Generation error: {e}")
-            fallback_q = context_chunks[0].get("question", "")
-            fallback_answer = context_chunks[0].get("answer", FALLBACK_RESPONSES.get(lang, FALLBACK_RESPONSES["en"]))
-            return {
-                "answer": f"**{fallback_q}**\n\n{fallback_answer}",
-                "grounded": True,
-                "confidence": round(top_score, 4),
-                "handoff_recommended": False,
-                "handoff_reason": f"LLM error ({e}), returning raw KB text."
-            }
-
-
 def get_llm_provider() -> AbstractLLMProvider:
-    """Factory function — selects LLM provider based on .env configuration."""
     provider = settings.LLM_PROVIDER
-    if provider == "groq":
-        return GroqLLMProvider()
-    elif provider == "gemini":
+    if provider == "gemini":
         return GeminiLLMProvider()
     else:
         return LocalGroundedLLMProvider()

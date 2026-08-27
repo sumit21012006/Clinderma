@@ -1,0 +1,265 @@
+{
+  "metadata": {
+    "timestamp": "20260822_204535",
+    "total_evaluated": 8,
+    "faqs_source": "E:\\Projects\\Clinderma\\WEBSCRAPPER\\master_faqs.json",
+    "average_alignment_score": 75.0
+  },
+  "results": [
+    {
+      "id": "faq_14",
+      "category": "Cohort Specific - Women",
+      "cohort": "Women",
+      "question": "Can I use makeup during treatment?",
+      "ground_truth_answer": "We recommend using non-comedogenic makeup that won't clog pores. If you're unsure, your skin coach can guide you on which products to use while undergoing treatment.",
+      "chatbot_response": "Yes, makeup can generally be used during treatment. Non-comedogenic makeup is preferred because it’s less likely to clog pores or trigger breakouts.\n\nHelpful tips:\n- Remove makeup gently before bed\n- Avoid very heavy or harsh products during active acne\n- Keep the skin moisturized and use sunscreen daily\n\nIf you have sensitive skin or are pregnant/breastfeeding, the dermatologist can guide safer makeup-compatible routines.\n\n",
+      "duration_seconds": 11.28,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "makeup during treatment",
+          "non-comedogenic"
+        ],
+        "missing_keywords": [
+          "cosmetics",
+          "foundation"
+        ],
+        "coverage_percent": 50.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Non-comedogenic makeup is allowed; skin coach can review current makeup items."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 80.0
+    },
+    {
+      "id": "faq_15",
+      "category": "Cohort Specific - Women",
+      "cohort": "Women",
+      "question": "Are these treatments truly safe for pregnancy and breastfeeding?",
+      "ground_truth_answer": "Your plan is created with ingredient safety in mind. We avoid retinoids and other ingredients not advised during pregnancy planning, pregnancy, or nursing. Every recommendation is reviewed under dermatologist supervision to align with your current life stage.",
+      "chatbot_response": "Yes. Pregnancy and breastfeeding cases are reviewed separately by a dermatologist to keep treatment safe for both mother and baby.\n\nIngredients that are not advised during pregnancy or nursing, such as retinoids, are avoided. The treatment plan is customized based on:\n- Your skin concern\n- Pregnancy/breastfeeding stage\n- Skin sensitivity and medical history\n\nTaking the Skin Test is usually the safest next step for a personalized review: [Skin Test](https://www.theclinderma.com/pages/assessment-form-recommedation)\n\n",
+      "duration_seconds": 10.15,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "pregnancy safe",
+          "breastfeeding",
+          "nursing",
+          "retinoids avoidance",
+          "pregnancy planning"
+        ],
+        "missing_keywords": [],
+        "coverage_percent": 100.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Dermatologist verified according to current life stage."
+        ],
+        "uncovered_key_points": [
+          "Customized plans avoiding retinoids and contraindicated molecules.",
+          "Safe for pregnancy planning, pregnant women, and lactating mothers."
+        ],
+        "score_percent": 33.3
+      },
+      "alignment_score": 60.0
+    },
+    {
+      "id": "faq_16",
+      "category": "Cohort Specific - Men",
+      "cohort": "Men",
+      "question": "Will this treatment actually work for men?",
+      "ground_truth_answer": "Yes. This treatment is designed specifically for men's skin, which tends to be thicker, oilier, and more prone to sweat and pollution. Your plan is personalized based on your assessment, so it targets the actual cause of your acne, not just the symptoms.",
+      "chatbot_response": "Yes. The treatment is designed for men’s skin as well, which is often thicker, oilier, and more exposed to sweat and pollution.\n\nPlans are personalized based on your acne severity, skin sensitivity, and lifestyle. The focus is on treating the root causes and reducing relapse, not just temporarily drying out pimples.\n\nThe routine is also simple enough to fit around work, gym, or college schedules.\n\n",
+      "duration_seconds": 11.88,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "treatment for men",
+          "thick oily skin"
+        ],
+        "missing_keywords": [
+          "men skin",
+          "male acne"
+        ],
+        "coverage_percent": 50.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Tailored for thicker, oilier male skin subjected to sweat and pollution.",
+          "Personalized plan targeting root cause."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 80.0
+    },
+    {
+      "id": "faq_17",
+      "category": "Cohort Specific - Men",
+      "cohort": "Men",
+      "question": "Is this treatment safe for men with sensitive skin?",
+      "ground_truth_answer": "Yes. The treatment is dermatologist-prescribed and adjusted based on your skin sensitivity, lifestyle, and acne severity. If your skin reacts, the plan can be modified.",
+      "chatbot_response": "Yes. Men with sensitive skin can still follow treatment safely because the plan is customized around skin sensitivity, barrier condition, and previous reactions.\n\nDermatologists adjust the strength and combination of products gradually to reduce irritation, and alternatives are available if certain ingredients don’t suit your skin.\n\n",
+      "duration_seconds": 11.78,
+      "products_recommended": [],
+      "follow_ups": [
+        {
+          "question": "What usually triggers your skin sensitivity?",
+          "options": [
+            "I react to acne products easily",
+            "My skin gets red or itchy",
+            "I have dryness and burning",
+            "I’m not sure what triggers it"
+          ],
+          "id": "2Ty2WexuIPy3ohpWuJFjS"
+        }
+      ],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "sensitive skin men",
+          "male sensitive skin",
+          "irritation"
+        ],
+        "missing_keywords": [],
+        "coverage_percent": 100.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Dermatologist customizes formula based on skin sensitivity and modifies if reaction occurs."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 100.0
+    },
+    {
+      "id": "faq_18",
+      "category": "Cohort Specific - Men",
+      "cohort": "Men",
+      "question": "Can I continue shaving while on this treatment?",
+      "ground_truth_answer": "Yes. You can shave normally, but we recommend:\n- Using a gentle, non-irritating shaving product\n- Avoiding shaving over active inflamed acne\n- Shaving after cleansing, not on dry skin\nYour routine will support this.",
+      "chatbot_response": "Yes, shaving can usually be continued during treatment.\n\nA few things help reduce irritation:\n- Use a gentle, non-irritating shaving product\n- Avoid shaving directly over inflamed acne\n- Shave after cleansing, not on dry skin\n- Moisturize well afterward, especially if using acne actives\n\nIf your skin becomes very irritated, the dermatologist may adjust the routine temporarily.\n\n",
+      "duration_seconds": 9.03,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "shaving",
+          "shaving while on treatment",
+          "inflamed acne"
+        ],
+        "missing_keywords": [
+          "beard razor"
+        ],
+        "coverage_percent": 75.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Shaving is permitted with gentle products.",
+          "Do not shave over active inflamed cysts/pustules.",
+          "Shave on damp, cleansed skin."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 90.0
+    },
+    {
+      "id": "faq_19",
+      "category": "Cohort Specific - Men",
+      "cohort": "Men",
+      "question": "Will this affect my daily routine or work schedule?",
+      "ground_truth_answer": "Not at all. The routine is simple and designed to fit into a busy lifestyle. You'll have clear AM and PM steps, each taking only a few minutes.",
+      "chatbot_response": "Not usually. The routine is designed to fit into a normal work, college, or gym schedule.\n\nMost people follow:\n- Morning: Cleanser → Treatment → Moisturiser → Sunscreen\n- Night: Cleanser → Treatment → Moisturiser\n\nThe full routine usually takes about 5–7 minutes a day. Skin Coaches also help with reminders and follow-ups to make consistency easier.\n\n",
+      "duration_seconds": 9.24,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "work schedule",
+          "daily routine"
+        ],
+        "missing_keywords": [
+          "busy lifestyle",
+          "time needed"
+        ],
+        "coverage_percent": 50.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Streamlined AM/PM routine taking only 5 minutes."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 80.0
+    },
+    {
+      "id": "faq_20",
+      "category": "Cohort Specific - Men",
+      "cohort": "Men",
+      "question": "Do I need to stop going to the gym or sweating?",
+      "ground_truth_answer": "No. You can continue your workouts. We only recommend:\n- Washing your face after heavy sweating\n- Following the routine consistently.",
+      "chatbot_response": "No, gym and workouts can usually continue during treatment. Sweating itself isn’t the problem, but leaving sweat, oil, and bacteria on the skin for long periods can trigger breakouts.\n\nHelpful habits:\n- Wash your face after heavy sweating\n- Avoid touching acne during workouts\n- Use clean towels and pillow covers\n- Follow the routine consistently\n\nThe routine is designed to fit busy schedules and usually takes about 5–7 minutes daily.\n\n",
+      "duration_seconds": 9.78,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "gym",
+          "workout",
+          "sweating"
+        ],
+        "missing_keywords": [
+          "exercise acne"
+        ],
+        "coverage_percent": 75.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Workouts and gym are fine; cleanse face after sweating."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 90.0
+    },
+    {
+      "id": "faq_21",
+      "category": "Cohort Specific - Men",
+      "cohort": "Men",
+      "question": "Will this affect my beard growth or hormones?",
+      "ground_truth_answer": "No. The treatment does not affect beard growth or male hormones. It focuses only on improving skin health.",
+      "chatbot_response": "No, the treatment is not designed to affect beard growth or male hormones. The focus is on improving skin health by managing acne, inflammation, oil balance, and root-cause triggers.\n\nTreatment plans are dermatologist-reviewed and adjusted based on your skin type, sensitivity, and severity.\n\n",
+      "duration_seconds": 9.37,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "beard growth",
+          "male hormones"
+        ],
+        "missing_keywords": [
+          "testosterone",
+          "facial hair"
+        ],
+        "coverage_percent": 50.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [],
+        "uncovered_key_points": [
+          "No negative impact on facial hair or testosterone/hormones."
+        ],
+        "score_percent": 0.0
+      },
+      "alignment_score": 20.0
+    }
+  ]
+}

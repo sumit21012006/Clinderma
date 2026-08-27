@@ -3,432 +3,4011 @@
     "idx": 0,
     "id": "faq_1",
     "question": "Protocol / Guideline (General FAQs)",
-    "category": "General FAQs"
+    "category": "General FAQs",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 1,
     "id": "faq_2",
     "question": "What is Clinderma?",
-    "category": "About Clinderma"
+    "category": "About Clinderma",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 2,
     "id": "faq_3",
     "question": "How is Clinderma different from other skincare brands?",
-    "category": "Acne – Timeline & Expectations"
+    "category": "Acne - Timeline & Expectations",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 3,
     "id": "faq_4",
     "question": "How long does acne treatment take?",
-    "category": "Acne – Timeline & Expectations"
+    "category": "Acne - Timeline & Expectations",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 4,
     "id": "faq_5",
     "question": "What is purging?",
-    "category": "Acne – Timeline & Expectations"
+    "category": "Acne - Timeline & Expectations",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 5,
     "id": "faq_6",
     "question": "Will acne come back?",
-    "category": "Pigmentation – Timeline & Expectations"
+    "category": "Pigmentation - Timeline & Expectations",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 6,
     "id": "faq_7",
     "question": "How long does pigmentation treatment take?",
-    "category": "Pigmentation – Timeline & Expectations"
+    "category": "Pigmentation - Timeline & Expectations",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 7,
     "id": "faq_8",
     "question": "Why does pigmentation take longer than acne?",
-    "category": "Pigmentation – Timeline & Expectations"
+    "category": "Pigmentation - Timeline & Expectations",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 8,
     "id": "faq_9",
     "question": "Why is sunscreen mandatory in pigmentation treatment?",
-    "category": "Common Concerns"
+    "category": "Common Concerns",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 9,
     "id": "faq_10",
     "question": "Can acne and pigmentation be treated together?",
-    "category": "Common Concerns"
+    "category": "Common Concerns",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 10,
     "id": "faq_11",
     "question": "Are Ayurvedic supplements safe?",
-    "category": "Communication Rules For One Point One"
+    "category": "Communication Rules For One Point One",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 11,
     "id": "faq_12",
     "question": "Is acne normal during teenage years?",
-    "category": "This Document Contains The Faqs Specifically For Teens, Women And Men. Faqs For Teen"
+    "category": "This Document Contains The Faqs Specifically For Teens, Women And Men. Faqs For Teen",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 12,
     "id": "faq_13",
     "question": "Is this treatment safe for my age?",
-    "category": "This Document Contains The Faqs Specifically For Teens, Women And Men. Faqs For Teen"
+    "category": "This Document Contains The Faqs Specifically For Teens, Women And Men. Faqs For Teen",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 13,
     "id": "faq_14",
     "question": "Will my parents be involved in the treatment?",
-    "category": "Faqs For Women"
+    "category": "Faqs For Women",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 14,
     "id": "faq_15",
     "question": "Can I use makeup during treatment?",
-    "category": "Faqs For Women"
+    "category": "Faqs For Women",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 15,
     "id": "faq_16",
     "question": "Are these treatments truly safe for pregnancy and breastfeeding?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 16,
     "id": "faq_17",
     "question": "Will this treatment actually work for men?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 17,
     "id": "faq_18",
     "question": "Is this treatment safe for men with sensitive skin?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 18,
     "id": "faq_19",
     "question": "Can I continue shaving while on this treatment?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 19,
     "id": "faq_20",
     "question": "Will this affect my daily routine or work schedule?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 20,
     "id": "faq_21",
     "question": "Do I need to stop going to the gym or sweating?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 21,
     "id": "faq_22",
     "question": "Will this affect my beard growth or hormones?",
-    "category": "Faqs For Men"
+    "category": "Faqs For Men",
+    "source": "Master FAQs Document"
   },
   {
     "idx": 22,
     "id": "mod_1",
     "question": "Topic: Clinderma Clinical Philosophy & Protocols",
-    "category": "Clinderma Clinical Philosophy & Protocols"
+    "category": "Clinderma Clinical Philosophy & Protocols",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 23,
     "id": "mod_2",
     "question": "Topic: 1. Clinderma Clinical Philosophy",
-    "category": "1. Clinderma Clinical Philosophy"
+    "category": "1. Clinderma Clinical Philosophy",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 24,
     "id": "mod_3",
     "question": "Topic: 2. Role Definition & Boundaries",
-    "category": "2. Role Definition & Boundaries"
+    "category": "2. Role Definition & Boundaries",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 25,
     "id": "mod_4",
     "question": "Topic: 3. Skin & Disease Basics (Non-Clinical)",
-    "category": "3. Skin & Disease Basics (Non-Clinical)"
+    "category": "3. Skin & Disease Basics (Non-Clinical)",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 26,
     "id": "mod_5",
     "question": "Topic: 4. Understanding a Dermatology Prescription",
-    "category": "4. Understanding a Dermatology Prescription"
+    "category": "4. Understanding a Dermatology Prescription",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 27,
     "id": "mod_6",
     "question": "Topic: 5. Reading & Explaining Prescriptions",
-    "category": "5. Reading & Explaining Prescriptions"
+    "category": "5. Reading & Explaining Prescriptions",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 28,
     "id": "mod_7",
-    "question": "Topic: 6. Topical Medications – Explanation Framework",
-    "category": "6. Topical Medications – Explanation Framework"
+    "question": "Topic: 6. Topical Medications - Explanation Framework",
+    "category": "6. Topical Medications - Explanation Framework",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 29,
     "id": "mod_8",
-    "question": "Topic: 7. Oral Medications – Explanation Framework",
-    "category": "7. Oral Medications – Explanation Framework"
+    "question": "Topic: 7. Oral Medications - Explanation Framework",
+    "category": "7. Oral Medications - Explanation Framework",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 30,
     "id": "mod_9",
     "question": "Topic: 8. Explaining Treatment Phases",
-    "category": "8. Explaining Treatment Phases"
+    "category": "8. Explaining Treatment Phases",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 31,
     "id": "mod_10",
     "question": "Topic: 9. Managing Expectations & Timelines",
-    "category": "9. Managing Expectations & Timelines"
+    "category": "9. Managing Expectations & Timelines",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 32,
     "id": "mod_11",
     "question": "Topic: 10. Side Effects & Safety Communication",
-    "category": "10. Side Effects & Safety Communication"
+    "category": "10. Side Effects & Safety Communication",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 33,
     "id": "mod_12",
     "question": "Topic: GENERAL ADVICE FOR PATIENTS",
-    "category": "GENERAL ADVICE FOR PATIENTS"
+    "category": "GENERAL ADVICE FOR PATIENTS",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 34,
     "id": "mod_13",
     "question": "Topic: 11. Adherence & Compliance Education",
-    "category": "11. Adherence & Compliance Education"
+    "category": "11. Adherence & Compliance Education",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 35,
     "id": "mod_14",
     "question": "Topic: Why it matters:",
-    "category": "Why it matters:"
+    "category": "Why it matters:",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 36,
     "id": "mod_15",
     "question": "Topic: Here's why consistency is important:",
-    "category": "Here's why consistency is important:"
+    "category": "Here's why consistency is important:",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 37,
     "id": "mod_16",
     "question": "Topic: 12. Lifestyle & Root-Cause Context",
-    "category": "12. Lifestyle & Root-Cause Context"
+    "category": "12. Lifestyle & Root-Cause Context",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 38,
     "id": "mod_17",
     "question": "Topic: Stress:",
-    "category": "Stress:"
+    "category": "Stress:",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 39,
     "id": "mod_18",
     "question": "Topic: Sleep:",
-    "category": "Sleep:"
+    "category": "Sleep:",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 40,
     "id": "mod_19",
     "question": "Topic: 13. Objection Handling (Clinical Tone)",
-    "category": "13. Objection Handling (Clinical Tone)"
+    "category": "13. Objection Handling (Clinical Tone)",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 41,
     "id": "mod_20",
     "question": "Topic: 14. Clinderma Differentiation Talking Points",
-    "category": "14. Clinderma Differentiation Talking Points"
+    "category": "14. Clinderma Differentiation Talking Points",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 42,
     "id": "mod_21",
     "question": "Topic: 15. Call Flow Structure",
-    "category": "15. Call Flow Structure"
+    "category": "15. Call Flow Structure",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 43,
     "id": "mod_22",
     "question": "Topic: 16. Ethical Closing & Payment Conversations",
-    "category": "16. Ethical Closing & Payment Conversations"
+    "category": "16. Ethical Closing & Payment Conversations",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 44,
     "id": "mod_23",
     "question": "Topic: 17. Follow-ups & Continuity of Care",
-    "category": "17. Follow-ups & Continuity of Care"
+    "category": "17. Follow-ups & Continuity of Care",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 45,
     "id": "mod_24",
     "question": "Topic: 18. Escalation & Emergency SOPs",
-    "category": "18. Escalation & Emergency SOPs"
+    "category": "18. Escalation & Emergency SOPs",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 46,
     "id": "mod_25",
     "question": "Topic: ACNETROL CLEANSER - INGREDIENT LIST",
-    "category": "ACNETROL CLEANSER - INGREDIENT LIST"
+    "category": "ACNETROL CLEANSER - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 47,
     "id": "mod_26",
     "question": "Topic: AQUASOFT DAY CREAM",
-    "category": "AQUASOFT DAY CREAM"
+    "category": "AQUASOFT DAY CREAM",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 48,
     "id": "mod_27",
-    "question": "Topic: ACNETROL AC – INGREDIENT LIST",
-    "category": "ACNETROL AC – INGREDIENT LIST"
+    "question": "Topic: ACNETROL AC - INGREDIENT LIST",
+    "category": "ACNETROL AC - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 49,
     "id": "mod_28",
-    "question": "Topic: EPIFADE CREAM — INGREDIENTS",
-    "category": "EPIFADE CREAM — INGREDIENTS"
+    "question": "Topic: EPIFADE CREAM - INGREDIENTS",
+    "category": "EPIFADE CREAM - INGREDIENTS",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 50,
     "id": "mod_29",
     "question": "Topic: ANTIBIOTICS",
-    "category": "ANTIBIOTICS"
+    "category": "ANTIBIOTICS",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 51,
     "id": "mod_30",
-    "question": "Topic: 1. Azithromycin — 500 mg",
-    "category": "1. Azithromycin — 500 mg"
+    "question": "Topic: 1. Azithromycin - 500 mg",
+    "category": "1. Azithromycin - 500 mg",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 52,
     "id": "mod_31",
     "question": "Topic: 2. Doxynec- LB 100 mg",
-    "category": "2. Doxynec- LB 100 mg"
+    "category": "2. Doxynec- LB 100 mg",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 53,
     "id": "mod_32",
-    "question": "Topic: DETOZYL TABLETS — INGREDIENT LIST",
-    "category": "DETOZYL TABLETS — INGREDIENT LIST"
+    "question": "Topic: DETOZYL TABLETS - INGREDIENT LIST",
+    "category": "DETOZYL TABLETS - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 54,
     "id": "mod_33",
-    "question": "Topic: ISOTRETINOIN CAPSULES – INGREDIENT LIST",
-    "category": "ISOTRETINOIN CAPSULES – INGREDIENT LIST"
+    "question": "Topic: ISOTRETINOIN CAPSULES - INGREDIENT LIST",
+    "category": "ISOTRETINOIN CAPSULES - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 55,
     "id": "mod_34",
     "question": "Topic: Active & Functional Ingredients:",
-    "category": "Active & Functional Ingredients:"
+    "category": "Active & Functional Ingredients:",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 56,
     "id": "mod_35",
-    "question": "Topic: CALMXO – INGREDIENT LIST",
-    "category": "CALMXO – INGREDIENT LIST"
+    "question": "Topic: CALMXO - INGREDIENT LIST",
+    "category": "CALMXO - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 57,
     "id": "mod_36",
-    "question": "Topic: EUCEE CHEWABLE TABLET – INGREDIENTS",
-    "category": "EUCEE CHEWABLE TABLET – INGREDIENTS"
+    "question": "Topic: EUCEE CHEWABLE TABLET - INGREDIENTS",
+    "category": "EUCEE CHEWABLE TABLET - INGREDIENTS",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 58,
     "id": "mod_37",
-    "question": "Topic: AQUASOFT FC – INGREDIENT LIST",
-    "category": "AQUASOFT FC – INGREDIENT LIST"
+    "question": "Topic: AQUASOFT FC - INGREDIENT LIST",
+    "category": "AQUASOFT FC - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 59,
     "id": "mod_38",
-    "question": "Topic: 1. Glycolic Acid — 6%",
-    "category": "1. Glycolic Acid — 6%"
+    "question": "Topic: 1. Glycolic Acid - 6%",
+    "category": "1. Glycolic Acid - 6%",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 60,
     "id": "mod_39",
-    "question": "Topic: 1. Glycolic Acid — 12%",
-    "category": "1. Glycolic Acid — 12%"
+    "question": "Topic: 1. Glycolic Acid - 12%",
+    "category": "1. Glycolic Acid - 12%",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 61,
     "id": "mod_40",
-    "question": "Topic: ACNESTAR GEL – INGREDIENT LIST",
-    "category": "ACNESTAR GEL – INGREDIENT LIST"
+    "question": "Topic: ACNESTAR GEL - INGREDIENT LIST",
+    "category": "ACNESTAR GEL - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 62,
     "id": "mod_41",
-    "question": "Topic: PEROCLIN GEL – INGREDIENT LIST",
-    "category": "PEROCLIN GEL – INGREDIENT LIST"
+    "question": "Topic: PEROCLIN GEL - INGREDIENT LIST",
+    "category": "PEROCLIN GEL - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 63,
     "id": "mod_42",
-    "question": "Topic: PERODUO GEL – INGREDIENT LIST",
-    "category": "PERODUO GEL – INGREDIENT LIST"
+    "question": "Topic: PERODUO GEL - INGREDIENT LIST",
+    "category": "PERODUO GEL - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 64,
     "id": "mod_43",
-    "question": "Topic: CIVADERM SHAMPOO – INGREDIENT LIST",
-    "category": "CIVADERM SHAMPOO – INGREDIENT LIST"
+    "question": "Topic: CIVADERM SHAMPOO - INGREDIENT LIST",
+    "category": "CIVADERM SHAMPOO - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 65,
     "id": "mod_44",
-    "question": "Topic: EYEBLISS UNDER EYE CREAM – INGREDIENT LIST",
-    "category": "EYEBLISS UNDER EYE CREAM – INGREDIENT LIST"
+    "question": "Topic: EYEBLISS UNDER EYE CREAM - INGREDIENT LIST",
+    "category": "EYEBLISS UNDER EYE CREAM - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 66,
     "id": "mod_45",
     "question": "Topic: AZIDERM 10",
-    "category": "AZIDERM 10"
+    "category": "AZIDERM 10",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 67,
     "id": "mod_46",
     "question": "Topic: AZIDERM 20",
-    "category": "AZIDERM 20"
+    "category": "AZIDERM 20",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 68,
     "id": "mod_47",
-    "question": "Topic: SCAREND GEL – INGREDIENT LIST",
-    "category": "SCAREND GEL – INGREDIENT LIST"
+    "question": "Topic: SCAREND GEL - INGREDIENT LIST",
+    "category": "SCAREND GEL - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 69,
     "id": "mod_48",
-    "question": "Topic: TRETIN 0.05% – INGREDIENT LIST",
-    "category": "TRETIN 0.05% – INGREDIENT LIST"
+    "question": "Topic: TRETIN 0.05% - INGREDIENT LIST",
+    "category": "TRETIN 0.05% - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 70,
     "id": "mod_49",
     "question": "Topic: HEXILAK ACNESCAR SERUM",
-    "category": "HEXILAK ACNESCAR SERUM"
+    "category": "HEXILAK ACNESCAR SERUM",
+    "source": "Clinderma Training Module"
   },
   {
     "idx": 71,
     "id": "mod_50",
-    "question": "Topic: SALISIA KT SHAMPOO – INGREDIENT LIST",
-    "category": "SALISIA KT SHAMPOO – INGREDIENT LIST"
+    "question": "Topic: SALISIA KT SHAMPOO - INGREDIENT LIST",
+    "category": "SALISIA KT SHAMPOO - INGREDIENT LIST",
+    "source": "Clinderma Training Module"
+  },
+  {
+    "idx": 72,
+    "id": "blog_1_1",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 73,
+    "id": "blog_1_2",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - When those tiny bumps are actually clogged pores",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 74,
+    "id": "blog_1_3",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - Your hair products could be contributing",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 75,
+    "id": "blog_1_4",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - Sweat and humidity can make the problem more noticeable",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 76,
+    "id": "blog_1_5",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - But what if the bumps are itchy?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 77,
+    "id": "blog_1_6",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - Sometimes it really is acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 78,
+    "id": "blog_1_7",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - Should you scrub the bumps away?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 79,
+    "id": "blog_1_8",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - Your forehead routine may need to become simpler",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 80,
+    "id": "blog_1_9",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - When should you stop experimenting at home?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 81,
+    "id": "blog_1_10",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - What your forehead bumps are really trying to tell you",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 82,
+    "id": "blog_1_11",
+    "question": "Why Am I Getting Tiny Bumps on My Forehead? - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Tiny Bumps on My Forehead?"
+  },
+  {
+    "idx": 83,
+    "id": "blog_2_1",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 84,
+    "id": "blog_2_2",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Is It Really a Pimple?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 85,
+    "id": "blog_2_3",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Why Does an Eyebrow Pimple Hurt So Much?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 86,
+    "id": "blog_2_4",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Did You Recently Get Your Eyebrows Threaded or Waxed?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 87,
+    "id": "blog_2_5",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Don't Squeeze It",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 88,
+    "id": "blog_2_6",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Try a warm compress.",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 89,
+    "id": "blog_2_7",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Avoid More Hair Removal for Now",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 90,
+    "id": "blog_2_8",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Be Careful With Acne Products",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 91,
+    "id": "blog_2_9",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - Check Your Makeup and Brow Products",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 92,
+    "id": "blog_2_10",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - When Is It More Than a Simple Eyebrow Pimple?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 93,
+    "id": "blog_2_11",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - What If It Keeps Coming Back?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 94,
+    "id": "blog_2_12",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - What to Keep in Mind",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 95,
+    "id": "blog_2_13",
+    "question": "Painful Pimple on Eyebrow? Here's What to Do - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple on Eyebrow? Here's What to Do"
+  },
+  {
+    "idx": 96,
+    "id": "blog_3_1",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 97,
+    "id": "blog_3_2",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Why Your Skin Needs Moisture Even If You Have Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 98,
+    "id": "blog_3_3",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Can Moisturizer Make Pimples Worse?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 99,
+    "id": "blog_3_4",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Benefits of Using a Pimple Moisturizer",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 100,
+    "id": "blog_3_5",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - What Should a Pimple Moisturizer Contain?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 101,
+    "id": "blog_3_6",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Ingredients That May Not Suit Acne-Prone Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 102,
+    "id": "blog_3_7",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Should People with Oily Skin Use a Moisturizer?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 103,
+    "id": "blog_3_8",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 104,
+    "id": "blog_3_9",
+    "question": "Do You Need of Moisturizer If You Have Pimples? - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need of Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 105,
+    "id": "blog_4_1",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 106,
+    "id": "blog_4_2",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - Why Do Pimples During Pregnancy Happen?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 107,
+    "id": "blog_4_3",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - Who Is More Likely to Get Pregnancy Acne?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 108,
+    "id": "blog_4_4",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - How to Manage Pimples During Pregnancy",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 109,
+    "id": "blog_4_5",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - Can Diet Affect Pimples During Pregnancy?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 110,
+    "id": "blog_4_6",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - When Should You Visit a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 111,
+    "id": "blog_4_7",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - Will Pregnancy Acne Go Away?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 112,
+    "id": "blog_4_8",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 113,
+    "id": "blog_4_9",
+    "question": "Pregnancy Acne: Why It Happens and How to Manage It - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pregnancy Acne: Why It Happens and How to Manage It"
+  },
+  {
+    "idx": 114,
+    "id": "blog_5_1",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 115,
+    "id": "blog_5_2",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Why Your Skin Needs Moisture Even If You Have Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 116,
+    "id": "blog_5_3",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Can Moisturizer Make Pimples Worse?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 117,
+    "id": "blog_5_4",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Benefits of Using a Pimple Moisturizer",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 118,
+    "id": "blog_5_5",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - What Should a Pimple Moisturizer Contain?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 119,
+    "id": "blog_5_6",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Ingredients That May Not Suit Acne-Prone Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 120,
+    "id": "blog_5_7",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - How to Use a Pimple Moisturizer",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 121,
+    "id": "blog_5_8",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Should People with Oily Skin Use a Moisturizer?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 122,
+    "id": "blog_5_9",
+    "question": "Do You Need a Moisturizer If You Have Pimples? - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Do You Need a Moisturizer If You Have Pimples?"
+  },
+  {
+    "idx": 123,
+    "id": "blog_6_1",
+    "question": "What Causes Raised Skin Bumps - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 124,
+    "id": "blog_6_2",
+    "question": "What Causes Raised Skin Bumps - Are Raised Bumps on Skin Always a Cause for Concern?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 125,
+    "id": "blog_6_3",
+    "question": "What Causes Raised Skin Bumps - When Are Raised Bumps Usually Harmless?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 126,
+    "id": "blog_6_4",
+    "question": "What Causes Raised Skin Bumps - Warning Signs You Shouldn't Ignore",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 127,
+    "id": "blog_6_5",
+    "question": "What Causes Raised Skin Bumps - Why Do Some Raised Bumps Keep Coming Back?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 128,
+    "id": "blog_6_6",
+    "question": "What Causes Raised Skin Bumps - Can You Tell the Cause Just by Looking?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 129,
+    "id": "blog_6_7",
+    "question": "What Causes Raised Skin Bumps - Simple Self-Care Tips While Monitoring Your Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 130,
+    "id": "blog_6_8",
+    "question": "What Causes Raised Skin Bumps - Common Mistakes That May Make Raised Bumps Worse",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 131,
+    "id": "blog_6_9",
+    "question": "What Causes Raised Skin Bumps - When Should You Book a Dermatology Consultation?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 132,
+    "id": "blog_6_10",
+    "question": "What Causes Raised Skin Bumps - Clinderma's Approach",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 133,
+    "id": "blog_6_11",
+    "question": "What Causes Raised Skin Bumps - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 134,
+    "id": "blog_6_12",
+    "question": "What Causes Raised Skin Bumps - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 135,
+    "id": "blog_6_13",
+    "question": "What Causes Raised Skin Bumps - References:",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What Causes Raised Skin Bumps"
+  },
+  {
+    "idx": 136,
+    "id": "blog_7_1",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 137,
+    "id": "blog_7_2",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - What Are Black Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 138,
+    "id": "blog_7_3",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Why Do Blackheads Keep Coming Back?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 139,
+    "id": "blog_7_4",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Can You Remove Blackheads Naturally?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 140,
+    "id": "blog_7_5",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Natural Ways to Help Reduce Blackheads",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 141,
+    "id": "blog_7_6",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Home Remedies to Be Careful With",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 142,
+    "id": "blog_7_7",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - When Natural Care Isn't Enough",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 143,
+    "id": "blog_7_8",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Clinderma's Approach",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 144,
+    "id": "blog_7_9",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 145,
+    "id": "blog_7_10",
+    "question": "How to Get Rid of Black Pimples Naturally: What Really Helps - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: How to Get Rid of Black Pimples Naturally: What Really Helps"
+  },
+  {
+    "idx": 146,
+    "id": "blog_8_1",
+    "question": "Complete Guide to Pimple Treatment for All - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 147,
+    "id": "blog_8_2",
+    "question": "Complete Guide to Pimple Treatment for All - What Causes Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 148,
+    "id": "blog_8_3",
+    "question": "Complete Guide to Pimple Treatment for All - Why Skin Type Matters in Pimple Treatments for All",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 149,
+    "id": "blog_8_4",
+    "question": "Complete Guide to Pimple Treatment for All - Pimple Treatment for Oily Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 150,
+    "id": "blog_8_5",
+    "question": "Complete Guide to Pimple Treatment for All - Pimple Treatment for Dry Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 151,
+    "id": "blog_8_6",
+    "question": "Complete Guide to Pimple Treatment for All - Pimple Treatment for Combination Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 152,
+    "id": "blog_8_7",
+    "question": "Complete Guide to Pimple Treatment for All - Pimple Treatment for Sensitive Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 153,
+    "id": "blog_8_8",
+    "question": "Complete Guide to Pimple Treatment for All - Ingredients Commonly Used in Pimple Treatments for All",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 154,
+    "id": "blog_8_9",
+    "question": "Complete Guide to Pimple Treatment for All - Daily Habits That Support Pimple Treatments for All",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 155,
+    "id": "blog_8_10",
+    "question": "Complete Guide to Pimple Treatment for All - Common Pimple Treatments for All Mistakes",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 156,
+    "id": "blog_8_11",
+    "question": "Complete Guide to Pimple Treatment for All - When Should You See a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 157,
+    "id": "blog_8_12",
+    "question": "Complete Guide to Pimple Treatment for All - Clinderma's Approach to Pimple Treatments for All",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 158,
+    "id": "blog_8_13",
+    "question": "Complete Guide to Pimple Treatment for All - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 159,
+    "id": "blog_8_14",
+    "question": "Complete Guide to Pimple Treatment for All - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Complete Guide to Pimple Treatment for All"
+  },
+  {
+    "idx": 160,
+    "id": "blog_9_1",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 161,
+    "id": "blog_9_2",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Not Every Red Bump Is Acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 162,
+    "id": "blog_9_3",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Could It Be Body Acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 163,
+    "id": "blog_9_4",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Is Sweat Making Your Skin React?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 164,
+    "id": "blog_9_5",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Your Hair Follicles Could Be Inflamed",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 165,
+    "id": "blog_9_6",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Could Your Clothes Be Irritating Your Skin?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 166,
+    "id": "blog_9_7",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Weather Can Affect Your Skin More Than You Think",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 167,
+    "id": "blog_9_8",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Hormones May Be Playing a Role",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 168,
+    "id": "blog_9_9",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Everyday Habits That May Be Triggering Body Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 169,
+    "id": "blog_9_10",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Can Your Diet Affect Body Breakouts?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 170,
+    "id": "blog_9_11",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - When Should You Stop Guessing?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 171,
+    "id": "blog_9_12",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Clinderma's Approach",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 172,
+    "id": "blog_9_13",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 173,
+    "id": "blog_9_14",
+    "question": "Why Am I Getting Red Pimples All Over My Body? - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Why Am I Getting Red Pimples All Over My Body?"
+  },
+  {
+    "idx": 174,
+    "id": "blog_10_1",
+    "question": "Painful Pimple in Nose? Here's What It Means - Introduction",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 175,
+    "id": "blog_10_2",
+    "question": "Painful Pimple in Nose? Here's What It Means - Why Does a Pimple in Nose Hurt So Much?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 176,
+    "id": "blog_10_3",
+    "question": "Painful Pimple in Nose? Here's What It Means - What Causes a Pimple in Nose?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 177,
+    "id": "blog_10_4",
+    "question": "Painful Pimple in Nose? Here's What It Means - Is It a Pimple or a Boil?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 178,
+    "id": "blog_10_5",
+    "question": "Painful Pimple in Nose? Here's What It Means - Symptoms of a Pimple in Nose",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 179,
+    "id": "blog_10_6",
+    "question": "Painful Pimple in Nose? Here's What It Means - Is It Safe to Pop a Nose Pimple?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 180,
+    "id": "blog_10_7",
+    "question": "Painful Pimple in Nose? Here's What It Means - How to Treat a Painful Pimple in Nose",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 181,
+    "id": "blog_10_8",
+    "question": "Painful Pimple in Nose? Here's What It Means - When Should You See a Doctor",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 182,
+    "id": "blog_10_9",
+    "question": "Painful Pimple in Nose? Here's What It Means - Can You Prevent Pimple in Nose?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 183,
+    "id": "blog_10_10",
+    "question": "Painful Pimple in Nose? Here's What It Means - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 184,
+    "id": "blog_10_11",
+    "question": "Painful Pimple in Nose? Here's What It Means - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 185,
+    "id": "blog_10_12",
+    "question": "Painful Pimple in Nose? Here's What It Means - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Painful Pimple in Nose? Here's What It Means"
+  },
+  {
+    "idx": 186,
+    "id": "blog_11_1",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 187,
+    "id": "blog_11_2",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - What Are Whiteheads",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 188,
+    "id": "blog_11_3",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Why Do Whiteheads Develop",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 189,
+    "id": "blog_11_4",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Yes, but they don't \"pull out\" whiteheads overnight.",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 190,
+    "id": "blog_11_5",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - What Makes a Good Whitehead Removal Cream?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 191,
+    "id": "blog_11_6",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Ingredients That Help Support Healthy Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 192,
+    "id": "blog_11_7",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - How to Use a Whitehead Removal Cream",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 193,
+    "id": "blog_11_8",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Common Mistakes That Can Make Whiteheads Worse",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 194,
+    "id": "blog_11_9",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - When Should You See a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 195,
+    "id": "blog_11_10",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Clinderma's Approach to Whitehead Treatment",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 196,
+    "id": "blog_11_11",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 197,
+    "id": "blog_11_12",
+    "question": "Best Whiteheads Removal Creams for Smooth Skin - REFERENCES:",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Whiteheads Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 198,
+    "id": "blog_12_1",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 199,
+    "id": "blog_12_2",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Why Self-Care Matters for Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 200,
+    "id": "blog_12_3",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Morning Pimples Self-Care Routine",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 201,
+    "id": "blog_12_4",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Throughout the Day",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 202,
+    "id": "blog_12_5",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Evening Pimples Self-Care Routine",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 203,
+    "id": "blog_12_6",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Lifestyle Habits That Support Healthy Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 204,
+    "id": "blog_12_7",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Give Your Skincare Pimples Self-Care Routine Time to Work",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 205,
+    "id": "blog_12_8",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Know When to Ask for Professional Help",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 206,
+    "id": "blog_12_9",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - A Simple Daily Acne Self-Care Checklist",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 207,
+    "id": "blog_12_10",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Common Self-Care Mistakes That Can Make Acne Worse",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 208,
+    "id": "blog_12_11",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 209,
+    "id": "blog_12_12",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - Frequently Asked Questions (FAQs)",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 210,
+    "id": "blog_12_13",
+    "question": "Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter - REFERENCES",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples Self-Care Routine for Healthier Skin: Simple Daily Habits That Really Matter"
+  },
+  {
+    "idx": 211,
+    "id": "blog_13_1",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 212,
+    "id": "blog_13_2",
+    "question": "Pimple Scar Removal: Best Treatments That Work - What Are Pimple Scars",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 213,
+    "id": "blog_13_3",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Why Do Acne Scars Form",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 214,
+    "id": "blog_13_4",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Types of Acne Scars",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 215,
+    "id": "blog_13_5",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Can Acne Scars Go Away Naturally",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 216,
+    "id": "blog_13_6",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Best Treatments for Pimple Scar Removal",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 217,
+    "id": "blog_13_7",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Can One Treatment Remove All Acne Scars",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 218,
+    "id": "blog_13_8",
+    "question": "Pimple Scar Removal: Best Treatments That Work - How to Prevent Acne Scars",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 219,
+    "id": "blog_13_9",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 220,
+    "id": "blog_13_10",
+    "question": "Pimple Scar Removal: Best Treatments That Work - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 221,
+    "id": "blog_13_11",
+    "question": "Pimple Scar Removal: Best Treatments That Work - REFERENCES",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple Scar Removal: Best Treatments That Work"
+  },
+  {
+    "idx": 222,
+    "id": "blog_14_1",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 223,
+    "id": "blog_14_2",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - What Is a Salicylic Acid Face Wash?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 224,
+    "id": "blog_14_3",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Benefits of a Salicylic Acid Face Wash",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 225,
+    "id": "blog_14_4",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Common Mistakes to Avoid",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 226,
+    "id": "blog_14_5",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Who Can Benefits of Acne Prone Skin from a Salicylic Acid Face Wash?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 227,
+    "id": "blog_14_6",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Salicylic Acid Face Wash vs Regular Face Wash",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 228,
+    "id": "blog_14_7",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 229,
+    "id": "blog_14_8",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 230,
+    "id": "blog_14_9",
+    "question": "Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear - REFERENCES:",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Salicylic Acid Face Wash: Benefits for Acne-Prone Skin and How It Helps Keep Your Skin Clear"
+  },
+  {
+    "idx": 231,
+    "id": "blog_15_1",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 232,
+    "id": "blog_15_2",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - Why Do Pimples Appear on the Eyebrows",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 233,
+    "id": "blog_15_3",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - Common Causes of Eyebrow Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 234,
+    "id": "blog_15_4",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - What Does an Eyebrow Pimple Look Like",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 235,
+    "id": "blog_15_5",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - Avoid Pricking or Squeezing the Pimple",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 236,
+    "id": "blog_15_6",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - How to Treat an Eyebrow Pimple Safely",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 237,
+    "id": "blog_15_7",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - When Should You See a Doctor",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 238,
+    "id": "blog_15_8",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - Simple Habits to Prevent Eyebrow Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 239,
+    "id": "blog_15_9",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - The Clinderma Perspective",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 240,
+    "id": "blog_15_10",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - Conclusion",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 241,
+    "id": "blog_15_11",
+    "question": "Eyebrow Pimple: Causes, Treatment & Prevention Tips - REFERENCES:",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Eyebrow Pimple: Causes, Treatment & Prevention Tips"
+  },
+  {
+    "idx": 242,
+    "id": "blog_16_1",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 243,
+    "id": "blog_16_2",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - What Causes Pimples on the Face?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 244,
+    "id": "blog_16_3",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Different Types of Facial Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 245,
+    "id": "blog_16_4",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - How to Manage Pimples Effectively",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 246,
+    "id": "blog_16_5",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Follow a Gentle Skincare Routine",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 247,
+    "id": "blog_16_6",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Choose Acne-Fighting Ingredients Carefully",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 248,
+    "id": "blog_16_7",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Avoid Changing Products Too Often",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 249,
+    "id": "blog_16_8",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Clinderma's Approach to Managing Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 250,
+    "id": "blog_16_9",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 251,
+    "id": "blog_16_10",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - Frequently Asked Questions About Pimples on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 252,
+    "id": "blog_16_11",
+    "question": "Pimples on Face: Causes, Types & Effective Solutions - REFERENCES:",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples on Face: Causes, Types & Effective Solutions"
+  },
+  {
+    "idx": 253,
+    "id": "blog_17_1",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 254,
+    "id": "blog_17_2",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - What is Pregnancy Acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 255,
+    "id": "blog_17_3",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - When Does Pregnancy Acne Start",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 256,
+    "id": "blog_17_4",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Symptoms of Pregnancy Acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 257,
+    "id": "blog_17_5",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Causes of Pimples During Pregnancy",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 258,
+    "id": "blog_17_6",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - How to Safely Treat Pimples During Pregnancy",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 259,
+    "id": "blog_17_7",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Pregnancy-Safe Acne Treatments",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 260,
+    "id": "blog_17_8",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Acne Treatments to Avoid During Pregnancy",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 261,
+    "id": "blog_17_9",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Is Acne a Sign of Pregnancy?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 262,
+    "id": "blog_17_10",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 263,
+    "id": "blog_17_11",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Clinderma's Approach to Pregnancy Acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 264,
+    "id": "blog_17_12",
+    "question": "Pimples During Pregnancy: Causes & Safe Treatments - Research References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimples During Pregnancy: Causes & Safe Treatments"
+  },
+  {
+    "idx": 265,
+    "id": "blog_18_1",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - The Importance of Choosing the Right Pimple-Removing Face Wash",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 266,
+    "id": "blog_18_2",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - What Ingredients Should You Look For in a Pimple-Removing Face Wash?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 267,
+    "id": "blog_18_3",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - How a Gentle Pimple Removing Face Wash Supports Your Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 268,
+    "id": "blog_18_4",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - How to Use a Pimple Removing Face Wash Correctly",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 269,
+    "id": "blog_18_5",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - Common Mistakes When Choosing an Acne Face Wash",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 270,
+    "id": "blog_18_6",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 271,
+    "id": "blog_18_7",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 272,
+    "id": "blog_18_8",
+    "question": "Best Pimple-Removing Face Wash for Clearer-Looking Skin - Research References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple-Removing Face Wash for Clearer-Looking Skin"
+  },
+  {
+    "idx": 273,
+    "id": "blog_19_1",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 274,
+    "id": "blog_19_2",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Why Moisturiser Is Important for Acne-Prone Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 275,
+    "id": "blog_19_3",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - What Should You Look for in a Moisturiser?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 276,
+    "id": "blog_19_4",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Ingredients That Work Well for Acne-Prone Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 277,
+    "id": "blog_19_5",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Ingredients That May Not Suit Everyone",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 278,
+    "id": "blog_19_6",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Common Moisturiser Mistakes",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 279,
+    "id": "blog_19_7",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 280,
+    "id": "blog_19_8",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 281,
+    "id": "blog_19_9",
+    "question": "Best Moisturisers for Pimples and Acne-Prone Skin - Research References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Moisturisers for Pimples and Acne-Prone Skin"
+  },
+  {
+    "idx": 282,
+    "id": "blog_20_1",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 283,
+    "id": "blog_20_2",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - What Causes Small Bumps on the Forehead?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 284,
+    "id": "blog_20_3",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - Easy Treatments for Small Forehead Bumps",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 285,
+    "id": "blog_20_4",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - When Should You See a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 286,
+    "id": "blog_20_5",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 287,
+    "id": "blog_20_6",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 288,
+    "id": "blog_20_7",
+    "question": "Small Bumps on Forehead: Causes & Easy Treatments - Research References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Small Bumps on Forehead: Causes & Easy Treatments"
+  },
+  {
+    "idx": 289,
+    "id": "blog_21_1",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 290,
+    "id": "blog_21_2",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Not Every Dark Spot Is Actually a Scar",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 291,
+    "id": "blog_21_3",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - The Ingredient List Matters More Than the Packaging",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 292,
+    "id": "blog_21_4",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Results Rarely Happen Overnight",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 293,
+    "id": "blog_21_5",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Pricking Pimples Can Create More Marks",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 294,
+    "id": "blog_21_6",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - More Active Ingredients Do Not Always Mean Better Results",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 295,
+    "id": "blog_21_7",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Sometimes Professional Treatment Is the Better Option",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 296,
+    "id": "blog_21_8",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 297,
+    "id": "blog_21_9",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 298,
+    "id": "blog_21_10",
+    "question": "Best Pimple Dark Spot Removal Creams for Acne Marks - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Dark Spot Removal Creams for Acne Marks"
+  },
+  {
+    "idx": 299,
+    "id": "blog_22_1",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 300,
+    "id": "blog_22_2",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Can Scar Removal Creams Really Remove Scars?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 301,
+    "id": "blog_22_3",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Why Do Some Scars Fade While Others Remain Visible?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 302,
+    "id": "blog_22_4",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Ingredients Worth Looking for in a Scar Cream",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 303,
+    "id": "blog_22_5",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - When Scar Creams May Not Be Enough",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 304,
+    "id": "blog_22_6",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Don't Forget Sunscreen",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 305,
+    "id": "blog_22_7",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Simple Tips to Improve Scar Healing",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 306,
+    "id": "blog_22_8",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - Frequently Asked Questions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 307,
+    "id": "blog_22_9",
+    "question": "Best Face Scar Removal Creams for Smooth Skin - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Scar Removal Creams for Smooth Skin"
+  },
+  {
+    "idx": 308,
+    "id": "blog_23_1",
+    "question": "More Than Just Megha Acne Healing Journey - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: More Than Just Megha Acne Healing Journey"
+  },
+  {
+    "idx": 309,
+    "id": "blog_23_2",
+    "question": "More Than Just Megha Acne Healing Journey - Discovererd the Root Cause at Clinderma Consultation",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: More Than Just Megha Acne Healing Journey"
+  },
+  {
+    "idx": 310,
+    "id": "blog_23_3",
+    "question": "More Than Just Megha Acne Healing Journey - Holistic Treatment Approach to Megha Acne Healing Journey",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: More Than Just Megha Acne Healing Journey"
+  },
+  {
+    "idx": 311,
+    "id": "blog_23_4",
+    "question": "More Than Just Megha Acne Healing Journey - Megha gained Confidence Again",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: More Than Just Megha Acne Healing Journey"
+  },
+  {
+    "idx": 312,
+    "id": "blog_24_1",
+    "question": "Raised Red Bumps on Skin - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 313,
+    "id": "blog_24_2",
+    "question": "Raised Red Bumps on Skin - What Are Raised Red Bumps on Skin?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 314,
+    "id": "blog_24_3",
+    "question": "Raised Red Bumps on Skin - Common Causes of Raised Red Bumps on Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 315,
+    "id": "blog_24_4",
+    "question": "Raised Red Bumps on Skin - Clinical Features That May Accompany Raised Red Bumps",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 316,
+    "id": "blog_24_5",
+    "question": "Raised Red Bumps on Skin - How Are Raised Red Bumps Treated?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 317,
+    "id": "blog_24_6",
+    "question": "Raised Red Bumps on Skin - Tips to Help Prevent Raised Red Bumps",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 318,
+    "id": "blog_24_7",
+    "question": "Raised Red Bumps on Skin - When Should You See a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 319,
+    "id": "blog_24_8",
+    "question": "Raised Red Bumps on Skin - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 320,
+    "id": "blog_24_9",
+    "question": "Raised Red Bumps on Skin - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Raised Red Bumps on Skin"
+  },
+  {
+    "idx": 321,
+    "id": "blog_25_1",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 322,
+    "id": "blog_25_2",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Why Do People With Oily Skin Get More Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 323,
+    "id": "blog_25_3",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - What Should You Look for in a Face Wash?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 324,
+    "id": "blog_25_4",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Ingredients That Can Actually Help",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 325,
+    "id": "blog_25_5",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Which Type of Face Wash Is Right for You?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 326,
+    "id": "blog_25_6",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Ingredients Worth Avoiding",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 327,
+    "id": "blog_25_7",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Common Mistakes That Can Make Acne Worse",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 328,
+    "id": "blog_25_8",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Can a Face Wash Clear Acne on Its Own?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 329,
+    "id": "blog_25_9",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 330,
+    "id": "blog_25_10",
+    "question": "Best Face Wash for Oily Skin and Pimples in 2026 - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Face Wash for Oily Skin and Pimples in 2026"
+  },
+  {
+    "idx": 331,
+    "id": "blog_26_1",
+    "question": "Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency"
+  },
+  {
+    "idx": 332,
+    "id": "blog_26_2",
+    "question": "Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency - Progress Isn't Always Perfect",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency"
+  },
+  {
+    "idx": 333,
+    "id": "blog_26_3",
+    "question": "Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency - The Difference Consistency Makes",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency"
+  },
+  {
+    "idx": 334,
+    "id": "blog_26_4",
+    "question": "Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency - A Reminder Worth Sharing",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Noufal Kuttipencil Acne Was Starving Acne Was Starving for Consistency"
+  },
+  {
+    "idx": 335,
+    "id": "blog_27_1",
+    "question": "His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun"
+  },
+  {
+    "idx": 336,
+    "id": "blog_27_2",
+    "question": "His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun - The First Win: Stopping New Breakouts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun"
+  },
+  {
+    "idx": 337,
+    "id": "blog_27_3",
+    "question": "His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun - Scars and Pigmentation Need More Patience",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun"
+  },
+  {
+    "idx": 338,
+    "id": "blog_27_4",
+    "question": "His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun - The Role of Consistency",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun"
+  },
+  {
+    "idx": 339,
+    "id": "blog_27_5",
+    "question": "His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun - More Than Numbers",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: His Acne Started Clearing in 16 Weeks-But The Real Journey Had Just Begun"
+  },
+  {
+    "idx": 340,
+    "id": "blog_28_1",
+    "question": "What We Discovered Behind 5 Years of Acne - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What We Discovered Behind 5 Years of Acne"
+  },
+  {
+    "idx": 341,
+    "id": "blog_28_2",
+    "question": "What We Discovered Behind 5 Years of Acne - Looking Beyond the Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What We Discovered Behind 5 Years of Acne"
+  },
+  {
+    "idx": 342,
+    "id": "blog_28_3",
+    "question": "What We Discovered Behind 5 Years of Acne - A Journey She Didn't Have to Walk Alone",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: What We Discovered Behind 5 Years of Acne"
+  },
+  {
+    "idx": 343,
+    "id": "blog_29_1",
+    "question": "The Marks Stayed Longer Than The Acne - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Marks Stayed Longer Than The Acne"
+  },
+  {
+    "idx": 344,
+    "id": "blog_29_2",
+    "question": "The Marks Stayed Longer Than The Acne - Making Skincare Simpler",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Marks Stayed Longer Than The Acne"
+  },
+  {
+    "idx": 345,
+    "id": "blog_29_3",
+    "question": "The Marks Stayed Longer Than The Acne - The Power of Staying Connected",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Marks Stayed Longer Than The Acne"
+  },
+  {
+    "idx": 346,
+    "id": "blog_29_4",
+    "question": "The Marks Stayed Longer Than The Acne - Small Improvements, Big Impact",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Marks Stayed Longer Than The Acne"
+  },
+  {
+    "idx": 347,
+    "id": "blog_30_1",
+    "question": "When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin"
+  },
+  {
+    "idx": 348,
+    "id": "blog_30_2",
+    "question": "When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin - Looking Beyond the Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin"
+  },
+  {
+    "idx": 349,
+    "id": "blog_30_3",
+    "question": "When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin - The Challenge Wasn't Just Mohammad Teen Acne",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin"
+  },
+  {
+    "idx": 350,
+    "id": "blog_30_4",
+    "question": "When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin - From 60 Lesions to Just 5",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin"
+  },
+  {
+    "idx": 351,
+    "id": "blog_30_5",
+    "question": "When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin - The Takeaway",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: When Teen Acne Starts Taking Over: Mohammad Aaseem's Journey to Clearer Skin"
+  },
+  {
+    "idx": 352,
+    "id": "blog_31_1",
+    "question": "Saieesh Had the Grades. But Acne Was Stealing the Spotlight. - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Saieesh Had the Grades. But Acne Was Stealing the Spotlight."
+  },
+  {
+    "idx": 353,
+    "id": "blog_31_2",
+    "question": "Saieesh Had the Grades. But Acne Was Stealing the Spotlight. - The Problem Wasn't Just on His Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Saieesh Had the Grades. But Acne Was Stealing the Spotlight."
+  },
+  {
+    "idx": 354,
+    "id": "blog_31_3",
+    "question": "Saieesh Had the Grades. But Acne Was Stealing the Spotlight. - Treating the Root Cause, Not Just the Symptoms",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Saieesh Had the Grades. But Acne Was Stealing the Spotlight."
+  },
+  {
+    "idx": 355,
+    "id": "blog_31_4",
+    "question": "Saieesh Had the Grades. But Acne Was Stealing the Spotlight. - Every Step, skin coach Had His Back",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Saieesh Had the Grades. But Acne Was Stealing the Spotlight."
+  },
+  {
+    "idx": 356,
+    "id": "blog_31_5",
+    "question": "Saieesh Had the Grades. But Acne Was Stealing the Spotlight. - The Results That Changed Everything",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Saieesh Had the Grades. But Acne Was Stealing the Spotlight."
+  },
+  {
+    "idx": 357,
+    "id": "blog_31_6",
+    "question": "Saieesh Had the Grades. But Acne Was Stealing the Spotlight. - More Than Clear Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Saieesh Had the Grades. But Acne Was Stealing the Spotlight."
+  },
+  {
+    "idx": 358,
+    "id": "blog_32_1",
+    "question": "From Peer Teasing to Confidence: Rishi's Acne Transformation - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: From Peer Teasing to Confidence: Rishi's Acne Transformation"
+  },
+  {
+    "idx": 359,
+    "id": "blog_32_2",
+    "question": "From Peer Teasing to Confidence: Rishi's Acne Transformation - Looking Beyond the Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: From Peer Teasing to Confidence: Rishi's Acne Transformation"
+  },
+  {
+    "idx": 360,
+    "id": "blog_32_3",
+    "question": "From Peer Teasing to Confidence: Rishi's Acne Transformation - When Acne No Longer Defined Him",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: From Peer Teasing to Confidence: Rishi's Acne Transformation"
+  },
+  {
+    "idx": 361,
+    "id": "blog_33_1",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 362,
+    "id": "blog_33_2",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - What Causes Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 363,
+    "id": "blog_33_3",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Understanding Different Types of Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 364,
+    "id": "blog_33_4",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Best Pimple Treatment Options",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 365,
+    "id": "blog_33_5",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Which treatment is best for pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 366,
+    "id": "blog_33_6",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Can pimples go away permanently?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 367,
+    "id": "blog_33_7",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - How long does pimple treatment take to work?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 368,
+    "id": "blog_33_8",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Is moisturiser necessary for acne-prone skin?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 369,
+    "id": "blog_33_9",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Should I pop pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 370,
+    "id": "blog_33_10",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Can Diet, Stress & Lifestyle Affect Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 371,
+    "id": "blog_33_11",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Are home remedies effective for pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 372,
+    "id": "blog_33_12",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Daily Habits That Support Clear Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 373,
+    "id": "blog_33_13",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Common Mistakes That Make Pimples Worse",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 374,
+    "id": "blog_33_14",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - When Should You See a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 375,
+    "id": "blog_33_15",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 376,
+    "id": "blog_33_16",
+    "question": "Best Pimple Treatment Options for Clear Skin: What Actually Works? - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Pimple Treatment Options for Clear Skin: What Actually Works?"
+  },
+  {
+    "idx": 377,
+    "id": "blog_34_1",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 378,
+    "id": "blog_34_2",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - What Causes Black Pimples on the Face?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 379,
+    "id": "blog_34_3",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Why Do Black Pimples Look Black?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 380,
+    "id": "blog_34_4",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Which Areas Commonly Develop Black Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 381,
+    "id": "blog_34_5",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - What Is the Best Way to Remove Black Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 382,
+    "id": "blog_34_6",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Are Pore Strips Good for Blackheads?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 383,
+    "id": "blog_34_7",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Can Stress Cause Black Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 384,
+    "id": "blog_34_8",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Can Diet Affect Black Pimples?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 385,
+    "id": "blog_34_9",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Should You Exfoliate Daily?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 386,
+    "id": "blog_34_10",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Can Black Pimples Turn Into Painful Acne?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 387,
+    "id": "blog_34_11",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Do's & Don'ts for Black Pimples",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 388,
+    "id": "blog_34_12",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Common Mistakes People Make",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 389,
+    "id": "blog_34_13",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - When Should You Avoid Home Remedies?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 390,
+    "id": "blog_34_14",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - When Should You See a Dermatologist?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 391,
+    "id": "blog_34_15",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 392,
+    "id": "blog_34_16",
+    "question": "Black Pimples on Face: Causes & Effective Removal Methods - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Black Pimples on Face: Causes & Effective Removal Methods"
+  },
+  {
+    "idx": 393,
+    "id": "blog_35_1",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 394,
+    "id": "blog_35_2",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - What Causes Red Pimples on Body?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 395,
+    "id": "blog_35_3",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - Symptoms Associated with Red Pimples on Body",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 396,
+    "id": "blog_35_4",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - Treatment Options",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 397,
+    "id": "blog_35_5",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - Home Care Tips",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 398,
+    "id": "blog_35_6",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - Can Diet Affect it ?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 399,
+    "id": "blog_35_7",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - Conclusion",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 400,
+    "id": "blog_35_8",
+    "question": "Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips - References (Research Papers & Sources)",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Red Pimples on Body: Causes, Treatment, Home Care & Prevention Tips"
+  },
+  {
+    "idx": 401,
+    "id": "blog_36_1",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 402,
+    "id": "blog_36_2",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - What Causes a Pimple in Nose?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 403,
+    "id": "blog_36_3",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - Symptoms of a Pimple in Nose",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 404,
+    "id": "blog_36_4",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - Home Remedies for Pimple in Nose",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 405,
+    "id": "blog_36_5",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - What to Avoid",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 406,
+    "id": "blog_36_6",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - When to See a Doctor",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 407,
+    "id": "blog_36_7",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - Tips to Prevent Pimple in Nose",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 408,
+    "id": "blog_36_8",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 409,
+    "id": "blog_36_9",
+    "question": "Pimple in Nose: Home Remedies & When to See a Doctor - References",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Pimple in Nose: Home Remedies & When to See a Doctor"
+  },
+  {
+    "idx": 410,
+    "id": "blog_37_1",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 411,
+    "id": "blog_37_2",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Although these facial bumps",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 412,
+    "id": "blog_37_3",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Understanding Tiny Bumps on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 413,
+    "id": "blog_37_4",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Dermatologically, these facial bumps",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 414,
+    "id": "blog_37_5",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Why Do Tiny Bumps on Face Occur?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 415,
+    "id": "blog_37_6",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Common Types of Tiny Bumps on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 416,
+    "id": "blog_37_7",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Treatment of Tiny Bumps on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 417,
+    "id": "blog_37_8",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Skincare Routine for Tiny Bumps on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 418,
+    "id": "blog_37_9",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Prevention of Tiny Bumps on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 419,
+    "id": "blog_37_10",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Common Mistakes That Worsen Tiny Bumps on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 420,
+    "id": "blog_37_11",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - When to See a Dermatologist",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 421,
+    "id": "blog_37_12",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - Conclusion",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 422,
+    "id": "blog_37_13",
+    "question": "Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them - References (Research Papers &Sources)",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Tiny Bumps on Face: Causes, Treatment, and How to Get Rid of Them"
+  },
+  {
+    "idx": 423,
+    "id": "blog_38_1",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 424,
+    "id": "blog_38_2",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Understanding Types of Pimples on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 425,
+    "id": "blog_38_3",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - (Scientific Insight)",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 426,
+    "id": "blog_38_4",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Main Types",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 427,
+    "id": "blog_38_5",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Diagnosis of Types of Pimples on Face",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 428,
+    "id": "blog_38_6",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Treatment",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 429,
+    "id": "blog_38_7",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Prevention",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 430,
+    "id": "blog_38_8",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Common Mistakes That Worsen",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 431,
+    "id": "blog_38_9",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - When to See a Dermatologist",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 432,
+    "id": "blog_38_10",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - Conclusion",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 433,
+    "id": "blog_38_11",
+    "question": "Types of Pimples on Face: Causes & Treatment Guide - References (Research Papers & Sources)",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Types of Pimples on Face: Causes & Treatment Guide"
+  },
+  {
+    "idx": 434,
+    "id": "blog_39_1",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 435,
+    "id": "blog_39_2",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - What is Scalp Folliculitis?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 436,
+    "id": "blog_39_3",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Why Scalp Folliculitis is the Real Cause Behind Pimples on Scalp",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 437,
+    "id": "blog_39_4",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Types of Scalp Folliculitis",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 438,
+    "id": "blog_39_5",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Causes of Scalp Folliculitis (Root of Pimples on Scalp)",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 439,
+    "id": "blog_39_6",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - How to Treat Scalp Folliculitis",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 440,
+    "id": "blog_39_7",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Home Care Routine for Pimples on Scalp",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 441,
+    "id": "blog_39_8",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Can Scalp Folliculitis Cause Hair Loss?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 442,
+    "id": "blog_39_9",
+    "question": "Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp) - Final Thoughts",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Scalp Folliculitis: Causes, Treatment, and Prevention Tips (Complete Guide to Pimples on Scalp)"
+  },
+  {
+    "idx": 443,
+    "id": "blog_40_1",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 444,
+    "id": "blog_40_2",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - What Exactly Are Whiteheads?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 445,
+    "id": "blog_40_3",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - How Whiteheads Form: The Science Behind It",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 446,
+    "id": "blog_40_4",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - Types of Whiteheads Based on Skin Behavior",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 447,
+    "id": "blog_40_5",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - Daily Skincare Routine for Whiteheads-Prone Skin",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 448,
+    "id": "blog_40_6",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - Prevention Tips for Whiteheads",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 449,
+    "id": "blog_40_7",
+    "question": "Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide) - When to Seek Professional Help",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Whiteheads on Face: Causes, Treatment, and Prevention (A Scientific Yet Practical Guide)"
+  },
+  {
+    "idx": 450,
+    "id": "blog_41_1",
+    "question": "The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically) - What Does Non Comedogenic Actually Mean?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically)"
+  },
+  {
+    "idx": 451,
+    "id": "blog_41_2",
+    "question": "The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically) - Why Do Pores Get Clogged in the First Place?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically)"
+  },
+  {
+    "idx": 452,
+    "id": "blog_41_3",
+    "question": "The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically) - The Origin of the Non Comedogenic Concept",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically)"
+  },
+  {
+    "idx": 453,
+    "id": "blog_41_4",
+    "question": "The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically) - Why the Non Comedogenic Label Is Not Perfect",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Truth About Non Comedogenic skincare (Explained Casually, but Scientifically)"
+  },
+  {
+    "idx": 454,
+    "id": "blog_42_1",
+    "question": "Breaking the Cycle: How to Avoid Picking and Scarring - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Breaking the Cycle: How to Avoid Picking and Scarring"
+  },
+  {
+    "idx": 455,
+    "id": "blog_42_2",
+    "question": "Breaking the Cycle: How to Avoid Picking and Scarring - Why Do We Pick?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Breaking the Cycle: How to Avoid Picking and Scarring"
+  },
+  {
+    "idx": 456,
+    "id": "blog_42_3",
+    "question": "Breaking the Cycle: How to Avoid Picking and Scarring - What Happens When You Pick?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Breaking the Cycle: How to Avoid Picking and Scarring"
+  },
+  {
+    "idx": 457,
+    "id": "blog_42_4",
+    "question": "Breaking the Cycle: How to Avoid Picking and Scarring - How to Break the Cycle-With Clinderma's Help",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Breaking the Cycle: How to Avoid Picking and Scarring"
+  },
+  {
+    "idx": 458,
+    "id": "blog_42_5",
+    "question": "Breaking the Cycle: How to Avoid Picking and Scarring - Healing Takes Time",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Breaking the Cycle: How to Avoid Picking and Scarring"
+  },
+  {
+    "idx": 459,
+    "id": "blog_43_1",
+    "question": "Beyond Products: The Power of Skin Coach at Clinderma - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Beyond Products: The Power of Skin Coach at Clinderma"
+  },
+  {
+    "idx": 460,
+    "id": "blog_43_2",
+    "question": "Beyond Products: The Power of Skin Coach at Clinderma - What is a Skin Coach?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Beyond Products: The Power of Skin Coach at Clinderma"
+  },
+  {
+    "idx": 461,
+    "id": "blog_43_3",
+    "question": "Beyond Products: The Power of Skin Coach at Clinderma - Why Do You Need a Skin Coach?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Beyond Products: The Power of Skin Coach at Clinderma"
+  },
+  {
+    "idx": 462,
+    "id": "blog_43_4",
+    "question": "Beyond Products: The Power of Skin Coach at Clinderma - How Does Skin Coaching Work at Clinderma?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Beyond Products: The Power of Skin Coach at Clinderma"
+  },
+  {
+    "idx": 463,
+    "id": "blog_43_5",
+    "question": "Beyond Products: The Power of Skin Coach at Clinderma - The Results Speak for Themselves",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Beyond Products: The Power of Skin Coach at Clinderma"
+  },
+  {
+    "idx": 464,
+    "id": "blog_43_6",
+    "question": "Beyond Products: The Power of Skin Coach at Clinderma - Ready to Start Your Skin Journey?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Beyond Products: The Power of Skin Coach at Clinderma"
+  },
+  {
+    "idx": 465,
+    "id": "blog_44_1",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 466,
+    "id": "blog_44_2",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - Why the Right Cleanser Matters?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 467,
+    "id": "blog_44_3",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - What Is Acnetrol Cleanser?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 468,
+    "id": "blog_44_4",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - Key Benefits",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 469,
+    "id": "blog_44_5",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - Hero Ingredients That Work",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 470,
+    "id": "blog_44_6",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - How to Use It",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 471,
+    "id": "blog_44_7",
+    "question": "Buy the Best Face Cleanser for a Glowing Complexion - The Clinderma Difference",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Buy the Best Face Cleanser for a Glowing Complexion"
+  },
+  {
+    "idx": 472,
+    "id": "blog_45_1",
+    "question": "Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today"
+  },
+  {
+    "idx": 473,
+    "id": "blog_45_2",
+    "question": "Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today - Key Ingredients which make SPF 50 Sunscreen special",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today"
+  },
+  {
+    "idx": 474,
+    "id": "blog_45_3",
+    "question": "Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today - Key Features:",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today"
+  },
+  {
+    "idx": 475,
+    "id": "blog_45_4",
+    "question": "Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today - How to Use",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Protect Your Skin! Buy SPF 50 Sunscreen at Clinderma Today"
+  },
+  {
+    "idx": 476,
+    "id": "blog_46_1",
+    "question": "Best Dermatologist-Recommended Sunscreens for Ultimate Sun Protection - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Dermatologist-Recommended Sunscreens for Ultimate Sun Protection"
+  },
+  {
+    "idx": 477,
+    "id": "blog_46_2",
+    "question": "Best Dermatologist-Recommended Sunscreens for Ultimate Sun Protection - Introduction",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Dermatologist-Recommended Sunscreens for Ultimate Sun Protection"
+  },
+  {
+    "idx": 478,
+    "id": "blog_46_3",
+    "question": "Best Dermatologist-Recommended Sunscreens for Ultimate Sun Protection - Key active ingredients in Acnetrol UV Sunscreen are dermatologist-approved",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Best Dermatologist-Recommended Sunscreens for Ultimate Sun Protection"
+  },
+  {
+    "idx": 479,
+    "id": "blog_47_1",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 480,
+    "id": "blog_47_2",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - Why Choose Online Dermatology Consultations?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 481,
+    "id": "blog_47_3",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - Acne Treatment via Teleconsultation",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 482,
+    "id": "blog_47_4",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - Addressing Pigmentation Issues from Home",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 483,
+    "id": "blog_47_5",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - Acne Scar Treatment",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 484,
+    "id": "blog_47_6",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - How Clinderma's Teleconsultation Works",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 485,
+    "id": "blog_47_7",
+    "question": "Online Consultation with a Skin Specialist: Get Expert Advice from Home - Why Trust Clinderma for Your Online Skin Consultation?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Online Consultation with a Skin Specialist: Get Expert Advice from Home"
+  },
+  {
+    "idx": 486,
+    "id": "blog_48_1",
+    "question": "The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits"
+  },
+  {
+    "idx": 487,
+    "id": "blog_48_2",
+    "question": "The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits - Why Does Deep Moisturization Creams Matter?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits"
+  },
+  {
+    "idx": 488,
+    "id": "blog_48_3",
+    "question": "The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits - 2.Hyaluronic Acid",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits"
+  },
+  {
+    "idx": 489,
+    "id": "blog_48_4",
+    "question": "The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits - 3. Aquaxyl",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits"
+  },
+  {
+    "idx": 490,
+    "id": "blog_48_5",
+    "question": "The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits - Why Clinderma's Acnetrol Moisturiser Stands Out?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits"
+  },
+  {
+    "idx": 491,
+    "id": "blog_48_6",
+    "question": "The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits - Why Choose Clinderma's Moisturiser?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Ultimate Guide to Deep Moisturizing Creams: Top Picks & Benefits"
+  },
+  {
+    "idx": 492,
+    "id": "blog_49_1",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 493,
+    "id": "blog_49_2",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Here is a quick introduction of Clinderma's Acnetrol UV Sunscreen-",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 494,
+    "id": "blog_49_3",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Why is sunscreen important?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 495,
+    "id": "blog_49_4",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - How does it work?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 496,
+    "id": "blog_49_5",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - When should I apply?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 497,
+    "id": "blog_49_6",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Do I need to use any other products with Acnetrol UV?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 498,
+    "id": "blog_49_7",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Can I use it with makeup products?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 499,
+    "id": "blog_49_8",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Is it water resistant?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 500,
+    "id": "blog_49_9",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Can I skip sunscreen if my foundation or moisturiser has SPF?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 501,
+    "id": "blog_49_10",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Are there any side effects of this cream?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 502,
+    "id": "blog_49_11",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - How long do I need to apply sunscreen?",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 503,
+    "id": "blog_49_12",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - Precautions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 504,
+    "id": "blog_49_13",
+    "question": "Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun! - drsiddharth@theclinderma.com",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Clinderma's Acnetrol UV Sunscreen- Your best friend against the sun!"
+  },
+  {
+    "idx": 505,
+    "id": "blog_50_1",
+    "question": "Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study"
+  },
+  {
+    "idx": 506,
+    "id": "blog_50_2",
+    "question": "Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study - Journal - Dermatology and Therapy",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study"
+  },
+  {
+    "idx": 507,
+    "id": "blog_50_3",
+    "question": "Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study - Methods",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study"
+  },
+  {
+    "idx": 508,
+    "id": "blog_50_4",
+    "question": "Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study - Results",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study"
+  },
+  {
+    "idx": 509,
+    "id": "blog_50_5",
+    "question": "Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study - Conclusions",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study"
+  },
+  {
+    "idx": 510,
+    "id": "blog_50_6",
+    "question": "Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study - Takeaways-",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: Trifarotene Reduces Risk for Atrophic Acne Scars: Results from A Phase 4 Controlled Study"
+  },
+  {
+    "idx": 511,
+    "id": "blog_51_1",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - Introduction & Overview",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 512,
+    "id": "blog_51_2",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - DOI -",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 513,
+    "id": "blog_51_3",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - The Gut-Skin Axis: A Bidirectional Pathway",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 514,
+    "id": "blog_51_4",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - Probiotics' Multifaceted Role in Skin Care",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 515,
+    "id": "blog_51_5",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - Innovative Applications: Probiotics in Cosmetic Formulations",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 516,
+    "id": "blog_51_6",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - Research Insights: The Promising Horizon for Probiotics",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 517,
+    "id": "blog_51_7",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - The Future of probiotics is skincare",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 518,
+    "id": "blog_51_8",
+    "question": "The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review - Expanded Takeaways: A Closer Look",
+    "category": "Skincare & Clinical Insights (Blog)",
+    "source": "Clinderma Clinical Blog: The Role of Probiotics in Skin Health and Related Gut-Skin Axis: A Review"
+  },
+  {
+    "idx": 519,
+    "id": "kandid_faq_03_acne",
+    "question": "How long does acne treatment take?",
+    "category": "Acne - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (Acne Timeline Expectations)"
+  },
+  {
+    "idx": 520,
+    "id": "kandid_faq_04_acne",
+    "question": "What is purging?",
+    "category": "Acne - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (Acne Timeline Expectations)"
+  },
+  {
+    "idx": 521,
+    "id": "kandid_faq_05_acne",
+    "question": "Will acne come back?",
+    "category": "Acne - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (Acne Timeline Expectations)"
+  },
+  {
+    "idx": 522,
+    "id": "kandid_faq_47_acne",
+    "question": "How long will it take for purging to settle down?",
+    "category": "Acne - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (Acne Timeline Expectations)"
+  },
+  {
+    "idx": 523,
+    "id": "kandid_faq_01_gene",
+    "question": "What is Clinderma?",
+    "category": "About Clinderma",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 524,
+    "id": "kandid_faq_02_gene",
+    "question": "How is Clinderma different from other skincare brands?",
+    "category": "About Clinderma",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 525,
+    "id": "kandid_faq_06_gene",
+    "question": "How long does pigmentation treatment take?",
+    "category": "Pigmentation - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 526,
+    "id": "kandid_faq_07_gene",
+    "question": "Why does pigmentation take longer than acne?",
+    "category": "Pigmentation - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 527,
+    "id": "kandid_faq_08_gene",
+    "question": "Why is sunscreen mandatory in pigmentation treatment?",
+    "category": "Pigmentation - Timeline & Expectations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 528,
+    "id": "kandid_faq_09_gene",
+    "question": "Can acne and pigmentation be treated together?",
+    "category": "Common Concerns",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 529,
+    "id": "kandid_faq_10_gene",
+    "question": "Are Ayurvedic supplements safe?",
+    "category": "Common Concerns",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 530,
+    "id": "kandid_faq_22_gene",
+    "question": "How does this recommendation work?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 531,
+    "id": "kandid_faq_23_gene",
+    "question": "Will a real dermatologist review my plan?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 532,
+    "id": "kandid_faq_24_gene",
+    "question": "Is this treatment safe for me?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 533,
+    "id": "kandid_faq_25_gene",
+    "question": "What if this treatment doesn't work for me?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 534,
+    "id": "kandid_faq_26_gene",
+    "question": "Will my acne get worse before it gets better?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 535,
+    "id": "kandid_faq_27_gene",
+    "question": "Do I need oral medicines to treat acne?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 536,
+    "id": "kandid_faq_28_gene",
+    "question": "Who will guide me during the treatment?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 537,
+    "id": "kandid_faq_29_gene",
+    "question": "Will this help prevent acne in the future?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 538,
+    "id": "kandid_faq_30_gene",
+    "question": "Is my personal information and photos safe?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 539,
+    "id": "kandid_faq_31_gene",
+    "question": "What's included in my treatment plan?",
+    "category": "Treatment Kit & Pricing",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 540,
+    "id": "kandid_faq_32_gene",
+    "question": "Is it safe to follow this plan without visiting a clinic?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 541,
+    "id": "kandid_faq_33_gene",
+    "question": "Do I have to buy all the products from you?",
+    "category": "Treatment Kit & Pricing",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 542,
+    "id": "kandid_faq_34_gene",
+    "question": "What does a Skin Coach do?",
+    "category": "Skin Coach & Support",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 543,
+    "id": "kandid_faq_35_gene",
+    "question": "How often will I talk to the doctor?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 544,
+    "id": "kandid_faq_36_gene",
+    "question": "How soon can I expect to see results?",
+    "category": "Acne & Pigmentation Timeline",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 545,
+    "id": "kandid_faq_37_gene",
+    "question": "Can I stop the plan midway if I feel better?",
+    "category": "Process & Consultations",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 546,
+    "id": "kandid_faq_38_gene",
+    "question": "Do I need to pay separately for doctor consultations and skin coach support?",
+    "category": "Treatment Kit & Pricing",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 547,
+    "id": "kandid_faq_39_gene",
+    "question": "Can I continue my current skincare products?",
+    "category": "Skincare Routine",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 548,
+    "id": "kandid_faq_40_gene",
+    "question": "How will we contact the skin coach once the kit is received?",
+    "category": "Onboarding & Delivery",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 549,
+    "id": "kandid_faq_41_gene",
+    "question": "There are no reviews on Google and Instagram - we are trusting your words.",
+    "category": "Brand Trust & Transparency",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 550,
+    "id": "kandid_faq_42_gene",
+    "question": "We have tried multiple products - what if acne comes back again?",
+    "category": "Acne & Treatment Protocols",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 551,
+    "id": "kandid_faq_43_gene",
+    "question": "Are there any side effects of oral medications?",
+    "category": "Medications & Side Effects",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 552,
+    "id": "kandid_faq_44_gene",
+    "question": "After using sunscreen, patches won't come on the face - what's the guarantee of that?",
+    "category": "Sun Protection & Pigmentation",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 553,
+    "id": "kandid_faq_45_gene",
+    "question": "Can we take only the diet plan? If yes, what's the price?",
+    "category": "Treatment Kit & Pricing",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 554,
+    "id": "kandid_faq_46_gene",
+    "question": "What is the treatment process for treating open pores?",
+    "category": "Skin Conditions & Procedures",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 555,
+    "id": "kandid_faq_50_gene",
+    "question": "Do we have to continue this for a lifetime?",
+    "category": "Acne & Treatment Protocols",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 556,
+    "id": "kandid_faq_51_gene",
+    "question": "What is the process once the treatment is over?",
+    "category": "Acne & Treatment Protocols",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 557,
+    "id": "kandid_faq_52_gene",
+    "question": "What happens if I have sensitivity to niacinamide or salicylic acid? What products will I receive?",
+    "category": "Customization & Sensitivities",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 558,
+    "id": "kandid_faq_53_gene",
+    "question": "Ayurvedic medicine doesn't suit me - how will you treat my root cause?",
+    "category": "Customization & Sensitivities",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 559,
+    "id": "kandid_faq_54_gene",
+    "question": "Are your products fragrance-free? Will I be given fragrance-free products if I'm allergic?",
+    "category": "Customization & Sensitivities",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 560,
+    "id": "kandid_faq_55_gene",
+    "question": "We are already using cleanser, sunscreen, and moisturizer - how is your treatment different?",
+    "category": "About Clinderma",
+    "source": "Kandid AI Benchmark (General)"
+  },
+  {
+    "idx": 561,
+    "id": "kandid_faq_14_men",
+    "question": "Can I use makeup during treatment?",
+    "category": "Cohort Specific - Women",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 562,
+    "id": "kandid_faq_15_men",
+    "question": "Are these treatments truly safe for pregnancy and breastfeeding?",
+    "category": "Cohort Specific - Women",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 563,
+    "id": "kandid_faq_16_men",
+    "question": "Will this treatment actually work for men?",
+    "category": "Cohort Specific - Men",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 564,
+    "id": "kandid_faq_17_men",
+    "question": "Is this treatment safe for men with sensitive skin?",
+    "category": "Cohort Specific - Men",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 565,
+    "id": "kandid_faq_18_men",
+    "question": "Can I continue shaving while on this treatment?",
+    "category": "Cohort Specific - Men",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 566,
+    "id": "kandid_faq_19_men",
+    "question": "Will this affect my daily routine or work schedule?",
+    "category": "Cohort Specific - Men",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 567,
+    "id": "kandid_faq_20_men",
+    "question": "Do I need to stop going to the gym or sweating?",
+    "category": "Cohort Specific - Men",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 568,
+    "id": "kandid_faq_21_men",
+    "question": "Will this affect my beard growth or hormones?",
+    "category": "Cohort Specific - Men",
+    "source": "Kandid AI Benchmark (Men)"
+  },
+  {
+    "idx": 569,
+    "id": "kandid_faq_11_teen",
+    "question": "Is acne normal during teenage years?",
+    "category": "Cohort Specific - Teens",
+    "source": "Kandid AI Benchmark (Teens)"
+  },
+  {
+    "idx": 570,
+    "id": "kandid_faq_12_teen",
+    "question": "Is this treatment safe for my age?",
+    "category": "Cohort Specific - Teens",
+    "source": "Kandid AI Benchmark (Teens)"
+  },
+  {
+    "idx": 571,
+    "id": "kandid_faq_13_teen",
+    "question": "Will my parents be involved in the treatment?",
+    "category": "Cohort Specific - Teens",
+    "source": "Kandid AI Benchmark (Teens)"
+  },
+  {
+    "idx": 572,
+    "id": "kandid_stream_1",
+    "question": "What is the best routine for dark spots and hyperpigmentation?",
+    "category": "Product Recommendations & Routine",
+    "source": "Kandid AI Verified Response"
   }
 ]

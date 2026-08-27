@@ -40,6 +40,57 @@ This project is an AI-powered, multi-channel customer support system built for *
 
 ---
 
+## 🔬 QA & Data Pipeline — Completed Tasks
+
+Beyond the chatbot itself, a comprehensive **Quality Assurance & Data Extraction pipeline** was built to evaluate chatbot accuracy and extract public website content.
+
+### ✅ Task 1: Master FAQ Database Creation
+- Parsed Clinderma's official Master FAQ document into a structured JSON database.
+- **55 FAQs** organized across **18 categories** and **5 user cohorts** (General, Men, Women, Teens, Acne Timeline & Expectations).
+- Each FAQ includes: question, ground-truth answer, expected keywords, and key clinical points.
+- **Output**: `WEBSCRAPPER/master_faqs.json`
+
+### ✅ Task 2: Blog Content Extraction
+- Built an automated scraper to discover and extract **all 51 publicly accessible blog articles** from `theclinderma.com`.
+- Handles Next.js React Server Components (RSC) payloads (`self.__next_f.push(...)`) to extract embedded HTML content.
+- Pipeline: Sitemap discovery → URL deduplication → RSC parsing → HTML-to-text extraction.
+- **Output**: `WEBSCRAPPER/clinderma_all_blogs.json` (51 articles with title + full content)
+
+### ✅ Task 3: Live Chatbot Benchmarking (WebSocket)
+- Developed an automated evaluation harness that connects to the **live Kandid AI WebSocket** endpoint.
+- Sends each Master FAQ question as a real user message and captures the full chatbot response.
+- Scores each response using two metrics:
+  - **Keyword Coverage** — % of expected clinical keywords present in the bot's response.
+  - **Key Point Coverage** — % of required clinical talking points covered.
+  - **Overall Alignment Score** — weighted combination of both metrics.
+- Ran benchmarks for all 5 cohorts independently, generating JSON + Markdown reports for each.
+- **Output**: `WEBSCRAPPER/comparison_results/FAQ_Comparision_*.json` and `.md` files
+
+### ✅ Task 4: Presentation-Quality PDF Analysis Report
+- Built a custom `reportlab` + `matplotlib` report generator producing a **10-page professional PDF**.
+- Report includes:
+  - Executive KPI cards (67.7% overall alignment, 74.2% keyword coverage, 63.3% key-point coverage)
+  - Cohort performance grouped bar chart with 70% target line
+  - Category-level breakdown sorted worst-to-best (18 categories)
+  - Full FAQ-by-FAQ detail table (all 59 evaluated FAQs)
+  - Keyword vs Key-Point scatter plot with alignment colour gradient
+  - Critical gap deep-dive (6 lowest-scoring FAQs with expected vs actual responses)
+  - Top performers table (FAQs scoring ≥ 90%)
+  - 4 strategic recommendations for system-prompt improvement
+- **Output**: `reports/Clinderma_Chatbot_FAQ_Analysis_Report.pdf`
+
+### 📊 Key Benchmark Findings
+
+| Cohort | FAQs | Alignment | Keywords | Key Points | Assessment |
+|--------|------|-----------|----------|------------|------------|
+| General | 42 | 64.9% | 75.8% | 57.5% | Adequate |
+| Men | 8 | 75.0% | 68.8% | 79.2% | Strong |
+| Women | 2 | 70.0% | 75.0% | 66.7% | Adequate |
+| Teens | 3 | 88.9% | 72.2% | 100.0% | Strong |
+| Acne Timeline | 4 | 65.4% | 69.8% | 62.5% | Adequate |
+
+---
+
 ## 📁 Project Structure
 
 ```
@@ -49,6 +100,23 @@ Clinderma/
 │   ├── Clinderma Customer Support Chatbot.pdf
 │   ├── Clinderma module.docx
 │   └── System_Flow.jpeg
+├── WEBSCRAPPER/                              # QA & Data Extraction Pipeline
+│   ├── master_faqs.json                      # 55 structured Master FAQs (ground-truth)
+│   ├── clinderma_all_blogs.json              # 51 extracted blog articles
+│   ├── compare_chatbot_with_faqs.py          # Live WebSocket chatbot benchmarking harness
+│   ├── scrape_all_blogs.py                   # Blog content scraper (Next.js RSC parser)
+│   ├── generate_pdf_report.py                # Professional PDF report generator
+│   ├── analyze_comparison_json.py            # Comparison data analysis utility
+│   ├── blog_parser.py                        # Individual blog article parser
+│   ├── discover_blogs.py                     # Blog URL discovery script
+│   ├── kandid_scraper.py                     # Kandid AI WebSocket client
+│   ├── comparison_results/                   # Benchmark results (JSON + Markdown per cohort)
+│   │   ├── FAQ_Comparision_General.json
+│   │   ├── FAQ_Comparision_Men.json
+│   │   ├── FAQ_Comparision_Women.json
+│   │   ├── FAQ_Comparision_Teens.json
+│   │   └── FAQ_Comparision_Acne_Timeline_Expectations.json
+│   └── sample_queries.txt                    # Test query samples
 ├── backend/
 │   ├── app/
 │   │   ├── api/                              # FastAPI REST routes (chat, leads, orders, handoff)
@@ -69,6 +137,8 @@ Clinderma/
 │       ├── chat-widget.js                    # Embeddable JS Chat Widget + Route Protection
 │       └── chat-widget.css                   # Clinderma medical skincare UI styling
 ├── data/                                     # Generated FAISS vector index & SQLite database
+├── reports/                                  # Generated analysis reports
+│   └── Clinderma_Chatbot_FAQ_Analysis_Report.pdf   # 10-page QA evaluation report
 ├── implementation_plan.md                    # Technical architecture assessment document
 ├── README.md                                 # Project documentation (this file)
 └── .gitignore                                # Secret & data protection rules
@@ -155,6 +225,7 @@ Open your browser and visit:
 ---
 
 ## 👥 Point of Contact & Project Info
-- **Project**: Clinderma Customer Support Chatbot Layer
+- **Project**: Clinderma Customer Support Chatbot + QA Pipeline
 - **Tech Stack**: Python, FastAPI, Google Gemini 2.0 Flash, FAISS Vector Search, SQLite, HTML5/CSS3/JS
+- **QA Pipeline**: WebSocket automation, reportlab, matplotlib, Next.js RSC parsing
 - **GitHub Repository**: [github.com/sumit21012006/Clinderma](https://github.com/sumit21012006/Clinderma)

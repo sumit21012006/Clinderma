@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from app.services.handoff_manager import HandoffManager
+from app.services.handoff_manager import handoff_manager
 
 router = APIRouter()
 
@@ -9,10 +9,11 @@ class ResolveRequest(BaseModel):
 
 @router.get("/handoff")
 def get_handoffs():
-    handoffs = HandoffManager.get_all_handoffs()
+    handoffs = handoff_manager.get_all_handoffs()
     return {"handoffs": handoffs, "count": len(handoffs)}
 
 @router.post("/handoff/resolve")
 def resolve_handoff(req: ResolveRequest):
-    HandoffManager.resolve_handoff(req.session_id)
+    handoff_manager.resolve_handoff(req.session_id)
     return {"status": "success", "session_id": req.session_id}
+

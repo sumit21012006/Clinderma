@@ -1,0 +1,150 @@
+{
+  "metadata": {
+    "timestamp": "20260822_203529",
+    "total_evaluated": 4,
+    "faqs_source": "E:\\Projects\\Clinderma\\WEBSCRAPPER\\master_faqs.json",
+    "average_alignment_score": 65.4
+  },
+  "results": [
+    {
+      "id": "faq_03",
+      "category": "Acne - Timeline & Expectations",
+      "cohort": "General",
+      "question": "How long does acne treatment take?",
+      "ground_truth_answer": "Acne starts showing results in 3-4 weeks, however we continue treatment for at least 3 months to provide optimal results and prevent recurrence.\n\nActive acne usually improves faster than pigmentation. Consistency is critical.",
+      "chatbot_response": "Most people begin seeing improvement in 3–4 weeks, but complete acne treatment typically takes around 4 months for the best long-term results.\n\nThe exact timeline depends on:\n- Acne severity\n- Skin type and sensitivity\n- Consistency with treatment\n- Lifestyle factors like sleep, stress, and diet\n\nTreatment is usually done in phases to reduce relapse risk and support long-term skin health.\n\n",
+      "duration_seconds": 17.85,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "acne timeline",
+          "acne treatment duration",
+          "3-4 weeks",
+          "3 months"
+        ],
+        "missing_keywords": [
+          "how long",
+          "recurrence"
+        ],
+        "coverage_percent": 66.7
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Starts showing visible results in 3-4 weeks.",
+          "Consistency is critical."
+        ],
+        "uncovered_key_points": [
+          "Minimum 3 months required for optimal results and preventing recurrence.",
+          "Active acne improves faster than pigmentation."
+        ],
+        "score_percent": 50.0
+      },
+      "alignment_score": 56.7
+    },
+    {
+      "id": "faq_04",
+      "category": "Acne - Timeline & Expectations",
+      "cohort": "General",
+      "question": "What is purging?",
+      "ground_truth_answer": "Purging is a temporary increase in acne when treatment starts.\n\nCertain active ingredients like oral/topical retinoids, AHAs, BHAs increase skin cell turnover, bringing hidden clogged pores to the surface faster.\n\nPurging usually happens in the first 2-4 weeks, is temporary, and settles with continued treatment.",
+      "chatbot_response": "Purging is a temporary increase in breakouts that can happen after starting active acne treatments like retinoids or exfoliating acids. These ingredients speed up skin renewal, so clogged pores surface faster before the skin clears.\n\nUsually:\n- Starts within 2–4 weeks\n- Improves within 3–6 weeks\n- Happens in areas where acne already exists\n\nIf breakouts become very painful, swollen, or continue worsening beyond a few weeks, the treatment should be reviewed by a dermatologist.\n\n",
+      "duration_seconds": 8.73,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "purging",
+          "what is purging",
+          "retinoids",
+          "temporary breakouts",
+          "2-4 weeks"
+        ],
+        "missing_keywords": [
+          "AHAs",
+          "BHAs",
+          "cell turnover"
+        ],
+        "coverage_percent": 62.5
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Temporary breakout when active ingredients (retinoids, AHAs, BHAs) speed up skin cell turnover.",
+          "Brings hidden clogged pores to the surface faster.",
+          "Occurs in the first 2-4 weeks (can last 3-6 weeks) and settles with continued treatment."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 85.0
+    },
+    {
+      "id": "faq_05",
+      "category": "Acne - Timeline & Expectations",
+      "cohort": "General",
+      "question": "Will acne come back?",
+      "ground_truth_answer": "If only products are used and root cause is not treated, acne often returns.\n\nThat is why we address gut health, sleep, stress, and monitor regularly. Thereafter follow lifestyle modifications to prevent recurrence.",
+      "chatbot_response": "Acne can return if the root causes aren’t addressed or treatment is stopped too early. Common triggers include hormones, stress, sleep issues, excess oil production, and inconsistent routines.\n\nClinderma’s approach focuses on reducing relapse through:\n- Root-cause correction\n- Dermatologist-guided treatment\n- Follow-ups and treatment adjustments\n- A maintenance routine after active treatment\n\nCompleting the full treatment phase usually gives more stable long-term results.\n\n",
+      "duration_seconds": 11.0,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "acne relapse",
+          "acne return",
+          "root cause"
+        ],
+        "missing_keywords": [
+          "come back",
+          "gut health",
+          "prevent recurrence"
+        ],
+        "coverage_percent": 50.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Clinderma treats internal root causes (gut health, stress, sleep, hormones).",
+          "Maintenance plan and lifestyle modifications prevent relapse."
+        ],
+        "uncovered_key_points": [
+          "Acne returns if root causes are ignored and only topical products are used."
+        ],
+        "score_percent": 66.7
+      },
+      "alignment_score": 60.0
+    },
+    {
+      "id": "faq_47",
+      "category": "Acne - Timeline & Expectations",
+      "cohort": "General",
+      "question": "How long will it take for purging to settle down?",
+      "ground_truth_answer": "Purging usually lasts 3 to 6 weeks.\n\nIt happens because actives like retinoids accelerate skin turnover.\n\nIf purging is severe:\n- We adjust frequency\n- We modify actives\n- You stay under supervision\n\nNot every breakout is purging - we differentiate clinically.",
+      "chatbot_response": "Purging usually settles within 3–6 weeks. Many people notice it starting during the first 2–4 weeks after beginning active treatments like retinoids or exfoliating acids.\n\nA mild temporary flare-up can be normal, but if you notice:\n- Severe redness or swelling\n- Painful irritation\n- Breakouts spreading to new areas\n- Worsening beyond 6 weeks\n\nthe treatment should be reviewed by a dermatologist.\n\n",
+      "duration_seconds": 9.77,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "purging duration",
+          "how long purging",
+          "3 to 6 weeks",
+          "retinoids turnover",
+          "breakout vs purging"
+        ],
+        "missing_keywords": [],
+        "coverage_percent": 100.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Purging typically lasts 3 to 6 weeks."
+        ],
+        "uncovered_key_points": [
+          "Caused by accelerated cellular turnover from retinoids/exfoliants.",
+          "Severe purging is managed by adjusting frequency or active strength under medical supervision."
+        ],
+        "score_percent": 33.3
+      },
+      "alignment_score": 60.0
+    }
+  ]
+}

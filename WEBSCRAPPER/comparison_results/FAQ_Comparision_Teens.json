@@ -1,0 +1,110 @@
+{
+  "metadata": {
+    "timestamp": "20260822_203831",
+    "total_evaluated": 3,
+    "faqs_source": "E:\\Projects\\Clinderma\\WEBSCRAPPER\\master_faqs.json",
+    "average_alignment_score": 88.9
+  },
+  "results": [
+    {
+      "id": "faq_11",
+      "category": "Cohort Specific - Teens",
+      "cohort": "Teens",
+      "question": "Is acne normal during teenage years?",
+      "ground_truth_answer": "Yes. Acne is quite common during the teenage years due to hormonal changes and excess oil production on the face.",
+      "chatbot_response": "Yes. Acne is very common during teenage years because hormonal changes increase oil production, which can clog pores and trigger breakouts.\n\nTeen skin usually responds well to early, consistent treatment. The goal is not just clearing pimples, but also reducing marks, scars, and future flare-ups safely.\n\nFor users under 18, parental consent is required before starting treatment.\n\n",
+      "duration_seconds": 10.17,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "teenage acne normal",
+          "teen pimples",
+          "hormonal surge"
+        ],
+        "missing_keywords": [
+          "puberty"
+        ],
+        "coverage_percent": 75.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Common during puberty due to hormonal fluctuations and increased sebum production."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 90.0
+    },
+    {
+      "id": "faq_12",
+      "category": "Cohort Specific - Teens",
+      "cohort": "Teens",
+      "question": "Is this treatment safe for my age?",
+      "ground_truth_answer": "Yes. All treatments are dermatologist-prescribed, age-appropriate, and designed specifically for teenage skin.",
+      "chatbot_response": "Yes, Clinderma treatment plans are designed to be age-appropriate and dermatologist-reviewed. Treatments are customized based on your skin condition, sensitivity, medical history, and age rather than using the same routine for everyone.\n\nIf you’re under 18, parental consent is required before treatment starts.\n\n",
+      "duration_seconds": 6.57,
+      "products_recommended": [],
+      "follow_ups": [
+        {
+          "question": "Which age group do you fall into?",
+          "options": [
+            "Under 18",
+            "18–25",
+            "26–35",
+            "Above 35"
+          ],
+          "id": "JbkaAG6_QnI-aymKRUQ60"
+        }
+      ],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "teen treatment safety",
+          "age appropriate"
+        ],
+        "missing_keywords": [
+          "safe for teens"
+        ],
+        "coverage_percent": 66.7
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Dermatologist-prescribed, gentle, age-appropriate formulations for teen skin."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 86.7
+    },
+    {
+      "id": "faq_13",
+      "category": "Cohort Specific - Teens",
+      "cohort": "Teens",
+      "question": "Will my parents be involved in the treatment?",
+      "ground_truth_answer": "Yes. For users under 18, parental consent is required and treatment details are shared for transparency and safety.",
+      "chatbot_response": "If you’re under 18, yes. Parental consent is required, and treatment details are shared with parents for safety and transparency.\n\nThe dermatologist reviews the treatment plan carefully to make sure it’s age-appropriate and safe for teenage skin.\n\n",
+      "duration_seconds": 10.15,
+      "products_recommended": [],
+      "follow_ups": [],
+      "keyword_coverage": {
+        "matched_keywords": [
+          "parents involved",
+          "parental consent",
+          "under 18"
+        ],
+        "missing_keywords": [
+          "teens"
+        ],
+        "coverage_percent": 75.0
+      },
+      "key_point_coverage": {
+        "covered_key_points": [
+          "Parental consent required for minors under 18 for medical safety and transparency."
+        ],
+        "uncovered_key_points": [],
+        "score_percent": 100.0
+      },
+      "alignment_score": 90.0
+    }
+  ]
+}

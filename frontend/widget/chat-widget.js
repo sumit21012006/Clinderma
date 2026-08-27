@@ -69,9 +69,10 @@
     <div class="clin-messages" id="clin-msg-list">
       <div class="clin-msg clin-msg-bot">
         👋 Hi! Welcome to <strong>Clinderma</strong>.<br>
-        I can help you with acne & pigmentation treatment details, product usage, order tracking, or connecting with a Skin Coach.
+        I can help you with acne & pigmentation treatment details, clinical skincare guides, order tracking, or connecting with a Skin Coach.
         <div class="clin-chips">
-          <div class="clin-chip" data-query="What is purging?">What is purging?</div>
+          <div class="clin-chip" data-query="What causes tiny bumps on my forehead?">Forehead Bumps</div>
+          <div class="clin-chip" data-query="Do I need moisturizer if I have pimples?">Moisturizer & Acne</div>
           <div class="clin-chip" data-query="How long does acne treatment take?">Acne Timeline</div>
           <div class="clin-chip" data-query="Track order CLIN-1001">Track Order CLIN-1001</div>
           <div class="clin-chip" data-query="Talk to Skin Coach">Skin Coach Handoff</div>
@@ -80,7 +81,7 @@
     </div>
 
     <div class="clin-input-bar">
-      <input type="text" class="clin-input" id="clin-input-field" placeholder="Ask a question or enter phone no..." />
+      <input type="text" class="clin-input" id="clin-input-field" placeholder="Ask a question or enter mobile no..." />
       <button class="clin-send-btn" id="clin-send-btn">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
@@ -112,7 +113,8 @@
       document.querySelectorAll('.clin-lang-btn').forEach((b) => b.classList.remove('active'));
       e.target.classList.add('active');
       currentLang = e.target.getAttribute('data-lang');
-      appendBotMsg(`Language set to ${currentLang.toUpperCase()}. How can I help you?`);
+      const langLabel = currentLang === 'hi' ? 'हिंदी' : currentLang === 'mr' ? 'मराठी' : 'English';
+      appendBotMsg(`Language set to <strong>${langLabel}</strong>. How can I help you?`);
     });
   });
 
@@ -147,11 +149,12 @@
     const div = document.createElement('div');
     div.className = 'clin-msg clin-msg-bot';
 
-    // Simple markdown formatting
+    // Enhanced markdown formatting
     let formatted = html
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n/g, '<br>')
-      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color:#0284c7;">$1</a>');
+      .replace(/\*(.*?)\*/g, '<em>$1</em>')
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" style="color:#0284c7; text-decoration:underline; font-weight:500;">$1</a>')
+      .replace(/\n/g, '<br>');
 
     div.innerHTML = formatted;
     msgList.appendChild(div);
