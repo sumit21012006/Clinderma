@@ -12,9 +12,9 @@ ENV/
 # Environment & Secrets
 .env
 
-# Data & SQLite
-data/clinderma.db
-data/kb_vectors.faiss
+# Data & SQLite — kept in repo for Render deployment (no persistent disk on free tier)
+# data/clinderma.db
+# data/kb_vectors.faiss
 
 # IDE / OS
 .vscode/
