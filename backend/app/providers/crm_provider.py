@@ -1,31 +1,23 @@
-import sqlite3
-import os
 import uuid
 import datetime
 from typing import Optional, Dict, Any
 from app.providers.base import AbstractCRMProvider
+from app.core.db import get_conn
 from app.core.config import settings
 
 
 class MockKylasCRMProvider(AbstractCRMProvider):
-    def __init__(self, db_path: str = None):
-        self.db_path = db_path or settings.DB_PATH
+    def __init__(self):
         self._init_db()
 
-    def _get_conn(self):
-        conn = sqlite3.connect(self.db_path, timeout=30.0)
-        return conn
-
     def _init_db(self):
-        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("PRAGMA journal_mode=WAL;")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS leads (
                 lead_id TEXT PRIMARY KEY,
                 name TEXT,
-                phone_number TEXT NOT NULL,
+                phone_number TEXT NOT NULL UNIQUE,
                 concern TEXT,
                 channel TEXT,
                 kylas_synced INTEGER DEFAULT 1,
@@ -33,36 +25,41 @@ class MockKylasCRMProvider(AbstractCRMProvider):
             )
         """)
         conn.commit()
+        cursor.close()
         conn.close()
 
     def create_lead(
-        self, phone_number: str, name: Optional[str] = "Web Visitor", concern: Optional[str] = "General Inquiry", channel: str = "website"
+        self, phone_number: str, name: Optional[str] = "Web Visitor",
+        concern: Optional[str] = "General Inquiry", channel: str = "website"
     ) -> Dict[str, Any]:
         created_at = datetime.datetime.now().isoformat()
         clean_name = name.strip() if name and name.strip() else "Web Visitor"
+        lead_id = f"KYLAS_LEAD_{uuid.uuid4().hex[:8].upper()}"
 
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
 
-        # Check if phone already exists
-        cursor.execute("SELECT lead_id, name, concern FROM leads WHERE phone_number = ?", (phone_number,))
-        existing = cursor.fetchone()
+        # Upsert: if phone exists, update name/concern; otherwise insert
+        cursor.execute("""
+            INSERT INTO leads (lead_id, name, phone_number, concern, channel, kylas_synced, created_at)
+            VALUES (%s, %s, %s, %s, %s, 1, %s)
+            ON CONFLICT (phone_number) DO UPDATE
+                SET name = CASE
+                        WHEN EXCLUDED.name != 'Web Visitor' THEN EXCLUDED.name
+                        ELSE leads.name
+                    END,
+                    concern = leads.concern || ' | ' || EXCLUDED.concern,
+                    channel = EXCLUDED.channel
+            RETURNING lead_id, name
+        """, (lead_id, clean_name, phone_number, concern or "General Inquiry", channel, created_at))
 
-        if existing:
-            lead_id = existing[0]
-            new_name = clean_name if clean_name != "Web Visitor" else existing[1]
-            new_concern = f"{existing[2]} | {concern}" if concern else existing[2]
-            cursor.execute("""
-                UPDATE leads SET name = ?, concern = ?, channel = ? WHERE lead_id = ?
-            """, (new_name, new_concern, channel, lead_id))
-        else:
-            lead_id = f"KYLAS_LEAD_{uuid.uuid4().hex[:8].upper()}"
-            cursor.execute("""
-                INSERT INTO leads (lead_id, name, phone_number, concern, channel, kylas_synced, created_at)
-                VALUES (?, ?, ?, ?, ?, 1, ?)
-            """, (lead_id, clean_name, phone_number, concern or "General Inquiry", channel, created_at))
+        returned = cursor.fetchone()
+        if returned:
+            lead_id = returned["lead_id"]
+            clean_name = returned["name"]
 
         conn.commit()
+        cursor.close()
         conn.close()
 
         print(f"[CRM PROVIDER] Synced Lead {lead_id} to Kylas CRM (Mock): {clean_name} ({phone_number}) - {concern}")
@@ -79,7 +76,8 @@ class MockKylasCRMProvider(AbstractCRMProvider):
 
 class LiveKylasCRMProvider(AbstractCRMProvider):
     def create_lead(
-        self, phone_number: str, name: Optional[str] = "Web Visitor", concern: Optional[str] = "General Inquiry", channel: str = "website"
+        self, phone_number: str, name: Optional[str] = "Web Visitor",
+        concern: Optional[str] = "General Inquiry", channel: str = "website"
     ) -> Dict[str, Any]:
         import requests
         headers = {"api-key": settings.KYLAS_API_KEY, "Content-Type": "application/json"}

@@ -1,21 +1,16 @@
-import sqlite3
 import json
 import datetime
 from typing import List, Dict, Any, Optional
-from app.core.config import settings
+from app.core.db import get_conn
+
 
 class HandoffManager:
-    def __init__(self, db_path: str = None):
-        self.db_path = db_path or settings.DB_PATH
+    def __init__(self):
         self._init_db()
 
-    def _get_conn(self):
-        return sqlite3.connect(self.db_path, timeout=30.0)
-
     def _init_db(self):
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("PRAGMA journal_mode=WAL;")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS handoffs (
                 session_id TEXT PRIMARY KEY,
@@ -29,7 +24,7 @@ class HandoffManager:
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS transcripts (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id SERIAL PRIMARY KEY,
                 session_id TEXT,
                 sender TEXT,
                 message TEXT,
@@ -37,52 +32,64 @@ class HandoffManager:
             )
         """)
         conn.commit()
+        cursor.close()
         conn.close()
 
     def add_transcript(self, session_id: str, sender: str, message: str):
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO transcripts (session_id, sender, message, timestamp)
-            VALUES (?, ?, ?, ?)
+            VALUES (%s, %s, %s, %s)
         """, (session_id, sender, message, datetime.datetime.now().isoformat()))
         conn.commit()
+        cursor.close()
         conn.close()
 
     def update_user_contact(self, session_id: str, user_name: Optional[str] = None, user_phone: Optional[str] = None):
         """Update contact info on an existing handoff record or initialize it."""
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("SELECT session_id, user_name, user_phone FROM handoffs WHERE session_id = ?", (session_id,))
+        cursor.execute("SELECT session_id, user_name, user_phone FROM handoffs WHERE session_id = %s", (session_id,))
         row = cursor.fetchone()
 
         if row:
-            new_name = user_name if user_name and user_name != "Anonymous" else row[1]
-            new_phone = user_phone if user_phone else row[2]
+            new_name = user_name if user_name and user_name != "Anonymous" else row["user_name"]
+            new_phone = user_phone if user_phone else row["user_phone"]
             cursor.execute("""
-                UPDATE handoffs SET user_name = ?, user_phone = ? WHERE session_id = ?
+                UPDATE handoffs SET user_name = %s, user_phone = %s WHERE session_id = %s
             """, (new_name, new_phone, session_id))
         else:
             created_at = datetime.datetime.now().isoformat()
             cursor.execute("""
                 INSERT INTO handoffs (session_id, user_name, user_phone, reason, channel, status, created_at)
-                VALUES (?, ?, ?, 'Lead Captured in Chat', 'website', 'pending', ?)
+                VALUES (%s, %s, %s, 'Lead Captured in Chat', 'website', 'pending', %s)
             """, (session_id, user_name or "Anonymous", user_phone or "", created_at))
 
         conn.commit()
+        cursor.close()
         conn.close()
 
     def create_handoff(
-        self, session_id: str, user_name: str = "Anonymous", user_phone: Optional[str] = None, reason: str = "Human Agent Request", channel: str = "website"
+        self, session_id: str, user_name: str = "Anonymous", user_phone: Optional[str] = None,
+        reason: str = "Human Agent Request", channel: str = "website"
     ) -> Dict[str, Any]:
         created_at = datetime.datetime.now().isoformat()
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT OR REPLACE INTO handoffs (session_id, user_name, user_phone, reason, channel, status, created_at)
-            VALUES (?, ?, ?, ?, ?, 'pending', ?)
+            INSERT INTO handoffs (session_id, user_name, user_phone, reason, channel, status, created_at)
+            VALUES (%s, %s, %s, %s, %s, 'pending', %s)
+            ON CONFLICT (session_id) DO UPDATE
+                SET user_name = EXCLUDED.user_name,
+                    user_phone = EXCLUDED.user_phone,
+                    reason = EXCLUDED.reason,
+                    channel = EXCLUDED.channel,
+                    status = 'pending',
+                    created_at = EXCLUDED.created_at
         """, (session_id, user_name, user_phone, reason, channel, created_at))
         conn.commit()
+        cursor.close()
         conn.close()
 
         print(f"[HANDOFF] Escalated session {session_id} to Skin Coach: {reason}")
@@ -94,8 +101,7 @@ class HandoffManager:
         }
 
     def get_all_handoffs(self) -> List[Dict[str, Any]]:
-        conn = self._get_conn()
-        conn.row_factory = sqlite3.Row
+        conn = get_conn()
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM handoffs ORDER BY created_at DESC")
         rows = cursor.fetchall()
@@ -103,7 +109,10 @@ class HandoffManager:
         handoffs = []
         for r in rows:
             sid = r["session_id"]
-            cursor.execute("SELECT sender, message, timestamp FROM transcripts WHERE session_id = ? ORDER BY id ASC", (sid,))
+            cursor.execute(
+                "SELECT sender, message, timestamp FROM transcripts WHERE session_id = %s ORDER BY id ASC",
+                (sid,)
+            )
             t_rows = cursor.fetchall()
             transcript = [{"sender": t["sender"], "message": t["message"], "timestamp": t["timestamp"]} for t in t_rows]
 
@@ -117,14 +126,17 @@ class HandoffManager:
                 "created_at": r["created_at"],
                 "transcript": transcript
             })
+        cursor.close()
         conn.close()
         return handoffs
 
     def resolve_handoff(self, session_id: str):
-        conn = self._get_conn()
+        conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("UPDATE handoffs SET status = 'resolved' WHERE session_id = ?", (session_id,))
+        cursor.execute("UPDATE handoffs SET status = 'resolved' WHERE session_id = %s", (session_id,))
         conn.commit()
+        cursor.close()
         conn.close()
+
 
 handoff_manager = HandoffManager()
