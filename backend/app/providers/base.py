@@ -14,6 +14,9 @@ class AbstractLLMProvider(ABC):
     ) -> Dict[str, Any]:
         pass
 
+    def condense_query(self, query: str, conversation_history: List[Dict[str, str]] = None) -> str:
+        return query
+
 class AbstractCRMProvider(ABC):
     @abstractmethod
     def create_lead(

@@ -1,6 +1,11 @@
 /**
- * Clinderma Embeddable Customer Support Chat Widget
- * Includes automatic Skin Assessment Form Isolation logic.
+ * Clinderma Embeddable Customer Support Chat Widget — V3.1
+ * Includes:
+ *   - Automatic Skin Assessment Form Isolation logic
+ *   - Session persistence across page reloads (sessionStorage)
+ *   - Clear / New Chat session restart
+ *   - Rich markdown rendering (bold, italics, links, line breaks)
+ *   - Language bar (EN, HI, MR)
  */
 
 (function () {
@@ -17,9 +22,13 @@
     return; // Exit completely, never render widget
   }
 
-  // 2. Widget State
-  let currentLang = 'en';
-  let sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+  // 2. Widget State with Persistent Session Storage
+  let currentLang = sessionStorage.getItem('clinderma_chat_lang') || 'en';
+  let sessionId = sessionStorage.getItem('clinderma_chat_session_id');
+  if (!sessionId) {
+    sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+    sessionStorage.setItem('clinderma_chat_session_id', sessionId);
+  }
   let isOpen = false;
   const API_HOST = window.location.origin;
 
@@ -43,6 +52,23 @@
     </svg>
   `;
 
+  const defaultStarterHTML = `
+    <div class="clin-msg clin-msg-bot">
+      👋 Hi! Welcome to <strong>Clinderma</strong>.<br>
+      I can help you with acne & pigmentation treatment details, clinical skincare guides, order tracking, or connecting with a Skin Coach.
+      <div class="clin-chips">
+        <div class="clin-chip" data-query="What causes tiny bumps on my forehead?">Forehead Bumps</div>
+        <div class="clin-chip" data-query="Do I need moisturizer if I have pimples?">Moisturizer & Acne</div>
+        <div class="clin-chip" data-query="How long does acne treatment take?">Acne Timeline</div>
+        <div class="clin-chip" data-query="Track order CLIN-1001">Track Order CLIN-1001</div>
+        <div class="clin-chip" data-query="Talk to Skin Coach">Skin Coach Handoff</div>
+      </div>
+    </div>
+  `;
+
+  const savedHTML = sessionStorage.getItem('clinderma_chat_html');
+  const initialMessagesHTML = savedHTML || defaultStarterHTML;
+
   const container = document.createElement('div');
   container.id = 'clinderma-chat-container';
   container.innerHTML = `
@@ -54,35 +80,28 @@
           <span>Online | Dermatologist Support</span>
         </div>
       </div>
-      <button class="clin-close-btn" id="clin-close">&times;</button>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <button class="clin-close-btn" id="clin-reset" title="Start New Chat" style="font-size: 13px; font-weight: normal; opacity: 0.85; padding: 2px 6px;">🔄 New</button>
+        <button class="clin-close-btn" id="clin-close" title="Close Chat">&times;</button>
+      </div>
     </div>
 
     <div class="clin-lang-bar">
       <span>Language / भाषा:</span>
       <div class="clin-lang-opts">
-        <button class="clin-lang-btn active" data-lang="en">EN</button>
-        <button class="clin-lang-btn" data-lang="hi">हिंदी</button>
-        <button class="clin-lang-btn" data-lang="mr">मराठी</button>
+        <button class="clin-lang-btn ${currentLang === 'en' ? 'active' : ''}" data-lang="en">EN</button>
+        <button class="clin-lang-btn ${currentLang === 'hi' ? 'active' : ''}" data-lang="hi">हिंदी</button>
+        <button class="clin-lang-btn ${currentLang === 'mr' ? 'active' : ''}" data-lang="mr">मराठी</button>
       </div>
     </div>
 
     <div class="clin-messages" id="clin-msg-list">
-      <div class="clin-msg clin-msg-bot">
-        👋 Hi! Welcome to <strong>Clinderma</strong>.<br>
-        I can help you with acne & pigmentation treatment details, clinical skincare guides, order tracking, or connecting with a Skin Coach.
-        <div class="clin-chips">
-          <div class="clin-chip" data-query="What causes tiny bumps on my forehead?">Forehead Bumps</div>
-          <div class="clin-chip" data-query="Do I need moisturizer if I have pimples?">Moisturizer & Acne</div>
-          <div class="clin-chip" data-query="How long does acne treatment take?">Acne Timeline</div>
-          <div class="clin-chip" data-query="Track order CLIN-1001">Track Order CLIN-1001</div>
-          <div class="clin-chip" data-query="Talk to Skin Coach">Skin Coach Handoff</div>
-        </div>
-      </div>
+      ${initialMessagesHTML}
     </div>
 
     <div class="clin-input-bar">
       <input type="text" class="clin-input" id="clin-input-field" placeholder="Ask a question or enter mobile no..." />
-      <button class="clin-send-btn" id="clin-send-btn">
+      <button class="clin-send-btn" id="clin-send-btn" aria-label="Send Message">
         <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
           <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
         </svg>
@@ -98,9 +117,20 @@
   const inputField = document.getElementById('clin-input-field');
   const sendBtn = document.getElementById('clin-send-btn');
   const closeBtn = document.getElementById('clin-close');
+  const resetBtn = document.getElementById('clin-reset');
 
   launcher.addEventListener('click', toggleChat);
   closeBtn.addEventListener('click', toggleChat);
+
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+      sessionStorage.setItem('clinderma_chat_session_id', sessionId);
+      sessionStorage.removeItem('clinderma_chat_html');
+      msgList.innerHTML = defaultStarterHTML;
+      appendBotMsg("Started a new chat session. How can I help you today?");
+    });
+  }
 
   sendBtn.addEventListener('click', handleSend);
   inputField.addEventListener('keypress', (e) => {
@@ -113,6 +143,7 @@
       document.querySelectorAll('.clin-lang-btn').forEach((b) => b.classList.remove('active'));
       e.target.classList.add('active');
       currentLang = e.target.getAttribute('data-lang');
+      sessionStorage.setItem('clinderma_chat_lang', currentLang);
       const langLabel = currentLang === 'hi' ? 'हिंदी' : currentLang === 'mr' ? 'मराठी' : 'English';
       appendBotMsg(`Language set to <strong>${langLabel}</strong>. How can I help you?`);
     });
@@ -127,11 +158,24 @@
     }
   });
 
+  function saveChatState() {
+    try {
+      // Remove typing indicator before saving
+      const clone = msgList.cloneNode(true);
+      const typing = clone.querySelector('#clin-typing');
+      if (typing) typing.remove();
+      sessionStorage.setItem('clinderma_chat_html', clone.innerHTML);
+    } catch (e) {
+      console.warn('[Clinderma Chat] Could not persist chat state:', e);
+    }
+  }
+
   function toggleChat() {
     isOpen = !isOpen;
     if (isOpen) {
       container.classList.add('clin-open');
       inputField.focus();
+      msgList.scrollTop = msgList.scrollHeight;
     } else {
       container.classList.remove('clin-open');
     }
@@ -143,6 +187,7 @@
     div.textContent = txt;
     msgList.appendChild(div);
     msgList.scrollTop = msgList.scrollHeight;
+    saveChatState();
   }
 
   function appendBotMsg(html) {
@@ -159,6 +204,7 @@
     div.innerHTML = formatted;
     msgList.appendChild(div);
     msgList.scrollTop = msgList.scrollHeight;
+    saveChatState();
   }
 
   async function handleSend() {

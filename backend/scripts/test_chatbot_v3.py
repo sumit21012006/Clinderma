@@ -1,11 +1,13 @@
 """
-Comprehensive Test Suite for Clinderma Chatbot V3
+Comprehensive Test Suite for Clinderma Chatbot V3.1
 Tests:
   1. Knowledge retrieval over Blog articles (forehead bumps, moisturizers, etc.)
   2. Grounding & out-of-scope query rejection + contact collection
   3. Multi-turn lead capture timing (turn 1, turn 2/3 soft invite)
   4. Entity extraction (Name + 10-digit Indian Mobile Number)
   5. Multi-lingual support (English, Hindi, Marathi)
+  6. Conversational query condensation for multi-turn follow-ups
+  7. Dual-intent handling (Name + Phone + Clinical Question in single message)
 """
 
 import os
@@ -28,7 +30,7 @@ from app.core.config import settings
 
 def run_tests():
     print("=" * 70)
-    print("[TEST SUITE] STARTING CLINDERMA CHATBOT V3 VERIFICATION")
+    print("[TEST SUITE] STARTING CLINDERMA CHATBOT V3.1 VERIFICATION")
     print("=" * 70)
 
     # Test 1: Blog-specific knowledge query
@@ -120,7 +122,7 @@ def run_tests():
     assert "9022905913" in res_t3.get("answer"), "Failed: Bot should acknowledge phone number"
 
     # Verify DB lead record
-    conn = sqlite3.connect(settings.DB_PATH)
+    conn = sqlite3.connect(settings.DB_PATH, timeout=30.0)
     cursor = conn.cursor()
     cursor.execute("SELECT name, phone_number FROM leads WHERE phone_number LIKE '%9022905913%'")
     row = cursor.fetchone()
@@ -144,8 +146,59 @@ def run_tests():
     assert res5.get("grounded") == True, "Failed: Hindi acne question should be grounded"
     print("--> TEST 5 PASSED: Multi-lingual Hindi query answered natively.")
 
+    # Test 6: Conversational Follow-Up Query Condensation
+    print("\n--- [TEST 6: Conversational Follow-Up Query Condensation] ---")
+    session_6 = f"test_condense_{uuid.uuid4().hex[:6]}"
+    req6_1 = ChatRequest(
+        message="What is salicylic acid used for in acne treatment?",
+        session_id=session_6,
+        language="en"
+    )
+    res6_1 = rag_engine.process_chat(req6_1)
+    print(f"Turn 1 User: {req6_1.message}")
+    print(f"Turn 1 Bot: {res6_1.get('answer')[:120]}...")
+
+    req6_2 = ChatRequest(
+        message="How often should I apply it?",
+        session_id=session_6,
+        language="en"
+    )
+    res6_2 = rag_engine.process_chat(req6_2)
+    print(f"Turn 2 User: {req6_2.message}")
+    print(f"Turn 2 Bot Answer:\n{res6_2.get('answer')}")
+    print(f"Turn 2 Grounded: {res6_2.get('grounded')} | Confidence: {res6_2.get('confidence')}")
+    assert res6_2.get("grounded") == True, "Failed: Follow-up query should be grounded using contextual condensation"
+    assert "salicylic" in res6_2.get("answer").lower() or "apply" in res6_2.get("answer").lower(), "Failed: Answer should relate to salicylic acid"
+    print("--> TEST 6 PASSED: Conversational query condensation maintained topic context.")
+
+    # Test 7: Dual-Intent Message (Contact Info + Medical Question)
+    print("\n--- [TEST 7: Dual-Intent Message (Contact Info + Question in Same Turn)] ---")
+    session_7 = f"test_dual_{uuid.uuid4().hex[:6]}"
+    req7 = ChatRequest(
+        message="My name is Rahul Sharma 9876543210, what moisturizer is recommended for acne prone skin?",
+        session_id=session_7,
+        language="en"
+    )
+    res7 = rag_engine.process_chat(req7)
+    print(f"User: {req7.message}")
+    print(f"Bot Answer:\n{res7.get('answer')}")
+    assert res7.get("grounded") == True, "Failed: Dual intent query should be grounded"
+    assert "9876543210" in res7.get("answer"), "Failed: Bot should acknowledge saving contact info"
+    assert "rahul" in res7.get("answer").lower(), "Failed: Bot should address user name"
+
+    # Verify DB lead record for Rahul Sharma
+    conn = sqlite3.connect(settings.DB_PATH, timeout=30.0)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name, phone_number FROM leads WHERE phone_number LIKE '%9876543210%'")
+    row_dual = cursor.fetchone()
+    conn.close()
+    assert row_dual is not None, "Failed: Lead not found in SQLite leads table"
+    assert "Rahul" in row_dual[0], f"Expected 'Rahul' in Name, got '{row_dual[0]}'"
+    print(f"  --> Lead verified in DB: Name={row_dual[0]}, Phone={row_dual[1]}")
+    print("--> TEST 7 PASSED: Dual-intent message handled contact capture and clinical response seamlessly.")
+
     print("\n" + "=" * 70)
-    print("ALL 5 TEST SUITES PASSED WITH 100% SUCCESS!")
+    print("ALL 7 TEST SUITES PASSED WITH 100% SUCCESS!")
     print("=" * 70)
 
 if __name__ == "__main__":

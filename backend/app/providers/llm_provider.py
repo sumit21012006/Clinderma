@@ -73,6 +73,50 @@ class GeminiLLMProvider(AbstractLLMProvider):
         self.client = genai.Client(api_key=settings.GEMINI_API_KEY)
         self.model = settings.LLM_MODEL
 
+    def condense_query(self, query: str, conversation_history: List[Dict[str, str]] = None) -> str:
+        """
+        Condenses a conversational follow-up query with past context into a standalone search query.
+        E.g. History: ["Can I use retinol?"], Query: "How often should I use it?" -> "How often should I use retinol for acne?"
+        """
+        if not conversation_history or len(conversation_history) == 0:
+            return query
+
+        clean_q = query.strip()
+        words = clean_q.split()
+        relative_markers = ["it", "this", "that", "these", "those", "how often", "when", "why", "where", "what about", "is it", "can i", "and", "also", "how to use", "side effects"]
+        is_relative = len(words) <= 7 or any(m in clean_q.lower() for m in relative_markers)
+
+        if not is_relative:
+            return query
+
+        try:
+            recent_turns = conversation_history[-4:]
+            hist_str = "\n".join([f"{m.get('sender', 'user')}: {m.get('message', '')[:140]}" for m in recent_turns])
+
+            prompt = f"""Given the following conversation history between a user and a skincare assistant, rephrase the user's latest follow-up question into a standalone, concise skincare search query that captures the subject/topic. If it is already standalone, return it unchanged. Do NOT answer the question, return ONLY the standalone search query.
+
+Conversation History:
+{hist_str}
+
+User's Latest Query: {clean_q}
+Standalone Search Query:"""
+
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+                config={
+                    "temperature": 0.1,
+                    "max_output_tokens": 40,
+                }
+            )
+            condensed = response.text.strip().replace('"', '').replace("'", "") if response.text else query
+            if len(condensed) >= 3 and len(condensed.split()) <= 15:
+                return condensed
+        except Exception:
+            pass
+
+        return query
+
     def generate_grounded_answer(
         self,
         query: str,
@@ -83,6 +127,7 @@ class GeminiLLMProvider(AbstractLLMProvider):
 
         lang = language.lower() if language in ["en", "hi", "mr"] else "en"
         fallback_text = OUT_OF_KB_MESSAGES.get(lang, OUT_OF_KB_MESSAGES["en"])
+
 
         # ── STRICT GROUNDING CHECK: Enforce threshold BEFORE calling LLM API ──
         if not context_chunks:

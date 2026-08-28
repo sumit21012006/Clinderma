@@ -1,17 +1,18 @@
 """
-Clinderma RAG Engine — V3 (Multi-Source Grounded Retrieval + Natural Conversational Lead Capture)
+Clinderma RAG Engine — V3.1 (Multi-Source Grounded Retrieval + Conversational Query Rewriting + Dual-Intent Lead Capture)
 
 Orchestrates:
   1. Multi-turn Session & Turn Tracking
   2. Dual Entity Extraction (Name + 10-digit Indian Mobile Number)
   3. Real-time Kylas CRM Lead Sync & SQLite Storage
-  4. Natural Conversational Lead Prompting (Turns 2-3)
-  5. Greeting & Small-Talk Handling
-  6. Real-time Order Tracking
-  7. Explicit Skin Coach / Human Handoff Intent
-  8. Multi-Source FAISS Semantic Retrieval (FAQs + Module + 51 Blogs + Kandid AI)
-  9. Gemini 2.0 Flash Grounded Answer Generation
-  10. Graceful & Concise Out-of-KB Redirection
+  4. Conversational Query Rewriting for Multi-Turn Accuracy (eliminates follow-up amnesia)
+  5. Dual-Intent Message Handling (captures contact info + answers medical question simultaneously)
+  6. Greeting & Small-Talk Handling
+  7. Real-time Order Tracking
+  8. Explicit Skin Coach / Human Handoff Intent
+  9. Multi-Source FAISS Semantic Retrieval (573 chunks: FAQs + Module + 51 Blogs + Kandid AI)
+  10. Gemini 3.6 Flash Grounded Answer Generation
+  11. Graceful & Concise Out-of-KB Redirection
 """
 
 import re
@@ -48,23 +49,24 @@ def extract_phone(text: str) -> Optional[str]:
 
 
 def extract_name(text: str) -> Optional[str]:
-    """Extract user name from conversational phrases."""
+    """Extract user name from conversational phrases, submissions, and contact pairs."""
     patterns = [
         r'(?:my name is|i am|i\'m|this is|myself)\s+([A-Za-z]+(?:\s+[A-Za-z]+)?)',
         r'(?:name\s*[:=\-]\s*)([A-Za-z]+(?:\s+[A-Za-z]+)?)',
-        r'^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s*,\s*(?:\+91[\-\s]?)?[6-9]\d{9}',
-        r'(?:\+91[\-\s]?)?[6-9]\d{9}\s*,\s*([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)',
-        r'^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)$'
+        r'^([A-Za-z]+(?:\s+[A-Za-z]+)?)\s*[,|\-]?\s*(?:\+91[\-\s]?)?[6-9]\d{9}',
+        r'(?:\+91[\-\s]?)?[6-9]\d{9}\s*[,|\-]?\s*([A-Za-z]+(?:\s+[A-Za-z]+)?)',
+        r'^([A-Za-z]+(?:\s+[A-Za-z]+)?)$'
     ]
+    stopwords = {
+        "hi", "hello", "hey", "yes", "no", "ok", "okay", "thanks",
+        "thank you", "please", "help", "order", "track", "what", "how",
+        "why", "acne", "pimple", "skin", "coach", "doctor", "medicine",
+        "treatment", "face", "cream", "sunscreen", "product", "routine"
+    }
     for pat in patterns:
         m = re.search(pat, text.strip(), re.IGNORECASE)
         if m:
             candidate = m.group(1).strip()
-            stopwords = {
-                "hi", "hello", "hey", "yes", "no", "ok", "okay", "thanks",
-                "thank you", "please", "help", "order", "track", "what", "how",
-                "why", "acne", "pimple", "skin", "coach", "doctor"
-            }
             if candidate.lower() not in stopwords and len(candidate) >= 2 and not any(c.isdigit() for c in candidate):
                 return candidate.title()
     return None
@@ -94,6 +96,7 @@ class RAGEngine:
         # ── 1. Phone & Name Extraction → Kylas CRM Lead Sync ──
         phone_no = extract_phone(message)
         name_candidate = extract_name(message) or captured_info.get("name")
+        dual_intent_ack = ""
 
         if phone_no:
             clean_name = name_candidate or "Web Visitor"
@@ -105,10 +108,11 @@ class RAGEngine:
             )
             handoff_manager.update_user_contact(session_id, user_name=clean_name, user_phone=phone_no)
 
-            # If user message was primarily providing contact info:
+            disp_name = f", {clean_name}" if clean_name and clean_name != "Web Visitor" else ""
             clean_digits = re.sub(r'[^\d]', '', message)
+
+            # If user message was ONLY providing contact info (short message):
             if len(clean_digits) >= 10 and len(message.split()) <= 8:
-                disp_name = f", {clean_name}" if clean_name and clean_name != "Web Visitor" else ""
                 if lang == "hi":
                     resp = f"धन्यवाद{disp_name}! मैंने आपकी जानकारी ({phone_no}) सहेज ली है। हमारी क्लिंडरमा स्किन कोच टीम जल्द ही आपसे संपर्क करेगी। 🩺\n\nक्या आपकी त्वचा या रूटीन के बारे में ऐसा कुछ है जो आप अभी मुझसे पूछना चाहते हैं?"
                 elif lang == "mr":
@@ -118,6 +122,14 @@ class RAGEngine:
 
                 handoff_manager.add_transcript(session_id, "bot", resp)
                 return self._build_response(resp, True, 1.0, False, None, [], lang, session_id)
+            else:
+                # Dual intent: Contact info provided alongside a clinical question
+                if lang == "hi":
+                    dual_intent_ack = f"धन्यवाद{disp_name}! मैंने आपका नंबर ({phone_no}) हमारी स्किन कोच टीम के लिए सुरक्षित कर लिया है। 🩺\n\n"
+                elif lang == "mr":
+                    dual_intent_ack = f"धन्यवाद{disp_name}! मी तुमचा नंबर ({phone_no}) आमच्या स्किन कोच टीमसाठी सेव्ह केला आहे. 🩺\n\n"
+                else:
+                    dual_intent_ack = f"Thank you{disp_name}! I've saved your contact details ({phone_no}) for our Clinderma Skin Coach team. 🩺\n\n"
 
         # If user only gave their name in response to a previous prompt:
         if name_candidate and not phone_no and not already_has_lead and turn_count in (2, 3, 4) and len(message.split()) <= 4:
@@ -203,9 +215,23 @@ class RAGEngine:
             handoff_manager.add_transcript(session_id, "bot", ans)
             return self._build_response(ans, True, 1.0, True, "User requested human handoff", [], lang, session_id)
 
-        # ── 5. Multi-Source Grounded RAG: Semantic Search → LLM Generation ──
-        chunks = self.vector_store.search(message, top_k=3)
+        # ── 5. Multi-Source Grounded RAG: Conversational Search → LLM Generation ──
         history = session_manager.get_history(session_id)
+        prior_history = history[:-1] if len(history) > 1 else []
+
+        # Condense follow-up questions only when prior multi-turn context exists
+        if prior_history and turn_count > 1:
+            search_query = self.llm_provider.condense_query(message, prior_history)
+        else:
+            search_query = message
+
+        chunks = self.vector_store.search(search_query, top_k=3)
+
+        # Fallback to raw message if condensed query returned no chunks or sub-threshold score
+        if not chunks or (chunks and chunks[0].get("score", 0.0) < settings.GROUNDING_THRESHOLD and search_query != message):
+            fallback_chunks = self.vector_store.search(message, top_k=3)
+            if fallback_chunks and fallback_chunks[0].get("score", 0.0) > (chunks[0].get("score", 0.0) if chunks else 0.0):
+                chunks = fallback_chunks
 
         result = self.llm_provider.generate_grounded_answer(
             query=message,
@@ -229,9 +255,13 @@ class RAGEngine:
                 ) for c in chunks if c.get("score", 0) >= settings.GROUNDING_THRESHOLD
             ]
 
+            # Prepend dual-intent acknowledgement if contact was shared alongside the question
+            if dual_intent_ack:
+                final_answer = f"{dual_intent_ack}{final_answer}"
+
             # ── Natural Turn-Based Lead Prompting (Turns 2-3) ──
             # If user hasn't provided contact details yet and conversation is ongoing:
-            if turn_count in (2, 3) and not already_has_lead and not phone_no:
+            elif turn_count in (2, 3) and not already_has_lead and not phone_no:
                 invitation = LEAD_INVITATIONS.get(lang, LEAD_INVITATIONS["en"])
                 final_answer = f"{final_answer}{invitation}"
 
