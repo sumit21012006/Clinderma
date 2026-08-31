@@ -15,6 +15,49 @@ from app.core.config import settings
 class SessionManager:
     """Manages per-session conversation history and state for multi-turn conversational AI."""
 
+    @staticmethod
+    def _ensure_state_table(conn) -> None:
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS chat_session_state (
+                session_id TEXT PRIMARY KEY,
+                phone_required BOOLEAN NOT NULL DEFAULT FALSE
+            )
+        """)
+        conn.commit()
+        cursor.close()
+
+    def is_phone_required(self, session_id: str) -> bool:
+        try:
+            conn = get_conn()
+            self._ensure_state_table(conn)
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT phone_required FROM chat_session_state WHERE session_id = %s",
+                (session_id,),
+            )
+            row = cursor.fetchone()
+            cursor.close()
+            conn.close()
+            return bool(row and row["phone_required"])
+        except Exception:
+            return False
+
+    def set_phone_required(self, session_id: str, required: bool) -> None:
+        conn = get_conn()
+        try:
+            self._ensure_state_table(conn)
+            cursor = conn.cursor()
+            cursor.execute("""
+                INSERT INTO chat_session_state (session_id, phone_required)
+                VALUES (%s, %s)
+                ON CONFLICT (session_id) DO UPDATE
+                SET phone_required = EXCLUDED.phone_required
+            """, (session_id, required))
+            conn.commit()
+            cursor.close()
+        finally:
+            conn.close()
     def get_history(self, session_id: str, max_turns: int = None) -> List[Dict[str, str]]:
         """Retrieve the last N conversation messages for a session in chronological order."""
         max_turns = max_turns or settings.MAX_HISTORY_TURNS

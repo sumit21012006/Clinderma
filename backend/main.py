@@ -1,5 +1,7 @@
 import os
 import sys
+import asyncio
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -9,11 +11,20 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from app.core.config import settings
 from app.api import chat, leads, orders, handoff, health
+from app.services.rag_engine import rag_engine
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if settings.RAG_WARMUP_ENABLED:
+        await asyncio.to_thread(rag_engine.warmup)
+    yield
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Scalable Multi-Channel Customer Support Chatbot API for Clinderma"
+    description="Scalable Multi-Channel Customer Support Chatbot API for Clinderma",
+    lifespan=lifespan,
 )
 
 # Enable CORS for cross-origin widget integration

@@ -21,9 +21,13 @@ class ChatResponse(BaseModel):
     confidence: float
     handoff_recommended: bool = False
     handoff_reason: Optional[str] = None
-    sources: List[KBSource] = []
+    sources: List[KBSource] = Field(default_factory=list)
     language: str = "en"
     session_id: str
+    requires_phone: bool = False
+    phone_prompt: Optional[str] = None
+    captured_phone: Optional[str] = None
+    suggested_questions: List[str] = Field(default_factory=list)
 
 class LeadCreateRequest(BaseModel):
     name: Optional[str] = "Web Visitor"

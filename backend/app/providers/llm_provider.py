@@ -8,6 +8,8 @@ Pluggable provider architecture:
   - LocalGroundedLLMProvider: Fallback text formatter (100% offline).
 """
 
+import html
+import re
 import time
 from typing import List, Dict, Any
 from app.providers.base import AbstractLLMProvider
@@ -29,7 +31,11 @@ CLINDERMA_SYSTEM_PROMPT = """You are Clinderma's official AI Dermatology & Custo
 
 ## TONE & COMMUNICATION
 - Warm, polite, and encouraging. Never sound like a robotic search engine.
-- Address the user's concern directly in 2 to 4 concise paragraphs or clean bullet points.
+- Write like a thoughtful human support specialist: natural wording, varied sentence rhythm, and no canned or repetitive sign-offs.
+- Start with the answer. NEVER add a title, heading, article name, introduction, overview, or repeat the user's question.
+- Aim for 60-70 words, usually 3-5 complete sentences. Never stop midway through a sentence or thought; if space is tight, omit the least important detail and finish the current sentence naturally.
+- Do not diagnose or prescribe. Mention Clinderma products or kits only when the user explicitly asks for a product, kit, or shop recommendation and the retrieved context supports it.
+- Do not make order tracking or Skin Coach handoff the main topic unless the user explicitly asks for it or the medical context genuinely requires human review.
 - Under-promise and over-deliver: Acne improves faster (typically 6-8 weeks for initial changes, 3-4 months for stability); Pigmentation takes longer (3-6 months). Never guarantee 100% instant cures.
 
 ## LANGUAGE ADAPTATION
@@ -40,24 +46,75 @@ CLINDERMA_SYSTEM_PROMPT = """You are Clinderma's official AI Dermatology & Custo
   - Hinglish -> Conversational Hinglish
 """
 
+
+def normalize_chat_answer(text: str) -> str:
+    """Remove article-style headings and clean KB/LLM formatting for chat delivery."""
+    cleaned = html.unescape((text or "").strip()).replace("\xa0", " ")
+    lines = cleaned.splitlines()
+
+    while lines and not lines[0].strip():
+        lines.pop(0)
+
+    if lines:
+        first = lines[0].strip().rstrip("\\").strip()
+        is_heading = bool(re.match(r"^#{1,6}\s+\S", first))
+        is_bold_title = bool(re.fullmatch(r"\*\*[^*\n]+\*\*", first))
+        if is_heading or is_bold_title:
+            lines.pop(0)
+            while lines and not lines[0].strip():
+                lines.pop(0)
+
+    return "\n".join(lines).strip()
+
+
+def compact_grounded_fallback(text: str, max_sentences: int = 5, max_words: int = 75) -> str:
+    """Shorten raw KB text only at sentence boundaries so thoughts stay complete."""
+    cleaned = re.sub(r"\s+", " ", normalize_chat_answer(text))
+    if not cleaned:
+        return cleaned
+
+    sentences = re.split(r"(?<=[.!?।])\s+", cleaned)
+    informative_pattern = re.compile(
+        r"\b(causes?|can be|may be|depends?|usually|often|sometimes|treatment|recommend(?:ed|ation)?)\b",
+        re.IGNORECASE,
+    )
+    start = next(
+        (index for index, sentence in enumerate(sentences) if informative_pattern.search(sentence)),
+        0,
+    )
+    selected = []
+    for sentence in sentences[start:start + max_sentences]:
+        candidate = " ".join(selected + [sentence]).strip()
+        if selected and len(candidate.split()) > max_words:
+            break
+        selected.append(sentence)
+        if len(candidate.split()) >= 55:
+            break
+    return " ".join(selected).strip()
+
+
+def compact_clinic_answer(text: str, fallback: str = "") -> str:
+    """Normalize generated copy and reject token-truncated, incomplete output."""
+    cleaned = re.sub(r"\s+", " ", normalize_chat_answer(text))
+    if not cleaned or not re.search(r"[.!?।][*_\"')\]]*$", cleaned):
+        return compact_grounded_fallback(fallback) if fallback else ""
+    return cleaned
+
 OUT_OF_KB_MESSAGES = {
     "en": (
-        "I specialize in Clinderma's dermatologist-led skin treatments, acne, pigmentation, and routine guidance. "
-        "I don't have verified clinical information regarding that specific query in my knowledge base.\n\n"
-        "I'd be glad to connect you with one of our Clinderma Skin Coaches for personalized assistance! "
-        "Could you please share your **Name** and **Mobile Number** so our customer care team can reach out to you? 🩺"
+        "I don’t have enough verified Clinderma information to answer that confidently, and I don’t want to guess. "
+        "Try asking about acne, pigmentation, treatment timelines, skincare basics, or Clinderma products. "
+        "If your concern is persistent, painful, or getting worse, a dermatologist can assess it properly and guide the next step."
     ),
     "hi": (
-        "मैं क्लिंडरमा के त्वचा विशेषज्ञ उपचार, मुँहासे, पिगमेंटेशन और स्किनकेयर रूटीन में माहिर हूँ। "
-        "मेरे ज्ञानकोष में इस विशिष्ट विषय के बारे में सत्यापित जानकारी उपलब्ध नहीं है।\n\n"
-        "मुझे खुशी होगी अगर हमारे क्लिंडरमा स्किन कोच सीधे आपकी मदद करें! "
-        "क्या आप अपना **नाम** और **मोबाइल नंबर** साझा कर सकते हैं ताकि हमारी टीम आपसे संपर्क कर सके? 🩺"
+        "मेरे पास इस सवाल का भरोसेमंद क्लिंडरमा संदर्भ नहीं है, इसलिए मैं अनुमान लगाकर गलत सलाह नहीं देना चाहूँगा। "
+        "आप एक्ने, पिगमेंटेशन, उपचार में लगने वाले समय, सामान्य स्किनकेयर या क्लिंडरमा उत्पादों के बारे में पूछ सकते हैं। "
+        "यदि समस्या बनी हुई है, दर्दनाक है या बढ़ रही है, तो त्वचा विशेषज्ञ से जाँच कराना बेहतर रहेगा।"
     ),
     "mr": (
-        "मी क्लिंडरमाच्या त्वचातज्ज्ञ उपचार, मुरुम, पिगमेंटेशन आणि स्किनकेअर मार्गदर्शनात मदत करतो. "
-        "माझ्या ज्ञानकोशात या विशिष्ट विषयाबद्दल माहिती उपलब्ध नाही.\n\n"
-        "आमच्या क्लिंडरमा स्किन कोचकडून थेट वैयक्तिक मार्गदर्शन मिळवण्यासाठी, "
-        "कृपया तुमचे **नाव** आणि **मोबाईल नंबर** शेअर करू शकता का? 🩺"
+        "या प्रश्नासाठी माझ्याकडे पुरेसा विश्वासार्ह क्लिंडरमा संदर्भ नाही, त्यामुळे अंदाजाने चुकीचा सल्ला देणे योग्य ठरणार नाही. "
+        "तुम्ही मुरुम, पिगमेंटेशन, उपचाराचा कालावधी, सामान्य स्किनकेअर किंवा क्लिंडरमा उत्पादनांबद्दल विचारू शकता. "
+        "समस्या सतत राहात असेल, दुखत असेल किंवा वाढत असेल तर त्वचातज्ज्ञांकडून तपासणी करून घेणे उत्तम."
     )
 }
 
@@ -106,7 +163,8 @@ Standalone Search Query:"""
                 contents=prompt,
                 config={
                     "temperature": 0.1,
-                    "max_output_tokens": 40,
+                    "max_output_tokens": 80,
+                    "thinking_config": {"thinking_level": "MINIMAL"},
                 }
             )
             condensed = response.text.strip().replace('"', '').replace("'", "") if response.text else query
@@ -192,11 +250,20 @@ Answer the user's question accurately, naturally, and warmly using ONLY the cont
                         config={
                             "system_instruction": CLINDERMA_SYSTEM_PROMPT,
                             "temperature": 0.3,
-                            "max_output_tokens": 1024,
+                            "max_output_tokens": 384,
+                            "thinking_config": {"thinking_level": "MINIMAL"},
                         }
                     )
 
-                    answer = response.text.strip() if response.text else fallback_text
+                    grounded_fallback = context_chunks[0].get("answer", fallback_text)
+                    finish_reason = ""
+                    if getattr(response, "candidates", None):
+                        finish_reason = str(getattr(response.candidates[0], "finish_reason", ""))
+                    answer = compact_clinic_answer(response.text, grounded_fallback) if response.text else fallback_text
+                    if "MAX_TOKENS" in finish_reason.upper():
+                        answer = compact_grounded_fallback(grounded_fallback)
+                    if not answer:
+                        answer = fallback_text
                     handoff_rec = top_score < 0.65
                     handoff_reason = "Moderate confidence — human verification available." if handoff_rec else None
 
@@ -222,10 +289,9 @@ Answer the user's question accurately, naturally, and warmly using ONLY the cont
             print(f"[GeminiLLM] Generation error: {e}")
 
         # Grounded Fallback: Return raw KB text ONLY if query passed grounding threshold
-        fallback_q = context_chunks[0].get("question", "")
-        fallback_answer = context_chunks[0].get("answer", fallback_text)
+        fallback_answer = compact_grounded_fallback(context_chunks[0].get("answer", fallback_text))
         return {
-            "answer": f"**{fallback_q}**\n\n{fallback_answer}",
+            "answer": fallback_answer,
             "grounded": True,
             "confidence": round(top_score, 4),
             "handoff_recommended": False,
@@ -268,8 +334,7 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
                 "handoff_reason": f"Score ({score:.2f}) below threshold ({settings.GROUNDING_THRESHOLD})."
             }
 
-        answer_text = top_match.get("answer", "")
-        formatted_answer = f"**{top_match.get('question', '')}**\n\n{answer_text}"
+        formatted_answer = compact_grounded_fallback(top_match.get("answer", ""))
 
         return {
             "answer": formatted_answer,

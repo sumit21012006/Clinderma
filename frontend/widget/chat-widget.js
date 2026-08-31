@@ -2,7 +2,7 @@
  * Clinderma Embeddable Customer Support Chat Widget — V3.1
  * Includes:
  *   - Automatic Skin Assessment Form Isolation logic
- *   - Session persistence across page reloads (sessionStorage)
+ *   - Durable chat and identity persistence (localStorage)
  *   - Clear / New Chat session restart
  *   - Rich markdown rendering (bold, italics, links, line breaks)
  *   - Language bar (EN, HI, MR)
@@ -22,15 +22,29 @@
     return; // Exit completely, never render widget
   }
 
-  // 2. Widget State with Persistent Session Storage
-  let currentLang = sessionStorage.getItem('clinderma_chat_lang') || 'en';
-  let sessionId = sessionStorage.getItem('clinderma_chat_session_id');
+  // 2. Widget State with durable browser storage
+  let currentLang = localStorage.getItem('clinderma_chat_lang') || sessionStorage.getItem('clinderma_chat_lang') || 'en';
+  let sessionId = localStorage.getItem('clinderma_chat_session_id') || sessionStorage.getItem('clinderma_chat_session_id');
   if (!sessionId) {
     sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
-    sessionStorage.setItem('clinderma_chat_session_id', sessionId);
+    localStorage.setItem('clinderma_chat_session_id', sessionId);
   }
+  localStorage.setItem('clinderma_chat_lang', currentLang);
+  localStorage.setItem('clinderma_chat_session_id', sessionId);
+  let savedPhone = localStorage.getItem('clinderma_chat_phone') || '';
+  let phoneRequired = !savedPhone && localStorage.getItem('clinderma_phone_required') === 'true';
   let isOpen = false;
   const API_HOST = window.location.origin;
+
+  const skinTestLinks = {
+    en: '[Take the Clinderma skin test](https://www.theclinderma.com/en/skin-test)',
+    hi: '[क्लिंडरमा स्किन टेस्ट लें](https://www.theclinderma.com/hi/skin-test)',
+    mr: '[क्लिंडरमा स्किन टेस्ट घ्या](https://www.theclinderma.com/mr/skin-test)'
+  };
+
+  function skinTestCta() {
+    return skinTestLinks[currentLang] || skinTestLinks.en;
+  }
 
   // 3. Inject CSS Link if not present
   if (!document.getElementById('clinderma-widget-css')) {
@@ -52,22 +66,26 @@
     </svg>
   `;
 
-  const defaultStarterHTML = `
+  function starterHTML() {
+    const selectedSkinLink = skinTestLinks[currentLang] || skinTestLinks.en;
+    const selectedSkinUrl = selectedSkinLink.match(/\((.*?)\)/)[1];
+    return `
     <div class="clin-msg clin-msg-bot">
       👋 Hi! Welcome to <strong>Clinderma</strong>.<br>
-      I can help you with acne & pigmentation treatment details, clinical skincare guides, order tracking, or connecting with a Skin Coach.
+      Tell me what is happening with your skin. I can help with acne, pigmentation, treatment timelines, everyday skincare questions, and Clinderma product information.<br><br>
+      <a href="${selectedSkinUrl}" target="_blank" style="color:#0284c7; text-decoration:underline; font-weight:500;">${currentLang === 'hi' ? 'क्लिंडरमा स्किन टेस्ट लें' : currentLang === 'mr' ? 'क्लिंडरमा स्किन टेस्ट घ्या' : 'Take the Clinderma skin test'}</a>
       <div class="clin-chips">
-        <div class="clin-chip" data-query="What causes tiny bumps on my forehead?">Forehead Bumps</div>
-        <div class="clin-chip" data-query="Do I need moisturizer if I have pimples?">Moisturizer & Acne</div>
-        <div class="clin-chip" data-query="How long does acne treatment take?">Acne Timeline</div>
-        <div class="clin-chip" data-query="Track order CLIN-1001">Track Order CLIN-1001</div>
-        <div class="clin-chip" data-query="Talk to Skin Coach">Skin Coach Handoff</div>
+        <div class="clin-chip" data-query="How long will acne treatment take?">How long will acne treatment take?</div>
+        <div class="clin-chip" data-query="What can help with dark spots?">What can help with dark spots?</div>
+        <div class="clin-chip" data-query="Which Clinderma product may suit my concern?">Which Clinderma product may suit my concern?</div>
+        <div class="clin-chip" data-query="How does Clinderma treatment work?">How does Clinderma treatment work?</div>
       </div>
     </div>
   `;
+  }
 
-  const savedHTML = sessionStorage.getItem('clinderma_chat_html');
-  const initialMessagesHTML = savedHTML || defaultStarterHTML;
+  const savedHTML = localStorage.getItem('clinderma_chat_html') || sessionStorage.getItem('clinderma_chat_html');
+  const initialMessagesHTML = savedHTML || starterHTML();
 
   const container = document.createElement('div');
   container.id = 'clinderma-chat-container';
@@ -125,10 +143,13 @@
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
-      sessionStorage.setItem('clinderma_chat_session_id', sessionId);
-      sessionStorage.removeItem('clinderma_chat_html');
-      msgList.innerHTML = defaultStarterHTML;
-      appendBotMsg("Started a new chat session. How can I help you today?");
+      localStorage.setItem('clinderma_chat_session_id', sessionId);
+      localStorage.removeItem('clinderma_chat_html');
+      phoneRequired = false;
+      localStorage.setItem('clinderma_phone_required', 'false');
+      msgList.innerHTML = starterHTML();
+      updatePhoneGate();
+      saveChatState();
     });
   }
 
@@ -143,9 +164,9 @@
       document.querySelectorAll('.clin-lang-btn').forEach((b) => b.classList.remove('active'));
       e.target.classList.add('active');
       currentLang = e.target.getAttribute('data-lang');
-      sessionStorage.setItem('clinderma_chat_lang', currentLang);
+      localStorage.setItem('clinderma_chat_lang', currentLang);
       const langLabel = currentLang === 'hi' ? 'हिंदी' : currentLang === 'mr' ? 'मराठी' : 'English';
-      appendBotMsg(`Language set to <strong>${langLabel}</strong>. How can I help you?`);
+      appendBotMsg(`Language set to <strong>${langLabel}</strong>. How can I help you?<br><br>${skinTestCta()}`);
     });
   });
 
@@ -164,7 +185,7 @@
       const clone = msgList.cloneNode(true);
       const typing = clone.querySelector('#clin-typing');
       if (typing) typing.remove();
-      sessionStorage.setItem('clinderma_chat_html', clone.innerHTML);
+      localStorage.setItem('clinderma_chat_html', clone.innerHTML);
     } catch (e) {
       console.warn('[Clinderma Chat] Could not persist chat state:', e);
     }
@@ -207,9 +228,43 @@
     saveChatState();
   }
 
+  function appendSuggestions(questions) {
+    if (!Array.isArray(questions) || !questions.length || phoneRequired) return;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'clin-chips';
+    questions.forEach((question) => {
+      const chip = document.createElement('div');
+      chip.className = 'clin-chip';
+      chip.setAttribute('data-query', question);
+      chip.textContent = question;
+      wrapper.appendChild(chip);
+    });
+    msgList.appendChild(wrapper);
+    msgList.scrollTop = msgList.scrollHeight;
+    saveChatState();
+  }
+
+  function validPhone(text) {
+    const match = String(text || '').match(/(?:^|\D)(?:(?:\+91|0)[-\s]?)?[6-9]\d{9}(?!\d)/);
+    return match ? match[0] : '';
+  }
+
+  function updatePhoneGate() {
+    inputField.placeholder = phoneRequired
+      ? 'Enter your 10-digit mobile number to continue...'
+      : 'Ask a skincare question...';
+    localStorage.setItem('clinderma_phone_required', String(phoneRequired));
+  }
+
   async function handleSend() {
     const txt = inputField.value.trim();
     if (!txt) return;
+
+    if (phoneRequired && !validPhone(txt)) {
+      appendBotMsg(`Please enter a valid 10-digit Indian WhatsApp/mobile number to continue.<br><br>${skinTestCta()}`);
+      inputField.focus();
+      return;
+    }
 
     appendUserMsg(txt);
     inputField.value = '';
@@ -230,7 +285,8 @@
           message: txt,
           session_id: sessionId,
           language: currentLang,
-          channel: 'website'
+          channel: 'website',
+          user_phone: savedPhone || null
         })
       });
 
@@ -238,16 +294,33 @@
       const typingElem = document.getElementById('clin-typing');
       if (typingElem) typingElem.remove();
 
+      if (data && data.captured_phone) {
+        savedPhone = data.captured_phone;
+        localStorage.setItem('clinderma_chat_phone', savedPhone);
+      }
+
+      phoneRequired = Boolean(data && data.requires_phone && !savedPhone);
+      updatePhoneGate();
+
       if (data && data.answer) {
         appendBotMsg(data.answer);
-      } else {
-        appendBotMsg("I'm sorry, I am currently unable to process that. Please try again or talk to a Skin Coach.");
+      }
+      if (data && data.phone_prompt && phoneRequired) {
+        appendBotMsg(data.phone_prompt);
+      }
+      if (data && !phoneRequired) {
+        appendSuggestions(data.suggested_questions);
+      }
+      if (!data || (!data.answer && !data.phone_prompt)) {
+        appendBotMsg(`I'm sorry, I am currently unable to process that. Please try again.<br><br>${skinTestCta()}`);
       }
     } catch (err) {
       console.error('[Clinderma Chat Error]', err);
       const typingElem = document.getElementById('clin-typing');
       if (typingElem) typingElem.remove();
-      appendBotMsg("Connection error. Please check your network or try again.");
+      appendBotMsg(`Connection error. Please check your network or try again.<br><br>${skinTestCta()}`);
     }
   }
+
+  updatePhoneGate();
 })();

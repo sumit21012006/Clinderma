@@ -11,7 +11,7 @@ class Settings:
 
     # ── Gemini Configuration ──
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini-3.6-flash")
+    LLM_MODEL: str = os.getenv("LLM_MODEL", "gemini-3.5-flash-lite")
     EMBEDDING_MODEL: str = os.getenv("EMBEDDING_MODEL", "gemini-embedding-001")
 
     # ── Groq Configuration ──
@@ -26,6 +26,10 @@ class Settings:
     # ── Grounding & Guardrail Settings ──
     GROUNDING_THRESHOLD: float = float(os.getenv("GROUNDING_THRESHOLD", "0.60"))  # Cosine similarity threshold (0-1)
     STRICT_GROUNDING: bool = True
+
+    # Warm the embedding/retrieval path once during startup to reduce first-chat latency.
+    RAG_WARMUP_ENABLED: bool = os.getenv("RAG_WARMUP_ENABLED", "true").lower() in ("1", "true", "yes", "on")
+    RAG_WARMUP_QUERY: str = os.getenv("RAG_WARMUP_QUERY", "Clinderma acne treatment")
 
     # ── Conversation Memory ──
     MAX_HISTORY_TURNS: int = 8  # Number of past messages to include in LLM context
