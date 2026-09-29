@@ -24,7 +24,7 @@ class HandoffManager:
         """)
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS transcripts (
-                id SERIAL PRIMARY KEY,
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
                 session_id TEXT,
                 sender TEXT,
                 message TEXT,

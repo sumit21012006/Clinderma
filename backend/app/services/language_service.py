@@ -9,9 +9,9 @@ class LanguageService:
 
         # Check for Devanagari script (Hindi / Marathi)
         devanagari_chars = len(re.findall(r'[\u0900-\u097F]', text))
-        if devanagari_chars > 2:
+        if devanagari_chars >= 1:
             # Check Marathi specific words
-            marathi_words = ["काय", "आहे", "कसे", "मला", "नाही", "करावे", "होईल"]
+            marathi_words = ["काय", "आहे", "कसे", "मला", "नाही", "करावे", "होईल", "aahe", "kay", "kasa"]
             text_lower = text.lower()
             if any(w in text_lower for w in marathi_words):
                 return "mr"

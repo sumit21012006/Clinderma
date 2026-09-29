@@ -52,15 +52,15 @@ class MockOrderProvider(AbstractOrderProvider):
             if key in MOCK_ORDERS:
                 return MOCK_ORDERS[key]
 
-        # Default fallback sample response if generic number entered
+        # Default: order not found — never fabricate data for real customers
         return {
             "order_id": query,
-            "status": "Order Found",
-            "customer_name": "Valued Customer",
-            "items": ["Clinderma Prescribed Skincare Kit"],
-            "estimated_delivery": "2-4 Business Days",
-            "tracking_url": "https://clinderma.com/track",
-            "found": True
+            "status": "Order Not Found",
+            "customer_name": "",
+            "items": [],
+            "estimated_delivery": "",
+            "tracking_url": "https://www.theclinderma.com",
+            "found": False
         }
 
 def get_order_provider() -> AbstractOrderProvider:

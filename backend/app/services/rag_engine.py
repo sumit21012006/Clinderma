@@ -39,9 +39,9 @@ SKIN_TEST_LINKS = {
 }
 
 PHONE_PROMPTS = {
-    "en": "Before we continue, please share your 10-digit WhatsApp/mobile number. This helps us keep your chat connected and you won’t be asked again when you start a new chat.",
-    "hi": "आगे बढ़ने से पहले कृपया अपना 10-अंकों का व्हाट्सऐप/मोबाइल नंबर साझा करें। इससे आपकी चैट जुड़ी रहेगी और नई चैट शुरू करने पर नंबर दोबारा नहीं माँगा जाएगा।",
-    "mr": "पुढे जाण्यापूर्वी कृपया तुमचा 10-अंकी व्हॉट्सअॅप/मोबाईल नंबर शेअर करा. यामुळे तुमची चॅट जोडलेली राहील आणि नवीन चॅट सुरू केल्यावर नंबर पुन्हा विचारला जाणार नाही.",
+    "en": "To help our dermatologists and Skin Coaches review your concerns and share a personalized routine, could you please share your **name and 10-digit WhatsApp number**? 🩺",
+    "hi": "हमारे त्वचा विशेषज्ञों और स्किन कोच टीम द्वारा आपकी त्वचा की स्थिति समझने और व्यक्तिगत स्किनकेयर रूटीन साझा करने के लिए, क्या आप अपना **नाम और 10-अंकों का व्हाट्सऐप नंबर** बता सकते हैं? 🩺",
+    "mr": "आमच्या त्वचारोग तज्ज्ञांना आणि स्किन कोच टीमला तुमची त्वचा समजून वैयक्तिक सल्ला देण्यासाठी, कृपया तुमचे **नाव आणि 10-अंकी व्हॉट्सअॅप नंबर** शेअर कराल का? 🩺",
 }
 
 SHOP_URL = "https://www.theclinderma.com/en/shop"
@@ -146,7 +146,10 @@ def extract_name(text: str) -> Optional[str]:
         "hi", "hello", "hey", "yes", "no", "ok", "okay", "thanks",
         "thank you", "please", "help", "order", "track", "what", "how",
         "why", "acne", "pimple", "skin", "coach", "doctor", "medicine",
-        "treatment", "face", "cream", "sunscreen", "product", "routine"
+        "treatment", "face", "cream", "sunscreen", "product", "routine",
+        "also", "not", "sure", "having", "getting", "using", "feeling",
+        "starting", "trying", "need", "want", "just", "already", "good",
+        "bad", "new", "old", "same", "different", "more", "less"
     }
     for pat in patterns:
         m = re.search(pat, text.strip(), re.IGNORECASE)
@@ -221,16 +224,39 @@ class RAGEngine:
             already_has_lead = True
 
             disp_name = f", {clean_name}" if clean_name and clean_name != "Web Visitor" else ""
-            clean_digits = re.sub(r'[^\d]', '', message)
 
-            # If user message was ONLY providing contact info (short message):
-            if len(clean_digits) >= 10 and len(message.split()) <= 8:
+            # Check if there is an actual clinical question alongside the contact details
+            cleaned_query = message.lower()
+            if phone_no:
+                cleaned_query = cleaned_query.replace(phone_no, "")
+            if name_candidate:
+                cleaned_query = cleaned_query.replace(name_candidate.lower(), "")
+
+            contact_framing_words = {
+                "i", "am", "my", "mine", "name", "is", "and", "&", "number", "no", "num",
+                "phone", "whatsapp", "mobile", "mob", "ph", "here", "this", "contact",
+                "details", "call", "reach", "at", "on", "please", "share", "giving",
+                "it", "its", "it's", "to", "you", "me", "hi", "hello", "hey", "yes", "sure"
+            }
+            remaining_words = [w for w in re.sub(r'[^\w\s]', ' ', cleaned_query).split() if w not in contact_framing_words]
+
+            clinical_keywords = {
+                "acne", "pimple", "pigmentation", "dark", "spot", "spots", "scar", "scars",
+                "cream", "serum", "cleanser", "wash", "retinol", "tretinoin", "salicylic",
+                "benzoyl", "niacinamide", "sunscreen", "peeling", "purging", "routine",
+                "skin", "oily", "dry", "combination", "sensitive", "product", "treatment",
+                "how", "what", "why", "when", "can", "should", "does"
+            }
+            has_clinical_question = "?" in message or any(k in remaining_words for k in clinical_keywords)
+
+            # If user message was introducing contact details (no clinical question or short message):
+            if not has_clinical_question or len(remaining_words) <= 2:
                 if lang == "hi":
-                    resp = f"धन्यवाद{disp_name}! मैंने आपकी जानकारी ({phone_no}) सहेज ली है। हमारी क्लिंडरमा स्किन कोच टीम जल्द ही आपसे संपर्क करेगी। 🩺\n\nक्या आपकी त्वचा या रूटीन के बारे में ऐसा कुछ है जो आप अभी मुझसे पूछना चाहते हैं?"
+                    resp = f"धन्यवाद{disp_name}! मैंने आपकी जानकारी ({phone_no}) सहेज ली है। हमारी क्लिंडरमा स्किन कोच टीम जल्द ही आपसे व्हाट्सऐप पर संपर्क करेगी। 🩺\n\nक्या आपकी त्वचा या रूटीन के बारे में ऐसा कुछ है जो आप अभी मुझसे पूछना चाहते हैं?"
                 elif lang == "mr":
-                    resp = f"धन्यवाद{disp_name}! मी तुमची माहिती ({phone_no}) जतन केली आहे. आमची क्लिंडरमा स्किन कोच टीम लवकरच तुमच्याशी संपर्क साधेल. 🩺\n\nतुमच्या त्वचेबद्दल किंवा रूटीनबद्दल मला आणखी काही विचारायचे आहे का?"
+                    resp = f"धन्यवाद{disp_name}! मी तुमची माहिती ({phone_no}) जतन केली आहे. आमची क्लिंडरमा स्किन कोच टीम लवकरच तुमच्याशी व्हॉट्सअॅपवर संपर्क साधेल. 🩺\n\nतुमच्या त्वचेबद्दल किंवा रूटीनबद्दल मला आणखी काही विचारायचे आहे का?"
                 else:
-                    resp = f"Thank you{disp_name}! I've saved your details ({phone_no}). Our Clinderma Skin Coach team has your contact information and will be happy to assist you directly. 🩺\n\nIs there anything specific about your skin or routine you'd like to ask me right now?"
+                    resp = f"Thank you{disp_name}! I've saved your details ({phone_no}). Our Clinderma Skin Coach team has your contact information and will be happy to assist you directly on WhatsApp. 🩺\n\nIs there anything specific about your skin, acne, pigmentation, or daily routine you'd like to ask me right now?"
 
                 handoff_manager.add_transcript(session_id, "bot", resp)
                 return self._build_response(
@@ -239,7 +265,7 @@ class RAGEngine:
                     suggestions=suggested_questions(message, lang),
                 )
             else:
-                # Dual intent: Contact info provided alongside a clinical question
+                # Dual intent: Contact info provided alongside an actual clinical question
                 if lang == "hi":
                     dual_intent_ack = f"धन्यवाद{disp_name}! मैंने आपका नंबर ({phone_no}) हमारी स्किन कोच टीम के लिए सुरक्षित कर लिया है। 🩺\n\n"
                 elif lang == "mr":
@@ -248,14 +274,14 @@ class RAGEngine:
                     dual_intent_ack = f"Thank you{disp_name}! I've saved your contact details ({phone_no}) for our Clinderma Skin Coach team. 🩺\n\n"
 
         # If user only gave their name in response to a previous prompt:
-        if name_candidate and not phone_no and not already_has_lead and turn_count in (2, 3, 4) and len(message.split()) <= 4:
+        if name_candidate and not phone_no and not already_has_lead and turn_count in (1, 2, 3, 4) and len(message.split()) <= 4:
             handoff_manager.update_user_contact(session_id, user_name=name_candidate)
             if lang == "hi":
-                resp = f"आपसे मिलकर अच्छा लगा, {name_candidate}! मैंने आपका नाम सेव कर लिया है ताकि यह बातचीत व्यक्तिगत बनी रहे। 😊"
+                resp = f"आपसे मिलकर अच्छा लगा, {name_candidate}! मैंने आपका नाम सहेज लिया है। कृपया अपना 10-अंकों का व्हाट्सऐप नंबर साझा करें ताकि हमारे स्किन कोच आपसे व्यक्तिगत परामर्श के लिए जुड़ सकें। 🩺"
             elif lang == "mr":
-                resp = f"तुम्हाला भेटून आनंद झाला, {name_candidate}! हे संभाषण वैयक्तिक राहावे म्हणून मी तुमचे नाव सेव्ह केले आहे. 😊"
+                resp = f"तुम्हाला भेटून आनंद झाला, {name_candidate}! मी तुमचे नाव सेव्ह केले आहे. कृपया तुमचा 10-अंकी व्हॉट्सअॅप नंबर शेअर करा जेणेकरून आमचे स्किन कोच तुमच्याशी संपर्क साधू शकतील. 🩺"
             else:
-                resp = f"Nice to meet you, {name_candidate}! I’ve saved your name so we can keep this conversation personal. 😊"
+                resp = f"Nice to meet you, {name_candidate}! I’ve saved your name. Could you please share your 10-digit WhatsApp number so our Clinderma Skin Coach can follow up with your personalized routine? 🩺"
 
             handoff_manager.add_transcript(session_id, "bot", resp)
             session_manager.set_phone_required(session_id, True)
@@ -265,21 +291,23 @@ class RAGEngine:
                 phone_prompt_text=phone_prompt(lang),
             )
 
-        # Prompt from the second user turn onward. Using >= also repairs older/reused
-        # sessions that passed turn 2 before the phone-gate state was introduced.
-        phone_gate_after_response = turn_count >= 2 and not already_has_lead and not phone_no
+        # Prompt naturally from the first completed question onward
+        phone_gate_after_response = turn_count >= 1 and not already_has_lead and not phone_no
 
         # ── 2. Greeting / Small-Talk Detection ──
         clean_msg = re.sub(r'[^\w\s]', '', message.lower().strip())
         if clean_msg in GREETINGS:
             ans = ("👋 Hello! Welcome to **Clinderma** — your dermatologist-led skincare partner.\n\n"
-                   "Tell me what’s been bothering your skin, and I’ll help with acne, pigmentation, treatment timelines, everyday skincare questions, or Clinderma product information. What would you like to understand first?")
+                   "Tell me what’s been bothering your skin (acne, pigmentation, routine advice, or product questions). "
+                   "To help our Skin Coach and dermatologists personalize your guidance, feel free to share your **name and WhatsApp number** anytime! 🩺")
             if lang == "hi":
                 ans = ("👋 नमस्ते! **क्लिंडरमा** में आपका स्वागत है — आपका त्वचा विशेषज्ञ स्किनकेयर पार्टनर।\n\n"
-                       "अपनी त्वचा की परेशानी बताइए। मैं एक्ने, पिगमेंटेशन, उपचार में लगने वाले समय, सामान्य स्किनकेयर सवालों या क्लिंडरमा उत्पादों की जानकारी में आपकी मदद कर सकता हूँ।")
+                       "अपनी त्वचा की समस्या बताइए (एक्ने, पिगमेंटेशन या सही रूटीन)। "
+                       "हमारे स्किन कोच द्वारा बेहतर व्यक्तिगत सलाह के लिए, आप अपना **नाम और व्हाट्सऐप नंबर** भी साझा कर सकते हैं! 🩺")
             elif lang == "mr":
                 ans = ("👋 नमस्कार! **क्लिंडरमा** मध्ये आपले स्वागत — तुमचा त्वचातज्ज्ञ स्किनकेअर पार्टनर।\n\n"
-                       "तुमच्या त्वचेची अडचण सांगा. मी मुरुम, पिगमेंटेशन, उपचाराचा कालावधी, सामान्य स्किनकेअर प्रश्न किंवा क्लिंडरमा उत्पादनांची माहिती देऊ शकतो.")
+                       "तुमच्या त्वचेची अडचण सांगा (मुरुम, पिगमेंटेशन किंवा दिनचर्या). "
+                       "आमच्या स्किन कोचद्वारे अधिक चांगल्या वैयक्तिक सल्ल्यासाठी, आपण आपले **नाव आणि व्हॉट्सअॅप नंबर** देखील शेअर करू शकता! 🩺")
 
             handoff_manager.add_transcript(session_id, "bot", ans)
             return self._build_response(
@@ -321,8 +349,20 @@ class RAGEngine:
             )
 
         # ── 5. Human Agent / Skin Coach Handoff Intent ──
-        handoff_keywords = ["human", "agent", "skin coach", "talk to doctor", "call me",
-                            "escalate", "representative", "real person", "speak to someone"]
+        # Includes both explicit requests AND medical emergency triggers per spec
+        handoff_keywords = [
+            # Explicit human-help requests
+            "human", "agent", "skin coach", "talk to doctor", "call me",
+            "escalate", "representative", "real person", "speak to someone",
+            # Medical emergency escalation triggers
+            "cystic swelling", "severe pain", "infection", "extreme peeling",
+            "allergic reaction", "anaphylactic", "hives", "difficulty breathing",
+            "isotretinoin", "tretinoin dose", "prescription dosage",
+            # Hindi triggers
+            "डॉक्टर से बात", "गंभीर दर्द", "एलर्जी", "इन्फेक्शन",
+            # Marathi triggers
+            "डॉक्टरांशी बोला", "तीव्र वेदना", "ऍलर्जी",
+        ]
         if any(w in message.lower() for w in handoff_keywords):
             handoff_manager.create_handoff(
                 session_id=session_id,
@@ -385,9 +425,9 @@ class RAGEngine:
                 ) for c in chunks if c.get("score", 0) >= settings.GROUNDING_THRESHOLD
             ]
 
-            # Prepend dual-intent acknowledgement if contact was shared alongside the question
-            if dual_intent_ack:
-                final_answer = f"{dual_intent_ack}{final_answer}"
+        # Prepend dual-intent acknowledgement if contact was shared alongside the question
+        if dual_intent_ack:
+            final_answer = f"{dual_intent_ack}{final_answer}"
 
         requires_phone = phone_gate_after_response
         prompt_text = phone_prompt(lang) if phone_gate_after_response else None
@@ -412,10 +452,10 @@ class RAGEngine:
         if requires_phone:
             session_manager.set_phone_required(session_id, True)
         answer = answer.strip()
+        # Append Skin Test CTA to the main answer only.
+        # Do NOT append to phone_prompt_text to prevent the CTA appearing twice.
         if answer:
             answer = f"{answer}\n\n{skin_test_cta(lang)}"
-        if phone_prompt_text:
-            phone_prompt_text = f"{phone_prompt_text}\n\n{skin_test_cta(lang)}"
         return {
             "answer": answer,
             "grounded": grounded,

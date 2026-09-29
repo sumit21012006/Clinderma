@@ -26,7 +26,7 @@
   let currentLang = localStorage.getItem('clinderma_chat_lang') || sessionStorage.getItem('clinderma_chat_lang') || 'en';
   let sessionId = localStorage.getItem('clinderma_chat_session_id') || sessionStorage.getItem('clinderma_chat_session_id');
   if (!sessionId) {
-    sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+    sessionId = 'session_' + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2));
     localStorage.setItem('clinderma_chat_session_id', sessionId);
   }
   localStorage.setItem('clinderma_chat_lang', currentLang);
@@ -142,9 +142,11 @@
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      sessionId = 'session_' + Math.random().toString(36).substring(2, 10);
+      sessionId = 'session_' + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2));
       localStorage.setItem('clinderma_chat_session_id', sessionId);
       localStorage.removeItem('clinderma_chat_html');
+      localStorage.removeItem('clinderma_chat_phone');
+      savedPhone = '';
       phoneRequired = false;
       localStorage.setItem('clinderma_phone_required', 'false');
       msgList.innerHTML = starterHTML();
@@ -251,7 +253,7 @@
 
   function updatePhoneGate() {
     inputField.placeholder = phoneRequired
-      ? 'Enter your 10-digit mobile number to continue...'
+      ? 'Your name & WhatsApp number (e.g. Ananya 9876543210)...'
       : 'Ask a skincare question...';
     localStorage.setItem('clinderma_phone_required', String(phoneRequired));
   }
@@ -261,7 +263,7 @@
     if (!txt) return;
 
     if (phoneRequired && !validPhone(txt)) {
-      appendBotMsg(`Please enter a valid 10-digit Indian WhatsApp/mobile number to continue.<br><br>${skinTestCta()}`);
+      appendBotMsg(`To help our Skin Coach connect with you, please share your 10-digit WhatsApp number (you can also include your name, e.g. "Ananya 9876543210").<br><br>${skinTestCta()}`);
       inputField.focus();
       return;
     }

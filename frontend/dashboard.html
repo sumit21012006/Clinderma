@@ -21,30 +21,37 @@
     }
     .logo { font-size: 22px; font-weight: 700; color: var(--primary); }
     .badge-status { background: #dcfce7; color: #166534; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600; }
-    .container { max-width: 1300px; margin: 32px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .badge-auth { background: #e0e7ff; color: #3730a3; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 8px; }
+    .container { max-width: 1400px; margin: 32px auto; padding: 0 24px; display: grid; grid-template-columns: 1fr 1.2fr; gap: 32px; }
+    @media (max-width: 1024px) {
+      .container { grid-template-columns: 1fr; }
+    }
     .panel { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
     .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
     .panel-header h3 { font-size: 18px; color: var(--primary); }
     .item-card { background: #fafafa; border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 12px; }
     .item-card-header { display: flex; justify-content: space-between; margin-bottom: 8px; }
     .item-title { font-weight: 600; font-size: 15px; }
-    .item-meta { font-size: 12px; color: #64748b; }
+    .item-meta { font-size: 12px; color: #64748b; margin-top: 4px; }
     .transcript-box { background: white; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; margin-top: 10px; max-height: 180px; overflow-y: auto; font-size: 13px; }
     .t-msg { margin-bottom: 6px; }
     .t-user { color: #0284c7; font-weight: 600; }
     .t-bot { color: #0f766e; font-weight: 600; }
     .btn-resolve { background: #0f766e; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; font-weight: 600; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
-    th { background: #f1f5f9; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+    th { background: #f1f5f9; font-weight: 600; color: #475569; }
+    .sync-live { color: #166534; font-weight: 600; }
+    .sync-mock { color: #b45309; font-weight: 600; background: #fef3c7; padding: 2px 6px; border-radius: 4px; font-size: 11px; display: inline-block; }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">CLINDERMA <span>| Skin Coach Dashboard</span></div>
+    <div class="logo">CLINDERMA <span>| Skin Coach & Lead Dashboard</span></div>
     <div>
       <span class="badge-status">● Live API Connected</span>
+      <span class="badge-auth">🔒 Authenticated Admin</span>
       <a href="/" style="margin-left: 16px; color: #0284c7; text-decoration: none; font-size: 14px;">← Back to Website</a>
     </div>
   </header>
@@ -54,7 +61,7 @@
     <div class="panel">
       <div class="panel-header">
         <h3>🚨 Human Handoff Escalations</h3>
-        <button onclick="fetchData()" style="padding: 4px 10px; cursor: pointer; font-size: 12px;">Refresh</button>
+        <button onclick="fetchData()" style="padding: 4px 10px; cursor: pointer; font-size: 12px; border: 1px solid #cbd5e1; border-radius: 6px; background: white;">Refresh</button>
       </div>
       <div id="handoff-list">
         <p style="color: #64748b;">Loading active handoffs...</p>
@@ -64,7 +71,7 @@
     <!-- Panel 2: Kylas CRM Leads -->
     <div class="panel">
       <div class="panel-header">
-        <h3>📋 Kylas CRM Synced Leads</h3>
+        <h3>📋 Captured Patient Leads</h3>
         <span style="font-size: 12px; color: #64748b;" id="lead-count">0 leads</span>
       </div>
       <div style="overflow-x: auto;">
@@ -72,13 +79,14 @@
           <thead>
             <tr>
               <th>Lead ID</th>
+              <th>Name</th>
               <th>Phone</th>
               <th>Channel</th>
-              <th>Kylas Sync</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody id="leads-table-body">
-            <tr><td colspan="4" style="text-align:center;">Loading leads...</td></tr>
+            <tr><td colspan="5" style="text-align:center;">Loading leads...</td></tr>
           </tbody>
         </table>
       </div>
@@ -90,11 +98,19 @@
       try {
         // Fetch Handoffs
         const resHandoff = await fetch('/api/handoff');
+        if (resHandoff.status === 401) {
+          document.getElementById('handoff-list').innerHTML = '<p style="color:red;">Authentication required. Please refresh.</p>';
+          return;
+        }
         const dataHandoff = await resHandoff.json();
         renderHandoffs(dataHandoff.handoffs || []);
 
         // Fetch Leads
         const resLeads = await fetch('/api/leads');
+        if (resLeads.status === 401) {
+          document.getElementById('leads-table-body').innerHTML = '<tr><td colspan="5" style="color:red; text-align:center;">Authentication required.</td></tr>';
+          return;
+        }
         const dataLeads = await resLeads.json();
         renderLeads(dataLeads.leads || []);
       } catch (err) {
@@ -120,7 +136,11 @@
             </div>
             ${item.status !== 'resolved' ? `<button class="btn-resolve" onclick="resolveSession('${item.session_id}')">Mark Resolved</button>` : ''}
           </div>
-          <div class="item-meta">Reason: ${item.reason} | Channel: ${item.channel}</div>
+          <div class="item-meta">
+            ${item.user_name ? `<strong>${item.user_name}</strong> | ` : ''}
+            ${item.user_phone ? `📞 ${item.user_phone} | ` : ''}
+            Reason: ${item.reason} | Channel: ${item.channel}
+          </div>
           
           <div class="transcript-box">
             <strong>Full Session Transcript:</strong>
@@ -136,21 +156,30 @@
 
     function renderLeads(leads) {
       const tbody = document.getElementById('leads-table-body');
-      document.getElementById('lead-count').textContent = `${leads.length} leads synced`;
+      document.getElementById('lead-count').textContent = `${leads.length} leads registered`;
 
       if (!leads || leads.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#64748b;">No leads captured yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">No leads captured yet.</td></tr>';
         return;
       }
 
-      tbody.innerHTML = leads.map(l => `
-        <tr>
-          <td><strong style="font-size: 12px; color: #0f766e;">${l.lead_id}</strong></td>
-          <td>${l.phone_number}</td>
-          <td><span style="text-transform: capitalize;">${l.channel}</span></td>
-          <td><span style="color: #166534; font-weight: 600;">✓ Synced to Kylas</span></td>
-        </tr>
-      `).join('');
+      tbody.innerHTML = leads.map(l => {
+        const isSynced = (l.kylas_synced === 1 || l.kylas_synced === true);
+        const syncBadge = isSynced 
+          ? `<span class="sync-live">✓ Kylas Synced</span>`
+          : `<span class="sync-mock">💾 Saved Locally (Mock)</span>`;
+        const displayName = (l.name && l.name !== 'Web Visitor') ? `<strong>${l.name}</strong>` : `<span style="color:#64748b;">Web Visitor</span>`;
+
+        return `
+          <tr>
+            <td><strong style="font-size: 11px; color: #0f766e;">${l.lead_id}</strong></td>
+            <td>${displayName}</td>
+            <td>${l.phone_number}</td>
+            <td><span style="text-transform: capitalize;">${l.channel}</span></td>
+            <td>${syncBadge}</td>
+          </tr>
+        `;
+      }).join('');
     }
 
     async function resolveSession(sid) {

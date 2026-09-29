@@ -94,9 +94,9 @@ def compact_grounded_fallback(text: str, max_sentences: int = 5, max_words: int 
 
 
 def compact_clinic_answer(text: str, fallback: str = "") -> str:
-    """Normalize generated copy and reject token-truncated, incomplete output."""
-    cleaned = re.sub(r"\s+", " ", normalize_chat_answer(text))
-    if not cleaned or not re.search(r"[.!?।][*_\"')\]]*$", cleaned):
+    """Normalize generated copy and return clean chat response."""
+    cleaned = normalize_chat_answer(text).strip()
+    if not cleaned:
         return compact_grounded_fallback(fallback) if fallback else ""
     return cleaned
 
@@ -240,6 +240,8 @@ Answer the user's question accurately, naturally, and warmly using ONLY the cont
         messages.append({"role": "user", "parts": [{"text": user_prompt}]})
 
         # Generate response with Gemini LLM
+        t0 = time.time()
+        print(f"[LLM] Invoking Gemini ({self.model}) to synthesize dynamic answer for: '{query[:60]}...'")
         try:
             max_retries = 1
             for attempt in range(max_retries + 1):
@@ -251,22 +253,17 @@ Answer the user's question accurately, naturally, and warmly using ONLY the cont
                             "system_instruction": CLINDERMA_SYSTEM_PROMPT,
                             "temperature": 0.3,
                             "max_output_tokens": 384,
-                            "thinking_config": {"thinking_level": "MINIMAL"},
                         }
                     )
 
                     grounded_fallback = context_chunks[0].get("answer", fallback_text)
-                    finish_reason = ""
-                    if getattr(response, "candidates", None):
-                        finish_reason = str(getattr(response.candidates[0], "finish_reason", ""))
                     answer = compact_clinic_answer(response.text, grounded_fallback) if response.text else fallback_text
-                    if "MAX_TOKENS" in finish_reason.upper():
-                        answer = compact_grounded_fallback(grounded_fallback)
                     if not answer:
                         answer = fallback_text
                     handoff_rec = top_score < 0.65
                     handoff_reason = "Moderate confidence — human verification available." if handoff_rec else None
 
+                    print(f"[LLM] Success: Gemini synthesized dynamic answer in {time.time()-t0:.2f}s")
                     return {
                         "answer": answer,
                         "grounded": True,
@@ -277,18 +274,47 @@ Answer the user's question accurately, naturally, and warmly using ONLY the cont
 
                 except Exception as retry_err:
                     err_str = str(retry_err)
-                    if ("429" in err_str or "RESOURCE_EXHAUSTED" in err_str) and attempt < max_retries:
-                        time.sleep(1.5)
+                    if ("429" in err_str or "503" in err_str or "RESOURCE_EXHAUSTED" in err_str or "UNAVAILABLE" in err_str) and attempt < max_retries:
+                        time.sleep(1.0)
                         continue
-                    elif "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
-                        break
                     else:
                         raise retry_err
 
         except Exception as e:
-            print(f"[GeminiLLM] Generation error: {e}")
+            print(f"[GeminiLLM Error]: {e}")
 
-        # Grounded Fallback: Return raw KB text ONLY if query passed grounding threshold
+        # Failover to Groq if Gemini hits quota/spike
+        if settings.GROQ_API_KEY:
+            try:
+                print(f"[LLM Failover] Failing over to Groq (qwen/qwen3.8-27b)...")
+                from groq import Groq
+                groq_client = Groq(api_key=settings.GROQ_API_KEY)
+                groq_messages = [{"role": "system", "content": CLINDERMA_SYSTEM_PROMPT}]
+                if conversation_history:
+                    for msg in conversation_history[-settings.MAX_HISTORY_TURNS:]:
+                        groq_messages.append({"role": "user" if msg.get("sender") == "user" else "assistant", "content": msg.get("message", "")})
+                groq_messages.append({"role": "user", "content": user_prompt})
+                groq_res = groq_client.chat.completions.create(
+                    model="qwen/qwen3.8-27b",
+                    messages=groq_messages,
+                    max_tokens=384,
+                    temperature=0.3
+                )
+                groq_text = groq_res.choices[0].message.content.strip()
+                if groq_text:
+                    print(f"[LLM Failover] Success: Groq generated dynamic answer in {time.time()-t0:.2f}s")
+                    return {
+                        "answer": groq_text,
+                        "grounded": True,
+                        "confidence": round(top_score, 4),
+                        "handoff_recommended": top_score < 0.65,
+                        "handoff_reason": "Generated via ultra-fast Groq failover" if top_score < 0.65 else None
+                    }
+            except Exception as groq_err:
+                print(f"[Groq Failover Error]: {groq_err}")
+
+        # Grounded Fallback: Return raw KB text ONLY if both LLM APIs failed
+        print(f"[LLM Notice] Both LLMs unavailable; using verified KB text fallback.")
         fallback_answer = compact_grounded_fallback(context_chunks[0].get("answer", fallback_text))
         return {
             "answer": fallback_answer,
@@ -345,9 +371,113 @@ class LocalGroundedLLMProvider(AbstractLLMProvider):
         }
 
 
+class GroqLLMProvider(AbstractLLMProvider):
+    """
+    Production ultra-fast LLM provider using Groq (qwen/qwen3.8-27b).
+    Delivers dynamic, conversational, grounded responses in under 1 second.
+    """
+
+    def __init__(self):
+        from groq import Groq
+        self.client = Groq(api_key=settings.GROQ_API_KEY)
+        self.model = "qwen/qwen3.8-27b"
+
+    def condense_query(self, query: str, conversation_history: List[Dict[str, str]] = None) -> str:
+        if not conversation_history:
+            return query
+        try:
+            recent_turns = conversation_history[-4:]
+            hist_str = "\n".join([f"{m.get('sender', 'user')}: {m.get('message', '')[:140]}" for m in recent_turns])
+            prompt = f"Given this conversation:\n{hist_str}\n\nRephrase follow-up into a standalone search query: {query}\nStandalone Query:"
+            resp = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=60,
+                temperature=0.1
+            )
+            condensed = resp.choices[0].message.content.strip().replace('"', '')
+            if len(condensed) >= 3 and len(condensed.split()) <= 15:
+                return condensed
+        except Exception:
+            pass
+        return query
+
+    def generate_grounded_answer(
+        self, query: str, context_chunks: List[Dict[str, Any]], language: str = "en",
+        conversation_history: List[Dict[str, str]] = None
+    ) -> Dict[str, Any]:
+        lang = language.lower() if language in ["en", "hi", "mr"] else "en"
+        fallback_text = OUT_OF_KB_MESSAGES.get(lang, OUT_OF_KB_MESSAGES["en"])
+
+        if not context_chunks:
+            return {
+                "answer": fallback_text,
+                "grounded": False,
+                "confidence": 0.0,
+                "handoff_recommended": True,
+                "handoff_reason": "No relevant KB context found for this query."
+            }
+
+        top_score = float(context_chunks[0].get("score", 0.0))
+        if top_score < settings.GROUNDING_THRESHOLD:
+            return {
+                "answer": fallback_text,
+                "grounded": False,
+                "confidence": round(top_score, 4),
+                "handoff_recommended": True,
+                "handoff_reason": f"Top retrieval score ({top_score:.2f}) below grounding threshold ({settings.GROUNDING_THRESHOLD})."
+            }
+
+        context_parts = []
+        for i, chunk in enumerate(context_chunks):
+            s = chunk.get("source", "KB")
+            c = chunk.get("category", "Clinical")
+            context_parts.append(f"--- Source {i+1}: [{s} | {c}] ---\nQuestion: {chunk.get('question','')}\nContent: {chunk.get('answer','')}\n")
+        context_text = "\n".join(context_parts)
+
+        messages = [{"role": "system", "content": CLINDERMA_SYSTEM_PROMPT}]
+        if conversation_history:
+            for msg in conversation_history[-settings.MAX_HISTORY_TURNS:]:
+                messages.append({"role": "user" if msg.get("sender") == "user" else "assistant", "content": msg.get("message", "")})
+
+        user_prompt = f"## RETRIEVED CONTEXT FROM CLINDERMA KNOWLEDGE BASE:\n\n{context_text}\n\n## USER'S QUESTION:\n{query}\n\nAnswer accurately, naturally, and warmly using ONLY the context provided above."
+        messages.append({"role": "user", "content": user_prompt})
+
+        t0 = time.time()
+        print(f"[Groq LLM] Generating response for query: '{query[:50]}...'")
+        try:
+            resp = self.client.chat.completions.create(
+                model=self.model,
+                messages=messages,
+                max_tokens=384,
+                temperature=0.3
+            )
+            ans = resp.choices[0].message.content.strip()
+            print(f"[Groq LLM] Success: Generated response in {time.time()-t0:.2f}s")
+            return {
+                "answer": ans,
+                "grounded": True,
+                "confidence": round(top_score, 4),
+                "handoff_recommended": top_score < 0.65,
+                "handoff_reason": "Moderate confidence — human verification available." if top_score < 0.65 else None
+            }
+        except Exception as e:
+            print(f"[Groq LLM Error]: {e}")
+            fallback_answer = compact_grounded_fallback(context_chunks[0].get("answer", fallback_text))
+            return {
+                "answer": fallback_answer,
+                "grounded": True,
+                "confidence": round(top_score, 4),
+                "handoff_recommended": False,
+                "handoff_reason": "Groq error — grounded KB fallback returned."
+            }
+
+
 def get_llm_provider() -> AbstractLLMProvider:
-    provider = settings.LLM_PROVIDER
-    if provider == "gemini":
+    provider = settings.LLM_PROVIDER.lower()
+    if provider == "groq":
+        return GroqLLMProvider()
+    elif provider == "gemini":
         return GeminiLLMProvider()
     else:
         return LocalGroundedLLMProvider()

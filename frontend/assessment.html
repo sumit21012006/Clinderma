@@ -4,34 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Skin Assessment Form — Clinderma</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Outfit', sans-serif;
-      background: #f1f5f9;
+      background: #f8fafc;
       color: #0f172a;
       padding: 40px 20px;
+      margin: 0;
     }
     .form-box {
-      max-width: 640px;
+      max-width: 620px;
       margin: 0 auto;
       background: white;
       border-radius: 20px;
       padding: 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
     }
     .form-box h2 {
       color: #0f766e;
+      margin-top: 0;
       margin-bottom: 8px;
+      font-size: 24px;
     }
-    .banner-alert {
-      background: #fef3c7;
-      border-left: 4px solid #f59e0b;
-      padding: 12px 16px;
-      border-radius: 8px;
-      margin-bottom: 24px;
-      font-size: 13px;
-      color: #92400e;
+    .subtitle {
+      margin-bottom: 20px;
+      color: #64748b;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    .badge {
+      display: inline-block;
+      background: #ccfbf1;
+      color: #0f766e;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
     }
     .field {
       margin-bottom: 20px;
@@ -40,74 +51,226 @@
       display: block;
       font-weight: 600;
       margin-bottom: 8px;
+      font-size: 14px;
+      color: #334155;
     }
     input, select, textarea {
       width: 100%;
-      padding: 12px 16px;
+      padding: 12px 14px;
       border: 1px solid #cbd5e1;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 15px;
+      font-family: inherit;
+      box-sizing: border-box;
       outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #0f766e;
+      box-shadow: 0 0 0 3px rgba(15,118,110,0.1);
     }
     .btn-submit {
       background: #0f766e;
       color: white;
       border: none;
       padding: 14px 28px;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
       width: 100%;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) {
+      background: #115e59;
+    }
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .consent-text {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 14px;
+      line-height: 1.4;
+      text-align: center;
+    }
+    .success-card {
+      text-align: center;
+      padding: 20px 10px;
+    }
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #ccfbf1;
+      color: #0f766e;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 16px;
+    }
+    .error-msg {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #f87171;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 24px;
+    }
+    .back-link a {
+      color: #0f766e;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .back-link a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
   <div class="form-box" id="skin-assessment-form">
+    <span class="badge">🩺 Clinical Intake</span>
     <h2>Clinderma Dermatological Skin Assessment</h2>
-    <p style="margin-bottom: 16px; color: #64748b;">Please complete this confidential medical questionnaire for your dermatologist review.</p>
+    <p class="subtitle">Complete this confidential assessment to receive personalized guidance from a certified Clinderma Skin Coach.</p>
 
-    <div class="banner-alert">
-      <strong>⚠️ Route Protection Guarantee:</strong> The chatbot widget script is embedded on this page, but it automatically detects the <code>/assessment</code> route and suppresses itself so as not to interrupt your assessment flow.
+    <div id="errorBox" class="error-msg"></div>
+
+    <form id="assessmentForm" onsubmit="handleAssessmentSubmit(event)">
+      <div class="field">
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" placeholder="e.g. Ananya Sharma" required>
+      </div>
+
+      <div class="field">
+        <label for="phoneNumber">Phone Number (WhatsApp for Doctor Follow-up)</label>
+        <input type="tel" id="phoneNumber" placeholder="e.g. 9876543210" pattern="[0-9+\-\s]{10,15}" required>
+      </div>
+
+      <div class="field">
+        <label for="primaryConcern">Primary Skin Concern</label>
+        <select id="primaryConcern" required>
+          <option value="">Select Concern...</option>
+          <option value="Active Acne / Breakouts">Active Acne / Breakouts</option>
+          <option value="Pigmentation / Melasma / Dark Spots">Pigmentation / Melasma / Dark Spots</option>
+          <option value="Acne Scars & Texture">Acne Scars & Texture</option>
+          <option value="Sensitive Skin & Redness / Rosacea">Sensitive Skin & Redness / Rosacea</option>
+          <option value="Anti-Aging / Fine Lines">Anti-Aging / Fine Lines</option>
+          <option value="Both Acne and Pigmentation">Both Acne and Pigmentation</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="skinType">Your Skin Type</label>
+        <select id="skinType">
+          <option value="Oily">Oily</option>
+          <option value="Combination">Combination</option>
+          <option value="Dry">Dry</option>
+          <option value="Sensitive">Sensitive</option>
+          <option value="Normal">Normal</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="concernDuration">How long have you experienced this concern?</label>
+        <select id="concernDuration">
+          <option value="Less than 1 month">Less than 1 month</option>
+          <option value="1 to 6 months">1 to 6 months</option>
+          <option value="6 to 12 months">6 to 12 months</option>
+          <option value="More than 1 year">More than 1 year</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">Submit Assessment for Doctor Review</button>
+
+      <p class="consent-text">
+        🔒 <strong>Confidential & DPDP Compliant:</strong> Your health information is shared exclusively with the Clinderma clinical coaching team for the purpose of your consultation.
+      </p>
+    </form>
+
+    <div id="successCard" class="success-card" style="display: none;">
+      <div class="success-icon">✓</div>
+      <h3 style="color: #0f766e; margin-bottom: 8px;">Assessment Successfully Submitted!</h3>
+      <p id="successDetails" style="color: #475569; font-size: 15px; line-height: 1.6;"></p>
+      <div style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a href="/" style="background: #0f766e; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px;">Return to Home</a>
+      </div>
     </div>
 
-    <form onsubmit="event.preventDefault(); alert('Assessment submitted! A Skin Coach will contact you.');">
-      <div class="field">
-        <label>Full Name</label>
-        <input type="text" placeholder="e.g. Ananya Sharma" required>
-      </div>
-
-      <div class="field">
-        <label>Phone Number (WhatsApp)</label>
-        <input type="tel" placeholder="+91 98765 43210" required>
-      </div>
-
-      <div class="field">
-        <label>Primary Skin Concern</label>
-        <select required>
-          <option value="">Select Concern...</option>
-          <option value="acne">Active Acne / Breakouts</option>
-          <option value="pigmentation">Pigmentation / Dark Spots / Melasma</option>
-          <option value="both">Both Acne and Pigmentation</option>
-        </select>
-      </div>
-
-      <div class="field">
-        <label>How long have you had this concern?</label>
-        <select>
-          <option>Less than 1 month</option>
-          <option>1 to 6 months</option>
-          <option>More than 6 months</option>
-        </select>
-      </div>
-
-      <button type="submit" class="btn-submit">Submit Assessment for Doctor Review</button>
-    </form>
-    <p style="text-align: center; margin-top: 16px;"><a href="/" style="color: #0284c7;">← Back to Homepage</a></p>
+    <div class="back-link">
+      <a href="/">← Back to Homepage</a>
+    </div>
   </div>
 
-  <!-- Chat Widget script embedded — route guard will suppress it -->
+  <script>
+    async function handleAssessmentSubmit(event) {
+      event.preventDefault();
+      const submitBtn = document.getElementById('submitBtn');
+      const errorBox = document.getElementById('errorBox');
+      errorBox.style.display = 'none';
+
+      const name = document.getElementById('fullName').value.trim();
+      const phone = document.getElementById('phoneNumber').value.trim();
+      const concern = document.getElementById('primaryConcern').value;
+      const skinType = document.getElementById('skinType').value;
+      const duration = document.getElementById('concernDuration').value;
+
+      if (!name || !phone || !concern) {
+        errorBox.innerText = 'Please complete all required fields.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'Submitting Assessment...';
+
+      try {
+        const response = await fetch('/api/assessment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            phone_number: phone,
+            concern: concern,
+            skin_type: skinType,
+            duration: duration,
+            channel: 'assessment_form'
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.detail || 'Failed to submit assessment.');
+        }
+
+        // Show success
+        document.getElementById('assessmentForm').style.display = 'none';
+        const successCard = document.getElementById('successCard');
+        document.getElementById('successDetails').innerHTML = 
+          `Thank you, <strong>${name}</strong>!<br>Your assessment for <em>${concern}</em> has been securely submitted. A certified Clinderma Skin Coach will review your intake and contact you on WhatsApp (<em>${phone}</em>) within 24 hours.`;
+        successCard.style.display = 'block';
+
+      } catch (err) {
+        errorBox.innerText = err.message || 'Network error occurred. Please try again.';
+        errorBox.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'Submit Assessment for Doctor Review';
+      }
+    }
+  </script>
+
+  <!-- Chat Widget script embedded — route guard automatically suppresses on /assessment -->
   <script src="/widget/chat-widget.js"></script>
 
 </body>

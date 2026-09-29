@@ -3,7 +3,7 @@ from typing import List, Optional, Dict, Any
 
 class ChatRequest(BaseModel):
     message: str
-    session_id: str = "default_session"
+    session_id: str  # Required — widget always generates a UUID-based session ID
     language: Optional[str] = "en" # 'en', 'hi', 'mr'
     channel: Optional[str] = "website" # 'website', 'instagram', 'whatsapp'
     user_phone: Optional[str] = None
@@ -42,6 +42,20 @@ class LeadResponse(BaseModel):
     status: str
     kylas_synced: bool
     created_at: str
+
+class AssessmentRequest(BaseModel):
+    name: str
+    phone_number: str
+    concern: str
+    duration: Optional[str] = "Not specified"
+    skin_type: Optional[str] = "Not specified"
+    channel: str = "assessment_form"
+
+class AssessmentResponse(BaseModel):
+    status: str
+    lead_id: str
+    message: str
+
 
 class OrderResponse(BaseModel):
     order_id: str

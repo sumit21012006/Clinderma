@@ -41,6 +41,10 @@ class Settings:
     FAISS_META_PATH: str = os.path.join(DATA_DIR, "kb_meta.json")
     DB_PATH: str = os.path.join(DATA_DIR, "clinderma.db")
 
+    # ── Admin Dashboard Security ──
+    ADMIN_USERNAME: str = os.getenv("ADMIN_USERNAME", "admin")
+    ADMIN_PASSWORD: str = os.getenv("ADMIN_PASSWORD", "clinderma@admin2026")
+
     # ── Kylas CRM Configuration ──
     KYLAS_API_KEY: str = os.getenv("KYLAS_API_KEY", "MOCK_KYLAS_KEY_12345")
     KYLAS_API_URL: str = os.getenv("KYLAS_API_URL", "https://api.kylas.io/v1/leads")

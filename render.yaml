@@ -18,14 +18,14 @@ services:
       - key: LLM_PROVIDER
         value: gemini
       - key: LLM_MODEL
-        value: llama-3.3-70b-versatile
+        value: gemini-2.0-flash
       - key: EMBEDDING_MODEL
         value: gemini-embedding-001
       - key: VECTOR_STORE_PROVIDER
         value: faiss
       - key: CRM_PROVIDER
-        value: mock_kylas
+        value: mock_kylas        # MANUAL: Change to kylas_api after you add KYLAS_API_KEY secret
       - key: ORDER_PROVIDER
         value: mock_orders
       - key: GROUNDING_THRESHOLD
-        value: "0.35"
+        value: "0.60"
