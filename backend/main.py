@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from app.core.config import settings
 from app.core.auth import verify_admin
-from app.api import chat, leads, orders, handoff, health
+from app.api import chat, leads, orders, handoff, health, dashboard
 from app.services.rag_engine import rag_engine
 
 FRONTEND_DIR = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "frontend"))
@@ -53,6 +53,7 @@ app.include_router(chat.router, prefix=settings.API_PREFIX, tags=["Chatbot"])
 app.include_router(leads.router, prefix=settings.API_PREFIX, tags=["CRM Leads"])
 app.include_router(orders.router, prefix=settings.API_PREFIX, tags=["Order Tracking"])
 app.include_router(handoff.router, prefix=settings.API_PREFIX, tags=["Human Agent Handoff"])
+app.include_router(dashboard.router, prefix=settings.API_PREFIX, tags=["Dashboard Analytics"])
 
 
 # Protected Admin Dashboard routes (HTTP Basic Auth required)

@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from app.services.handoff_manager import handoff_manager
 from app.core.auth import verify_admin
@@ -8,6 +9,12 @@ router = APIRouter()
 
 class ResolveRequest(BaseModel):
     session_id: str
+    doctor_notes: Optional[str] = None
+
+
+class NoteRequest(BaseModel):
+    session_id: str
+    doctor_notes: str
 
 
 @router.get("/handoff")
@@ -26,5 +33,14 @@ def resolve_handoff(req: ResolveRequest, _admin: str = Depends(verify_admin)):
     Protected endpoint: resolves an escalation ticket.
     Requires HTTP Basic Authentication.
     """
-    handoff_manager.resolve_handoff(req.session_id)
+    handoff_manager.resolve_handoff(req.session_id, doctor_notes=req.doctor_notes)
     return {"status": "success", "session_id": req.session_id}
+
+
+@router.post("/handoff/note")
+def save_doctor_note(req: NoteRequest, _admin: str = Depends(verify_admin)):
+    """
+    Protected endpoint: saves clinical observations/notes on an escalation ticket.
+    """
+    handoff_manager.add_doctor_note(req.session_id, req.doctor_notes)
+    return {"status": "success", "session_id": req.session_id, "note": req.doctor_notes}
