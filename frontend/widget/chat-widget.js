@@ -24,16 +24,17 @@
 
   // 2. Widget State with durable browser storage
   let currentLang = localStorage.getItem('clinderma_chat_lang') || sessionStorage.getItem('clinderma_chat_lang') || 'en';
-  let sessionId = localStorage.getItem('clinderma_chat_session_id') || sessionStorage.getItem('clinderma_chat_session_id');
+  let sessionId = sessionStorage.getItem('clin_session_id') || localStorage.getItem('clinderma_chat_session_id') || sessionStorage.getItem('clinderma_chat_session_id');
   if (!sessionId) {
     sessionId = 'session_' + (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).substring(2));
-    localStorage.setItem('clinderma_chat_session_id', sessionId);
   }
-  localStorage.setItem('clinderma_chat_lang', currentLang);
   localStorage.setItem('clinderma_chat_session_id', sessionId);
+  sessionStorage.setItem('clin_session_id', sessionId);
+  localStorage.setItem('clinderma_chat_lang', currentLang);
   let savedPhone = localStorage.getItem('clinderma_chat_phone') || '';
   let phoneRequired = !savedPhone && localStorage.getItem('clinderma_phone_required') === 'true';
   let isOpen = false;
+  let hasTrackedOpen = false;
   const API_HOST = window.location.origin;
 
   const skinTestLinks = {
@@ -199,6 +200,16 @@
       container.classList.add('clin-open');
       inputField.focus();
       msgList.scrollTop = msgList.scrollHeight;
+      if (!hasTrackedOpen) {
+        hasTrackedOpen = true;
+        try {
+          fetch(`${API_HOST}/api/analytics/event`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ session_id: sessionId, event_type: 'chat_opened' })
+          }).catch(function () {});
+        } catch (e) {}
+      }
     } else {
       container.classList.remove('clin-open');
     }

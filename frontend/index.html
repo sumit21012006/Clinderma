@@ -187,6 +187,7 @@
       <a href="/">Home</a>
       <a href="#products">Products</a>
       <a href="/dashboard.html" target="_blank" style="color: var(--accent); font-weight: 600;">Skin Coach Dashboard ↗</a>
+      <a href="/admin.html" target="_blank" style="color: #7c3aed; font-weight: 600;">Admin Panel ↗</a>
       <a href="/assessment.html" class="btn-assess">Take Skin Assessment ➔</a>
     </nav>
   </header>
@@ -251,5 +252,15 @@
 
   <!-- Clinderma Customer Support Chatbot Widget Embed -->
   <script src="/widget/chat-widget.js"></script>
+
+  <!-- Funnel Analytics: Stage 1 Visitor Tracking Pixel -->
+  <script>
+    (function() {
+      const sid = sessionStorage.getItem('clin_session_id') || ('sess_' + Math.random().toString(36).substr(2, 9));
+      sessionStorage.setItem('clin_session_id', sid);
+      fetch('/api/analytics/visit?session_id=' + sid, { method: 'POST' }).catch(function(){});
+    })();
+  </script>
 </body>
 </html>
+

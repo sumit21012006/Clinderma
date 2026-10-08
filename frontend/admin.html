@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinderma Admin Panel — Knowledge Base, Offers, Analytics & More</title>
+  <meta name="description" content="Clinderma internal admin panel for managing chatbot content, offers, customer chats, doctor reviews, and analytics.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --primary-dark: #5b21b6;
+      --primary-light: #f5f3ff;
+      --teal: #0f766e;
+      --accent: #f97316;
+      --danger: #dc2626;
+      --danger-light: #fef2f2;
+      --warning: #d97706;
+      --warning-light: #fffbeb;
+      --success: #16a34a;
+      --success-light: #f0fdf4;
+      --blue: #0284c7;
+      --blue-light: #f0f9ff;
+      --bg: #0f0f1a;
+      --bg-card: #1a1a2e;
+      --bg-card2: #16213e;
+      --border: rgba(255,255,255,0.08);
+      --border-light: rgba(255,255,255,0.15);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+      --glow: 0 0 20px rgba(124,58,237,0.3);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    h1,h2,h3,h4,.font-heading { font-family: 'Outfit', sans-serif; }
+
+    /* ── Login Screen ─────────────────────────────────────────────────────── */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(ellipse at 50% 0%, rgba(124,58,237,0.25) 0%, var(--bg) 70%);
+    }
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 48px 40px;
+      width: 420px;
+      box-shadow: var(--shadow), var(--glow);
+    }
+    .login-logo {
+      font-family: 'Outfit', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .login-subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      color: var(--text);
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124,58,237,0.2);
+    }
+    .btn-login {
+      width: 100%;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      color: white;
+      border: none;
+      padding: 14px;
+      border-radius: var(--radius-sm);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 8px;
+    }
+    .btn-login:hover { opacity: 0.9; transform: translateY(-1px); }
+    .login-error {
+      color: #f87171;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 12px;
+      display: none;
+    }
+    .role-hint {
+      margin-top: 20px;
+      padding: 14px;
+      background: rgba(255,255,255,0.04);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    /* ── Main App Shell ───────────────────────────────────────────────────── */
+    #app-shell { display: none; flex-direction: column; min-height: 100vh; }
+
+    /* Top bar */
+    .topbar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-brand {
+      font-family: 'Outfit', sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .topbar-badge {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(124,58,237,0.2);
+      color: #c4b5fd;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(124,58,237,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-left: 10px;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 16px; }
+    .user-chip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.07);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .user-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: white;
+    }
+    .role-badge-admin { background: rgba(124,58,237,0.2); color: #c4b5fd; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .role-badge-doctor { background: rgba(16,185,129,0.2); color: #6ee7b7; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .role-badge-viewer { background: rgba(148,163,184,0.2); color: #94a3b8; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+    .btn-topbar {
+      background: rgba(255,255,255,0.07);
+      color: var(--text-muted);
+      border: 1px solid var(--border-light);
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-topbar:hover { background: rgba(255,255,255,0.14); color: var(--text); }
+
+    /* Side nav + content area */
+    .app-body { display: flex; flex: 1; }
+
+    .sidebar {
+      width: 230px;
+      background: var(--bg-card2);
+      border-right: 1px solid var(--border);
+      padding: 24px 0;
+      flex-shrink: 0;
+      position: sticky;
+      top: 57px;
+      height: calc(100vh - 57px);
+      overflow-y: auto;
+    }
+    .sidebar-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding: 0 20px;
+      margin: 16px 0 8px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      position: relative;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .nav-item.active {
+      background: rgba(124,58,237,0.15);
+      color: #c4b5fd;
+      border-left-color: var(--primary);
+      font-weight: 700;
+    }
+    .nav-icon { font-size: 18px; width: 22px; text-align: center; }
+    .nav-badge {
+      margin-left: auto;
+      background: var(--danger);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 10px;
+      min-width: 20px;
+      text-align: center;
+    }
+
+    /* Content pane */
+    .content-pane {
+      flex: 1;
+      padding: 28px 32px;
+      overflow-y: auto;
+      max-width: 1300px;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Page title */
+    .page-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .page-subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 28px; }
+
+    /* ── Shared Card ──────────────────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .card-subtitle { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Buttons ──────────────────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer; border: none;
+      transition: opacity 0.2s, transform 0.1s;
+      font-family: inherit;
+    }
+    .btn:hover { opacity: 0.85; transform: translateY(-1px); }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-success { background: var(--success); color: white; }
+    .btn-danger  { background: var(--danger); color: white; }
+    .btn-warning { background: var(--warning); color: white; }
+    .btn-teal    { background: var(--teal); color: white; }
+    .btn-ghost {
+      background: rgba(255,255,255,0.07);
+      color: var(--text-muted);
+      border: 1px solid var(--border-light);
+    }
+    .btn-ghost:hover { color: var(--text); }
+    .btn-sm { padding: 5px 12px; font-size: 12px; }
+
+    /* ── Inputs ───────────────────────────────────────────────────────────── */
+    .input, .select, .textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 9px 14px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .input:focus, .select:focus, .textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(124,58,237,0.2);
+    }
+    .select option { background: #1a1a2e; }
+    .textarea { resize: vertical; min-height: 80px; }
+
+    /* ── Tables ───────────────────────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { border-bottom: 1px solid var(--border); }
+    th {
+      text-align: left; padding: 12px 16px;
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-dim);
+    }
+    td { padding: 12px 16px; font-size: 13px; color: var(--text); border-bottom: 1px solid rgba(255,255,255,0.04); }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ── Status Badges ────────────────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 11px; font-weight: 700;
+    }
+    .badge-draft { background: rgba(148,163,184,0.15); color: #94a3b8; }
+    .badge-live   { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.3); }
+    .badge-active { background: rgba(22,163,74,0.15); color: #4ade80; border: 1px solid rgba(22,163,74,0.3); }
+    .badge-scheduled { background: rgba(2,132,199,0.15); color: #38bdf8; }
+    .badge-paused  { background: rgba(217,119,6,0.15); color: #fbbf24; }
+    .badge-expired { background: rgba(220,38,38,0.15); color: #f87171; }
+    .badge-pending { background: rgba(217,119,6,0.15); color: #fbbf24; }
+    .badge-approved{ background: rgba(22,163,74,0.15); color: #4ade80; }
+    .badge-edited  { background: rgba(124,58,237,0.15); color: #c4b5fd; }
+    .badge-admin   { background: rgba(124,58,237,0.2); color: #c4b5fd; }
+    .badge-doctor  { background: rgba(16,185,129,0.2); color: #6ee7b7; }
+    .badge-viewer  { background: rgba(148,163,184,0.2); color: #94a3b8; }
+
+    /* ── Filter Row ───────────────────────────────────────────────────────── */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .filter-row .input, .filter-row .select { flex: 1; min-width: 140px; }
+
+    /* ── Modals ───────────────────────────────────────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: none; align-items: center; justify-content: center;
+      z-index: 500;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      width: 560px;
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow), var(--glow);
+    }
+    .modal-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px;
+    }
+    .modal-title { font-size: 20px; font-weight: 700; }
+    .btn-close {
+      background: none; border: none; color: var(--text-muted);
+      font-size: 22px; cursor: pointer; line-height: 1;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-field { margin-bottom: 16px; }
+    .form-field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+    .form-field .input, .form-field .select, .form-field .textarea { width: 100%; }
+
+    /* ── Toast ────────────────────────────────────────────────────────────── */
+    #toast {
+      position: fixed; bottom: 28px; right: 28px;
+      background: #1e1e2e;
+      color: var(--text);
+      border: 1px solid var(--border-light);
+      padding: 14px 22px;
+      border-radius: var(--radius-md);
+      font-size: 14px; font-weight: 600;
+      box-shadow: var(--shadow);
+      z-index: 9999;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+    @keyframes slideIn { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    /* ── KPI Cards ────────────────────────────────────────────────────────── */
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-bottom: 28px; }
+    @media (max-width: 1100px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      position: relative; overflow: hidden;
+    }
+    .kpi-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--primary);
+    }
+    .kpi-card.teal::before { background: var(--teal); }
+    .kpi-card.success::before { background: var(--success); }
+    .kpi-card.warning::before { background: var(--warning); }
+    .kpi-card.blue::before { background: var(--blue); }
+    .kpi-card.danger::before { background: var(--danger); }
+    .kpi-label { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .kpi-val { font-size: 36px; font-weight: 800; font-family: 'Outfit', sans-serif; color: var(--text); }
+    .kpi-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── Funnel ───────────────────────────────────────────────────────────── */
+    .funnel-bar-wrap { margin-bottom: 10px; }
+    .funnel-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+    .funnel-bar { height: 28px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; }
+    .funnel-fill { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--primary), #4f46e5); transition: width 0.6s ease; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 700; color: white; }
+    .funnel-drop { font-size: 11px; color: #f87171; margin-top: 3px; text-align: right; }
+
+    /* ── Chat Transcript ──────────────────────────────────────────────────── */
+    .chat-bubble-user { background: rgba(124,58,237,0.15); border-radius: 12px 12px 4px 12px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; max-width: 80%; margin-left: auto; border: 1px solid rgba(124,58,237,0.25); }
+    .chat-bubble-bot { background: rgba(255,255,255,0.05); border-radius: 12px 12px 12px 4px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; max-width: 80%; border: 1px solid var(--border); }
+    .chat-bubble-admin { background: rgba(15,118,110,0.15); border-radius: 12px; padding: 10px 14px; margin-bottom: 8px; font-size: 13px; max-width: 80%; margin-left: auto; border: 1px solid rgba(15,118,110,0.3); }
+    .chat-bubble-system { background: rgba(148,163,184,0.08); border-radius: 8px; padding: 6px 12px; margin: 4px auto; font-size: 11px; color: var(--text-muted); text-align: center; font-style: italic; }
+    .chat-time { font-size: 10px; color: var(--text-dim); margin-top: 3px; }
+    .chat-sender { font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 3px; }
+
+    /* ── Upload Zone ──────────────────────────────────────────────────────── */
+    .upload-zone {
+      border: 2px dashed var(--border-light);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .upload-zone:hover { border-color: var(--primary); background: rgba(124,58,237,0.05); }
+    .upload-zone-icon { font-size: 36px; margin-bottom: 8px; }
+    .upload-zone-text { color: var(--text-muted); font-size: 14px; }
+
+    /* ── Section dividers ─────────────────────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+    /* ── Diff table ───────────────────────────────────────────────────────── */
+    .diff-old { color: #f87171; background: rgba(220,38,38,0.08); }
+    .diff-new  { color: #4ade80; background: rgba(22,163,74,0.08); }
+
+    /* ── Test Chat Area ───────────────────────────────────────────────────── */
+    .test-chat-window {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      height: 360px;
+      overflow-y: auto;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .test-chat-input-row { display: flex; gap: 10px; }
+    .test-chat-input-row .input { flex: 1; }
+
+    /* ── Scrollbar ────────────────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!--  LOGIN SCREEN                                                            -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">CLINDERMA</div>
+    <div class="login-subtitle">Admin Panel — Secure Access</div>
+
+    <div class="form-group">
+      <label class="form-label" for="l-username">Username</label>
+      <input id="l-username" class="form-input" type="text" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="l-password">Password</label>
+      <input id="l-password" class="form-input" type="password" placeholder="Enter password" autocomplete="current-password">
+    </div>
+    <button class="btn-login" id="btn-do-login" onclick="doLogin()">Sign In →</button>
+    <div id="login-error" class="login-error">Invalid username or password. Please try again.</div>
+
+    <div class="role-hint">
+      🔑 <strong>Default credentials:</strong><br>
+      Admin: <code>admin</code> / <code>clinderma@admin2026</code><br>
+      Doctor: <code>doctor</code> / <code>doctor@clinderma2026</code><br>
+      Viewer: <code>viewer</code> / <code>viewer@clinderma2026</code>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!--  MAIN APP SHELL                                                          -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div id="app-shell" style="display:none; flex-direction:column; min-height:100vh;">
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div class="topbar-brand">CLINDERMA</div>
+      <span class="topbar-badge">Admin Panel</span>
+    </div>
+    <div class="topbar-right">
+      <a href="/dashboard.html" class="btn-topbar" target="_blank">🩺 Skin Coach</a>
+      <a href="/" class="btn-topbar" target="_blank">🌐 Website</a>
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar-initial">A</div>
+        <span id="user-display-name">Admin</span>
+        <span id="user-role-badge" class="role-badge-admin">admin</span>
+      </div>
+      <button class="btn-topbar" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="app-body">
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+      <div class="sidebar-section-title">Content</div>
+      <div class="nav-item active" id="nav-kb" onclick="switchTab('kb')">
+        <span class="nav-icon">📚</span> KB & FAQs
+      </div>
+      <div class="nav-item" id="nav-offers" onclick="switchTab('offers')">
+        <span class="nav-icon">🏷️</span> Offers
+      </div>
+      <div class="nav-item" id="nav-testchat" onclick="switchTab('testchat')">
+        <span class="nav-icon">🧪</span> Test Chat
+      </div>
+
+      <div class="sidebar-section-title">Operations</div>
+      <div class="nav-item" id="nav-chats" onclick="switchTab('chats')">
+        <span class="nav-icon">💬</span> Customer Chats
+      </div>
+      <div class="nav-item" id="nav-reviews" onclick="switchTab('reviews')">
+        <span class="nav-icon">🩺</span> Doctor Review
+        <span class="nav-badge" id="pending-badge" style="display:none;">0</span>
+      </div>
+
+      <div class="sidebar-section-title">Analytics</div>
+      <div class="nav-item" id="nav-analytics" onclick="switchTab('analytics')">
+        <span class="nav-icon">📊</span> Analytics
+      </div>
+      <div class="nav-item" id="nav-changelog" onclick="switchTab('changelog')">
+        <span class="nav-icon">📋</span> Change Log
+      </div>
+
+      <div class="sidebar-section-title">Settings</div>
+      <div class="nav-item" id="nav-users" onclick="switchTab('users')">
+        <span class="nav-icon">👥</span> Users & Roles
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <div class="content-pane">
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 1: KB & FAQs                                                   -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel active" id="tab-kb">
+        <h1 class="page-title">📚 Knowledge Base & FAQs</h1>
+        <p class="page-subtitle">Manage chatbot content. All edits are saved as drafts — push live when ready.</p>
+
+        <!-- Top actions -->
+        <div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; align-items:center;">
+          <button class="btn btn-primary" onclick="openKBModal()">+ New Entry</button>
+          <button class="btn btn-teal" onclick="pushToLive()" id="btn-push-live">🚀 Push to Live</button>
+          <button class="btn btn-ghost" onclick="restoreKB()" id="btn-restore">↩ Restore Previous</button>
+          <button class="btn btn-ghost btn-sm" onclick="openDocUploadModal()">📎 Upload Document</button>
+          <span id="kb-draft-count" style="margin-left:auto; font-size:13px; color:var(--text-muted);"></span>
+        </div>
+
+        <!-- Filter row -->
+        <div class="filter-row">
+          <input type="text" class="input" id="kb-search" placeholder="🔍 Search questions or answers..." oninput="loadKBEntries()">
+          <select class="select" id="kb-cat-filter" onchange="loadKBEntries()" style="max-width:200px;">
+            <option value="">All Categories</option>
+          </select>
+          <select class="select" id="kb-status-filter" onchange="loadKBEntries()" style="max-width:160px;">
+            <option value="">All Status</option>
+            <option value="draft">Draft</option>
+            <option value="live">Live</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table id="kb-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Category</th>
+                  <th>Question</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="kb-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">Loading KB entries…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Documents section -->
+        <div class="card" style="margin-top:20px;">
+          <div class="card-header">
+            <div>
+              <div class="card-title">📎 Uploaded Documents</div>
+              <div class="card-subtitle">Product sheets, policies, and usage guides</div>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="loadDocuments()">🔄 Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>File</th><th>Category</th><th>Status</th><th>Uploaded By</th><th>Date</th></tr></thead>
+              <tbody id="docs-tbody">
+                <tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 2: Offers                                                       -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-offers">
+        <h1 class="page-title">🏷️ Offers Management</h1>
+        <p class="page-subtitle">Schedule discounts for different parts of the month. Chatbot only shows active offers.</p>
+
+        <div style="display:flex; gap:12px; margin-bottom:20px;">
+          <button class="btn btn-primary" onclick="openOfferModal()">+ Create Offer</button>
+        </div>
+
+        <div id="offers-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap:20px;">
+          <div style="text-align:center; color:var(--text-muted); padding:60px; grid-column: 1/-1;">Loading offers…</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 3: Test Chat                                                    -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-testchat">
+        <h1 class="page-title">🧪 Test Chat</h1>
+        <p class="page-subtitle">Test your draft KB content before going live. Answers come from draft entries only.</p>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px;">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Draft Mode Chat</div>
+              <div class="badge badge-draft">🔒 Draft KB</div>
+            </div>
+            <div class="test-chat-window" id="test-chat-window">
+              <div class="chat-bubble-system">Send a message to test draft KB responses</div>
+            </div>
+            <div class="test-chat-input-row">
+              <input type="text" class="input" id="test-chat-input"
+                placeholder="Type a test question..." onkeydown="if(event.key==='Enter') sendTestMessage()">
+              <button class="btn btn-primary" onclick="sendTestMessage()">Send</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Push to Live</div></div>
+            <p style="color:var(--text-muted); font-size:14px; margin-bottom:20px;">
+              When you're happy with your test results, push all draft entries to live.
+              Customers will immediately get the updated answers.
+            </p>
+            <div id="drafts-summary" style="margin-bottom:20px;"></div>
+            <button class="btn btn-success" onclick="pushToLive()" style="width:100%;">
+              🚀 Push All Drafts to Live
+            </button>
+            <hr class="divider">
+            <p style="color:var(--text-muted); font-size:13px; margin-bottom:12px;">
+              Something went wrong after push? Restore the previous version:
+            </p>
+            <button class="btn btn-ghost" onclick="restoreKB()" style="width:100%;">
+              ↩ Restore Previous Version
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 4: Customer Chats                                               -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-chats">
+        <h1 class="page-title">💬 Customer Chats</h1>
+        <p class="page-subtitle">View all chat sessions. Take over a live chat or read transcripts.</p>
+
+        <div class="filter-row">
+          <input type="text" class="input" id="chats-search" placeholder="🔍 Search by name or phone…" oninput="loadChats()">
+          <select class="select" id="chats-status-filter" onchange="loadChats()" style="max-width:180px;">
+            <option value="">All Sessions</option>
+            <option value="live">🔴 Live (Pending)</option>
+            <option value="ended">✅ Ended (Resolved)</option>
+            <option value="takeover">🛡️ Taken Over</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadChats()">🔄 Refresh</button>
+        </div>
+
+        <div id="chats-list">
+          <div style="text-align:center; color:var(--text-muted); padding:60px;">Loading chats…</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 5: Doctor Review                                                -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-reviews">
+        <h1 class="page-title">🩺 Doctor Review Queue</h1>
+        <p class="page-subtitle">Review tagged chatbot answers. Approve correct answers or provide corrections.</p>
+
+        <div class="filter-row">
+          <select class="select" id="reviews-status-filter" onchange="loadReviews()" style="max-width:180px;">
+            <option value="">All Reviews</option>
+            <option value="pending">⏳ Pending</option>
+            <option value="approved">✅ Approved</option>
+            <option value="edited">✏️ Edited</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" onclick="loadReviews()">🔄 Refresh</button>
+        </div>
+
+        <div id="reviews-list">
+          <div style="text-align:center; color:var(--text-muted); padding:60px;">Loading review queue…</div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 6: Analytics                                                    -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-analytics">
+        <h1 class="page-title">📊 Analytics Dashboard</h1>
+        <p class="page-subtitle">Chatbot funnel, orders and revenue. Filter by date range.</p>
+
+        <div class="filter-row" style="margin-bottom:28px;">
+          <label style="font-size:13px;color:var(--text-muted); white-space:nowrap;">Date Range:</label>
+          <input type="date" class="input" id="analytics-from" style="max-width:160px;">
+          <span style="color:var(--text-muted);">to</span>
+          <input type="date" class="input" id="analytics-to" style="max-width:160px;">
+          <select class="select" id="analytics-view" style="max-width:140px;">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+          <button class="btn btn-primary btn-sm" onclick="loadAnalytics()">Apply</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportAnalytics('funnel')">⬇ Export Funnel CSV</button>
+          <button class="btn btn-ghost btn-sm" onclick="exportAnalytics('orders')">⬇ Export Orders CSV</button>
+        </div>
+
+        <!-- KPI Row -->
+        <div class="kpi-grid" id="analytics-kpis">
+          <div class="kpi-card"><div class="kpi-label">Total Visitors</div><div class="kpi-val" id="kpi-visitors">—</div></div>
+          <div class="kpi-card teal"><div class="kpi-label">Chat Opened</div><div class="kpi-val" id="kpi-opened">—</div></div>
+          <div class="kpi-card success"><div class="kpi-label">Total Orders</div><div class="kpi-val" id="kpi-orders">—</div></div>
+          <div class="kpi-card warning"><div class="kpi-label">Total Revenue</div><div class="kpi-val" id="kpi-revenue">—</div></div>
+        </div>
+
+        <!-- Funnel -->
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:24px; margin-bottom:24px;">
+          <div class="card">
+            <div class="card-header"><div class="card-title">Chatbot Conversion Funnel</div></div>
+            <div id="funnel-chart">
+              <div style="text-align:center;color:var(--text-muted);padding:40px;">Loading funnel…</div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header"><div class="card-title">Non-Openers</div></div>
+            <div id="non-openers-panel" style="text-align:center; padding:40px 20px;">—</div>
+          </div>
+        </div>
+
+        <!-- Orders chart -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Orders & Revenue Over Time</div>
+          </div>
+          <div style="height:240px; position:relative;">
+            <canvas id="ordersChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 7: Change Log                                                   -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-changelog">
+        <h1 class="page-title">📋 Change Log</h1>
+        <p class="page-subtitle">Complete audit trail of every action in the admin panel.</p>
+
+        <div class="filter-row">
+          <input type="date" class="input" id="log-from" style="max-width:160px;">
+          <input type="date" class="input" id="log-to" style="max-width:160px;">
+          <select class="select" id="log-type-filter" style="max-width:200px;">
+            <option value="">All Action Types</option>
+          </select>
+          <input type="text" class="input" id="log-user-filter" placeholder="Filter by user…" style="max-width:160px;">
+          <button class="btn btn-primary btn-sm" onclick="loadChangelog()">Apply Filters</button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Action</th><th>Entity</th><th>Old Value</th><th>New Value</th><th>By</th><th>When</th></tr></thead>
+              <tbody id="changelog-tbody">
+                <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div id="changelog-pagination" style="display:flex; justify-content:center; gap:12px; margin-top:16px;"></div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <!-- TAB 8: Users & Roles                                                -->
+      <!-- ══════════════════════════════════════════════════════════════════ -->
+      <div class="tab-panel" id="tab-users">
+        <h1 class="page-title">👥 Users & Roles</h1>
+        <p class="page-subtitle">Manage admin panel access. Admins have full access; Doctors handle medical review; Viewers can only read.</p>
+
+        <div style="margin-bottom:20px;">
+          <button class="btn btn-primary" onclick="openUserModal()">+ Add User</button>
+        </div>
+
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Username</th><th>Full Name</th><th>Role</th><th>Status</th><th>Created</th><th>Actions</th></tr></thead>
+              <tbody id="users-tbody">
+                <tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content-pane -->
+  </div><!-- /app-body -->
+</div><!-- /app-shell -->
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!--  MODALS                                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+
+<!-- KB Entry Modal -->
+<div class="modal-overlay" id="modal-kb">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="kb-modal-title">New KB Entry</div>
+      <button class="btn-close" onclick="closeModal('modal-kb')">×</button>
+    </div>
+    <div class="form-field">
+      <label>Category</label>
+      <select class="select" id="kb-m-category" style="width:100%;"></select>
+    </div>
+    <div class="form-field">
+      <label>Question</label>
+      <input type="text" class="input" id="kb-m-question" placeholder="Enter the FAQ question…" style="width:100%;">
+    </div>
+    <div class="form-field">
+      <label>Answer</label>
+      <textarea class="textarea" id="kb-m-answer" placeholder="Enter the chatbot's answer…" style="width:100%; min-height:120px;"></textarea>
+    </div>
+    <div style="display:flex; gap:12px; justify-content:flex-end;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-kb')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveKBEntry()">Save as Draft</button>
+    </div>
+    <input type="hidden" id="kb-m-id" value="">
+  </div>
+</div>
+
+<!-- Document Upload Modal -->
+<div class="modal-overlay" id="modal-upload">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Upload Document</div>
+      <button class="btn-close" onclick="closeModal('modal-upload')">×</button>
+    </div>
+    <div class="form-field">
+      <label>Category</label>
+      <select class="select" id="upload-cat" style="width:100%;"></select>
+    </div>
+    <div class="upload-zone" onclick="document.getElementById('doc-file-input').click()">
+      <div class="upload-zone-icon">📎</div>
+      <div class="upload-zone-text">Click to choose a file<br><small>PDF, DOCX, TXT, XLSX — Max 10MB</small></div>
+      <input type="file" id="doc-file-input" style="display:none;" accept=".pdf,.docx,.txt,.xlsx" onchange="handleFileSelect(this)">
+    </div>
+    <div id="upload-file-name" style="margin-top:12px; color:var(--text-muted); font-size:13px;"></div>
+    <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-upload')">Cancel</button>
+      <button class="btn btn-primary" onclick="uploadDocument()">Upload</button>
+    </div>
+  </div>
+</div>
+
+<!-- Offer Modal -->
+<div class="modal-overlay" id="modal-offer">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="offer-modal-title">Create Offer</div>
+      <button class="btn-close" onclick="closeModal('modal-offer')">×</button>
+    </div>
+    <div class="form-field">
+      <label>Offer Name</label>
+      <input type="text" class="input" id="offer-m-name" placeholder="e.g. Mid-Month Acne Sale" style="width:100%;">
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Discount Code</label>
+        <input type="text" class="input" id="offer-m-code" placeholder="e.g. ACNE20" style="width:100%;">
+      </div>
+      <div class="form-field">
+        <label>Discount Type</label>
+        <select class="select" id="offer-m-type" style="width:100%;">
+          <option value="percentage">Percentage (%)</option>
+          <option value="flat_amount">Flat Amount (₹)</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Discount Value</label>
+        <input type="number" class="input" id="offer-m-value" placeholder="e.g. 20" style="width:100%;">
+      </div>
+      <div class="form-field">
+        <label>Applicable Products</label>
+        <input type="text" class="input" id="offer-m-products" placeholder="e.g. Clarifying Serum, Kit" style="width:100%;">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Start Date</label>
+        <input type="date" class="input" id="offer-m-start" style="width:100%;">
+      </div>
+      <div class="form-field">
+        <label>End Date</label>
+        <input type="date" class="input" id="offer-m-end" style="width:100%;">
+      </div>
+    </div>
+    <div class="form-field">
+      <label>Conditions (optional)</label>
+      <input type="text" class="input" id="offer-m-conditions" placeholder="e.g. Minimum order ₹999, First order only" style="width:100%;">
+    </div>
+    <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-offer')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveOffer()">Save Offer</button>
+    </div>
+    <input type="hidden" id="offer-m-id" value="">
+  </div>
+</div>
+
+<!-- User Modal -->
+<div class="modal-overlay" id="modal-user">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="user-modal-title">Add User</div>
+      <button class="btn-close" onclick="closeModal('modal-user')">×</button>
+    </div>
+    <div class="form-field">
+      <label>Username</label>
+      <input type="text" class="input" id="user-m-username" style="width:100%;">
+    </div>
+    <div class="form-field">
+      <label>Full Name</label>
+      <input type="text" class="input" id="user-m-fullname" style="width:100%;">
+    </div>
+    <div class="form-row">
+      <div class="form-field">
+        <label>Password</label>
+        <input type="password" class="input" id="user-m-password" style="width:100%;">
+      </div>
+      <div class="form-field">
+        <label>Role</label>
+        <select class="select" id="user-m-role" style="width:100%;">
+          <option value="viewer">Viewer</option>
+          <option value="doctor">Doctor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-user')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveUser()">Create User</button>
+    </div>
+    <input type="hidden" id="user-m-id" value="">
+  </div>
+</div>
+
+<!-- Doctor Edit Modal -->
+<div class="modal-overlay" id="modal-doc-edit">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Chatbot Answer</div>
+      <button class="btn-close" onclick="closeModal('modal-doc-edit')">×</button>
+    </div>
+    <div class="form-field">
+      <label>Customer's Question</label>
+      <div id="doc-edit-question" style="padding:12px; background:rgba(255,255,255,0.05); border-radius:8px; font-size:14px;"></div>
+    </div>
+    <div class="form-field">
+      <label>Original Chatbot Answer</label>
+      <div id="doc-edit-original" style="padding:12px; background:rgba(220,38,38,0.08); border-radius:8px; font-size:13px; color:#f87171; max-height:120px; overflow-y:auto;"></div>
+    </div>
+    <div class="form-field">
+      <label>Corrected Answer</label>
+      <textarea class="textarea" id="doc-edit-corrected" style="width:100%; min-height:120px;" placeholder="Write the correct medical answer…"></textarea>
+    </div>
+    <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:8px;">
+      <button class="btn btn-ghost" onclick="closeModal('modal-doc-edit')">Cancel</button>
+      <button class="btn btn-success" onclick="submitDocEdit()">Save Correction → Update KB</button>
+    </div>
+    <input type="hidden" id="doc-edit-review-id" value="">
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<!--  JAVASCRIPT APPLICATION                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════════════ -->
+<script>
+'use strict';
+
+// ── State ──────────────────────────────────────────────────────────────────
+let TOKEN = localStorage.getItem('clin_admin_token') || '';
+let CURRENT_USER = null;
+let currentTab = 'kb';
+let ordersChartInstance = null;
+let allChats = [];
+
+// ── Utilities ──────────────────────────────────────────────────────────────
+const API = (path, opts = {}) => {
+  opts.headers = opts.headers || {};
+  opts.headers['Content-Type'] = opts.headers['Content-Type'] || 'application/json';
+  if (TOKEN) opts.headers['Authorization'] = 'Bearer ' + TOKEN;
+  return fetch('/api' + path, opts).then(r => {
+    if (r.status === 401) { doLogout(); return {}; }
+    return r.json().catch(() => ({}));
+  });
+};
+
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  t.style.borderLeft = `4px solid ${type === 'error' ? '#dc2626' : type === 'success' ? '#16a34a' : '#7c3aed'}`;
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.display = 'none'; }, 3500);
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function relTime(iso) {
+  if (!iso) return '';
+  const d = new Date(iso), diff = (Date.now() - d) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  return Math.floor(diff/86400) + 'd ago';
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  return new Date(iso).toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'});
+}
+
+function badgeHtml(status) {
+  const map = {
+    draft:'badge-draft', live:'badge-live', active:'badge-active',
+    scheduled:'badge-scheduled', paused:'badge-paused', expired:'badge-expired',
+    pending:'badge-pending', approved:'badge-approved', edited:'badge-edited',
+    admin:'badge-admin', doctor:'badge-doctor', viewer:'badge-viewer'
+  };
+  return `<span class="badge ${map[status]||'badge-draft'}">${escHtml(status)}</span>`;
+}
+
+// ── Auth ───────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const btn = document.getElementById('btn-do-login');
+  btn.textContent = 'Signing in…';
+  btn.disabled = true;
+  document.getElementById('login-error').style.display = 'none';
+
+  const username = document.getElementById('l-username').value.trim();
+  const password = document.getElementById('l-password').value;
+
+  const res = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({username, password})
+  }).then(r => r.json()).catch(() => ({}));
+
+  btn.textContent = 'Sign In →';
+  btn.disabled = false;
+
+  if (res.access_token) {
+    TOKEN = res.access_token;
+    localStorage.setItem('clin_admin_token', TOKEN);
+    CURRENT_USER = res;
+    renderUserChip();
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'flex';
+    initApp();
+  } else {
+    document.getElementById('login-error').style.display = 'block';
+  }
+}
+
+document.getElementById('l-password').addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+
+function doLogout() {
+  localStorage.removeItem('clin_admin_token');
+  TOKEN = '';
+  CURRENT_USER = null;
+  document.getElementById('app-shell').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+function renderUserChip() {
+  if (!CURRENT_USER) return;
+  const name = CURRENT_USER.full_name || CURRENT_USER.username || '';
+  document.getElementById('user-display-name').textContent = name;
+  document.getElementById('user-avatar-initial').textContent = name[0]?.toUpperCase() || 'A';
+  const role = CURRENT_USER.role;
+  const rb = document.getElementById('user-role-badge');
+  rb.textContent = role;
+  rb.className = `role-badge-${role}`;
+
+  // Hide admin-only nav items for non-admins
+  if (role !== 'admin') {
+    document.getElementById('nav-users').style.display = 'none';
+  }
+  if (role === 'viewer') {
+    document.getElementById('nav-testchat').style.display = 'none';
+  }
+}
+
+// Try auto-login if token exists
+(async function autoLogin() {
+  if (!TOKEN) return;
+  const res = await fetch('/api/auth/me', {
+    headers: {'Authorization': 'Bearer ' + TOKEN}
+  }).then(r => r.ok ? r.json() : null).catch(() => null);
+
+  if (res?.username) {
+    CURRENT_USER = res;
+    renderUserChip();
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'flex';
+    initApp();
+  }
+})();
+
+// ── Tab Switching ──────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('nav-' + tab).classList.add('active');
+  currentTab = tab;
+
+  if (tab === 'kb')        { loadKBEntries(); loadDocuments(); loadCategories(); }
+  if (tab === 'offers')    { loadOffers(); }
+  if (tab === 'testchat')  { loadDraftsSummary(); }
+  if (tab === 'chats')     { loadChats(); }
+  if (tab === 'reviews')   { loadReviews(); }
+  if (tab === 'analytics') { loadAnalytics(); }
+  if (tab === 'changelog') { loadChangelog(); }
+  if (tab === 'users')     { loadUsers(); }
+}
+
+function initApp() {
+  loadCategories();
+  loadKBEntries();
+  loadDocuments();
+  loadPendingReviewsBadge();
+  setInterval(loadPendingReviewsBadge, 30000);
+}
+
+// ── KB Entries ─────────────────────────────────────────────────────────────
+let kbEntries = [];
+
+async function loadCategories() {
+  const data = await API('/admin/kb/categories');
+  const cats = data.categories || [];
+  ['kb-cat-filter','kb-m-category','upload-cat'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const defaultOpt = id === 'kb-cat-filter' ? '<option value="">All Categories</option>' : '';
+    el.innerHTML = defaultOpt + cats.map(c => `<option value="${escHtml(c)}">${escHtml(c)}</option>`).join('');
+  });
+}
+
+async function loadKBEntries() {
+  const search = document.getElementById('kb-search')?.value || '';
+  const cat = document.getElementById('kb-cat-filter')?.value || '';
+  const status = document.getElementById('kb-status-filter')?.value || '';
+
+  let url = '/admin/kb?';
+  if (cat) url += 'category=' + encodeURIComponent(cat) + '&';
+  if (status) url += 'status=' + encodeURIComponent(status) + '&';
+  if (search) url += 'search=' + encodeURIComponent(search);
+
+  const data = await API(url);
+  kbEntries = data.entries || [];
+
+  const draftCount = kbEntries.filter(e => e.status === 'draft').length;
+  document.getElementById('kb-draft-count').textContent = `${draftCount} draft${draftCount !== 1 ? 's' : ''} pending publish`;
+
+  const tbody = document.getElementById('kb-tbody');
+  if (kbEntries.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted);">No entries found. Create your first FAQ!</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = kbEntries.map((e, i) => `
+    <tr>
+      <td>${e.id}</td>
+      <td><span style="font-size:11px;background:rgba(124,58,237,0.15);color:#c4b5fd;padding:2px 8px;border-radius:10px;">${escHtml(e.category||'General')}</span></td>
+      <td style="max-width:280px;"><div style="font-weight:600;margin-bottom:3px;">${escHtml(e.question||'')}</div>
+        <div style="font-size:11px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px;">${escHtml(e.answer||'').substring(0,90)}…</div>
+      </td>
+      <td>${badgeHtml(e.status)}</td>
+      <td style="font-size:11px;color:var(--text-muted);">${relTime(e.updated_at)}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editKBEntry(${e.id})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteKBEntry(${e.id})">Del</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openKBModal(entry = null) {
+  document.getElementById('kb-m-id').value = entry ? entry.id : '';
+  document.getElementById('kb-m-question').value = entry ? entry.question : '';
+  document.getElementById('kb-m-answer').value = entry ? entry.answer : '';
+  if (entry) document.getElementById('kb-m-category').value = entry.category;
+  document.getElementById('kb-modal-title').textContent = entry ? 'Edit KB Entry' : 'New KB Entry';
+  openModal('modal-kb');
+}
+
+function editKBEntry(id) {
+  const entry = kbEntries.find(e => e.id === id);
+  if (entry) openKBModal(entry);
+}
+
+async function saveKBEntry() {
+  const id = document.getElementById('kb-m-id').value;
+  const body = {
+    category: document.getElementById('kb-m-category').value,
+    question: document.getElementById('kb-m-question').value.trim(),
+    answer: document.getElementById('kb-m-answer').value.trim(),
+  };
+  if (!body.question || !body.answer) { showToast('Question and answer are required.', 'error'); return; }
+
+  let res;
+  if (id) {
+    res = await API('/admin/kb/' + id, { method: 'PUT', body: JSON.stringify(body) });
+  } else {
+    res = await API('/admin/kb', { method: 'POST', body: JSON.stringify(body) });
+  }
+
+  if (res.status === 'created' || res.status === 'updated') {
+    showToast(id ? '✓ Entry updated (saved as draft).' : '✓ Entry created as draft.', 'success');
+    closeModal('modal-kb');
+    loadKBEntries();
+  } else {
+    showToast('❌ Failed to save entry.', 'error');
+  }
+}
+
+async function deleteKBEntry(id) {
+  if (!confirm('Delete this KB entry? This cannot be undone.')) return;
+  const res = await API('/admin/kb/' + id, { method: 'DELETE' });
+  if (res.status === 'deleted') { showToast('✓ Entry deleted.', 'success'); loadKBEntries(); }
+  else showToast('❌ Failed to delete.', 'error');
+}
+
+async function pushToLive() {
+  if (!confirm('Push all draft entries to live? Customers will see the updated answers immediately.')) return;
+  const res = await API('/admin/push-to-live', { method: 'POST' });
+  if (res.entries_pushed !== undefined) {
+    showToast(`🚀 ${res.entries_pushed} entries pushed live! FAISS rebuild triggered.`, 'success');
+    loadKBEntries();
+    loadDraftsSummary();
+  } else {
+    showToast('❌ Push failed: ' + (res.detail || 'Unknown error'), 'error');
+  }
+}
+
+async function restoreKB() {
+  if (!confirm('Restore the previous published version? Current live entries will revert.')) return;
+  const res = await API('/admin/restore', { method: 'POST' });
+  if (res.status === 'restored') {
+    showToast(`↩ Restored ${res.entries_restored} entries from snapshot.`, 'success');
+    loadKBEntries();
+  } else {
+    showToast(res.detail || '❌ No previous snapshot to restore.', 'error');
+  }
+}
+
+async function loadDraftsSummary() {
+  const data = await API('/admin/kb/drafts');
+  const el = document.getElementById('drafts-summary');
+  if (!el) return;
+  const count = data.count || 0;
+  el.innerHTML = count > 0
+    ? `<div style="background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:8px;padding:14px;">
+        <div style="font-size:22px;font-weight:800;color:#c4b5fd;">${count}</div>
+        <div style="font-size:13px;color:var(--text-muted);">Draft entries ready to push live</div>
+       </div>`
+    : '<div style="color:var(--text-muted);font-size:14px;">No pending drafts. All content is live.</div>';
+}
+
+// Documents
+async function loadDocuments() {
+  const data = await API('/admin/kb/documents');
+  const docs = data.documents || [];
+  const tbody = document.getElementById('docs-tbody');
+  if (docs.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--text-muted);">No documents uploaded yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = docs.map((d, i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>📎 ${escHtml(d.original_filename)}</td>
+      <td>${escHtml(d.category||'General')}</td>
+      <td>${badgeHtml(d.status)}</td>
+      <td>${escHtml(d.uploaded_by||'admin')}</td>
+      <td style="font-size:11px;color:var(--text-muted);">${fmtDate(d.uploaded_at)}</td>
+    </tr>
+  `).join('');
+}
+
+function openDocUploadModal() {
+  document.getElementById('upload-file-name').textContent = '';
+  document.getElementById('doc-file-input').value = '';
+  openModal('modal-upload');
+}
+
+function handleFileSelect(input) {
+  document.getElementById('upload-file-name').textContent = input.files[0]?.name || '';
+}
+
+async function uploadDocument() {
+  const fileInput = document.getElementById('doc-file-input');
+  const cat = document.getElementById('upload-cat').value;
+  if (!fileInput.files[0]) { showToast('Please select a file.', 'error'); return; }
+
+  const fd = new FormData();
+  fd.append('file', fileInput.files[0]);
+  fd.append('category', cat);
+
+  const res = await fetch('/api/admin/kb/documents', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + TOKEN },
+    body: fd
+  }).then(r => r.json()).catch(() => ({}));
+
+  if (res.status === 'uploaded') {
+    showToast(`✓ "${res.filename}" uploaded successfully!`, 'success');
+    closeModal('modal-upload');
+    loadDocuments();
+  } else {
+    showToast('❌ Upload failed: ' + (res.detail || 'Unknown error'), 'error');
+  }
+}
+
+// ── Test Chat ──────────────────────────────────────────────────────────────
+async function sendTestMessage() {
+  const input = document.getElementById('test-chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+
+  const win = document.getElementById('test-chat-window');
+  win.innerHTML += `<div class="chat-bubble-user"><div class="chat-sender">You</div>${escHtml(msg)}</div>`;
+  win.scrollTop = win.scrollHeight;
+
+  const res = await API('/admin/test-chat', {
+    method: 'POST',
+    body: JSON.stringify({ message: msg, session_id: 'test_' + Date.now() })
+  });
+
+  const answerHtml = res.matched_question
+    ? `<div class="chat-sender" style="color:#a78bfa;">🧪 Draft KB Match: ${escHtml(res.matched_question)}</div>
+       ${escHtml(res.answer)}<div class="chat-time">Confidence: ${(res.confidence*100).toFixed(0)}% · ${escHtml(res.category||'')}</div>`
+    : `<div style="color:var(--text-muted);">${escHtml(res.answer)}</div>`;
+
+  win.innerHTML += `<div class="chat-bubble-bot">${answerHtml}</div>`;
+  win.innerHTML += `<div class="chat-bubble-system">📝 ${escHtml(res.note||'')}</div>`;
+  win.scrollTop = win.scrollHeight;
+}
+
+// ── Offers ─────────────────────────────────────────────────────────────────
+let offersData = [];
+
+async function loadOffers() {
+  const data = await API('/admin/offers');
+  offersData = data.offers || [];
+  const grid = document.getElementById('offers-grid');
+  if (offersData.length === 0) {
+    grid.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:60px;grid-column:1/-1;">No offers yet. Create your first offer!</div>';
+    return;
+  }
+  const statusColors = { active:'#4ade80', scheduled:'#38bdf8', paused:'#fbbf24', expired:'#f87171' };
+  grid.innerHTML = offersData.map(o => {
+    const color = statusColors[o.status] || '#94a3b8';
+    const prods = Array.isArray(o.applicable_products) ? o.applicable_products.join(', ') : '';
+    const valLabel = o.discount_type === 'percentage' ? `${o.discount_value}%` : `₹${o.discount_value}`;
+    return `
+    <div class="card" style="border-left:4px solid ${color};">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div>
+          <div style="font-size:17px;font-weight:700;margin-bottom:4px;">${escHtml(o.name)}</div>
+          <div style="font-size:13px;color:var(--text-muted);">${escHtml(o.discount_code||'')} · ${valLabel} off</div>
+        </div>
+        ${badgeHtml(o.status)}
+      </div>
+      ${prods ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">Products: ${escHtml(prods)}</div>` : ''}
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">📅 ${escHtml(o.start_date)} → ${escHtml(o.end_date)}</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-ghost btn-sm" onclick="editOffer(${o.id})">Edit</button>
+        <button class="btn ${o.status==='paused'?'btn-success':'btn-warning'} btn-sm" onclick="togglePauseOffer(${o.id})">
+          ${o.status==='paused'?'Resume':'Pause'}
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteOffer(${o.id})">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openOfferModal() {
+  document.getElementById('offer-m-id').value = '';
+  document.getElementById('offer-m-name').value = '';
+  document.getElementById('offer-m-code').value = '';
+  document.getElementById('offer-m-value').value = '';
+  document.getElementById('offer-m-products').value = '';
+  document.getElementById('offer-m-conditions').value = '';
+  document.getElementById('offer-m-start').value = '';
+  document.getElementById('offer-m-end').value = '';
+  document.getElementById('offer-m-type').value = 'percentage';
+  document.getElementById('offer-modal-title').textContent = 'Create Offer';
+  openModal('modal-offer');
+}
+
+function editOffer(id) {
+  const o = offersData.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('offer-m-id').value = id;
+  document.getElementById('offer-m-name').value = o.name;
+  document.getElementById('offer-m-code').value = o.discount_code || '';
+  document.getElementById('offer-m-type').value = o.discount_type;
+  document.getElementById('offer-m-value').value = o.discount_value;
+  document.getElementById('offer-m-products').value = Array.isArray(o.applicable_products) ? o.applicable_products.join(', ') : '';
+  document.getElementById('offer-m-start').value = o.start_date;
+  document.getElementById('offer-m-end').value = o.end_date;
+  document.getElementById('offer-modal-title').textContent = 'Edit Offer';
+  openModal('modal-offer');
+}
+
+async function saveOffer() {
+  const id = document.getElementById('offer-m-id').value;
+  const prodsRaw = document.getElementById('offer-m-products').value;
+  const body = {
+    name: document.getElementById('offer-m-name').value.trim(),
+    discount_code: document.getElementById('offer-m-code').value.trim(),
+    discount_type: document.getElementById('offer-m-type').value,
+    discount_value: parseFloat(document.getElementById('offer-m-value').value) || 0,
+    applicable_products: prodsRaw ? prodsRaw.split(',').map(s => s.trim()).filter(Boolean) : [],
+    conditions: { notes: document.getElementById('offer-m-conditions').value.trim() },
+    start_date: document.getElementById('offer-m-start').value,
+    end_date: document.getElementById('offer-m-end').value,
+  };
+  if (!body.name || !body.start_date || !body.end_date) {
+    showToast('Name, start date, and end date are required.', 'error'); return;
+  }
+
+  let res;
+  if (id) {
+    res = await API('/admin/offers/' + id, { method: 'PUT', body: JSON.stringify(body) });
+  } else {
+    res = await API('/admin/offers', { method: 'POST', body: JSON.stringify(body) });
+  }
+
+  if (res.status === 'created' || res.status === 'updated') {
+    showToast(id ? '✓ Offer updated.' : `✓ Offer created (${res.offer_status}).`, 'success');
+    closeModal('modal-offer');
+    loadOffers();
+  } else {
+    showToast('❌ Failed: ' + (res.detail || 'Unknown error'), 'error');
+  }
+}
+
+async function togglePauseOffer(id) {
+  const res = await API('/admin/offers/' + id + '/pause', { method: 'PATCH' });
+  if (res.status) { showToast(`✓ Offer is now ${res.status}.`, 'success'); loadOffers(); }
+  else showToast('❌ Failed to toggle.', 'error');
+}
+
+async function deleteOffer(id) {
+  if (!confirm('Delete this offer permanently?')) return;
+  const res = await API('/admin/offers/' + id, { method: 'DELETE' });
+  if (res.status === 'deleted') { showToast('✓ Offer deleted.', 'success'); loadOffers(); }
+  else showToast('❌ Failed.', 'error');
+}
+
+// ── Customer Chats ─────────────────────────────────────────────────────────
+async function loadChats() {
+  const status = document.getElementById('chats-status-filter').value;
+  const search = document.getElementById('chats-search').value;
+  let url = '/admin/chats?';
+  if (status) url += 'status=' + status + '&';
+  if (search) url += 'search=' + encodeURIComponent(search);
+  const data = await API(url);
+  allChats = data.chats || [];
+
+  const el = document.getElementById('chats-list');
+  if (allChats.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:60px;">No chat sessions found.</div>';
+    return;
+  }
+
+  el.innerHTML = allChats.map(c => {
+    const statusBadge = c.is_taken_over
+      ? `<span class="badge badge-edited">🛡️ Taken Over</span>`
+      : c.is_live
+        ? `<span class="badge badge-active">🔴 Live</span>`
+        : `<span class="badge badge-draft">✅ Ended</span>`;
+
+    const transcriptHtml = (c.transcript||[]).slice(-6).map(t => {
+      if (t.sender === 'system') return `<div class="chat-bubble-system">${escHtml(t.message)}</div>`;
+      const isUser = t.sender === 'user';
+      const isAdmin = t.sender?.startsWith('admin:');
+      if (isAdmin) return `<div class="chat-bubble-admin"><div class="chat-sender" style="color:#5eead4;">🛡️ Admin</div>${escHtml(t.message)}</div>`;
+      if (isUser) return `<div class="chat-bubble-user"><div class="chat-sender">Customer</div>${escHtml(t.message)}</div>`;
+      return `<div class="chat-bubble-bot"><div class="chat-sender">🤖 Bot</div>${escHtml(t.message)}</div>`;
+    }).join('');
+
+    const sessionId = escHtml(c.session_id);
+    return `
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-size:16px;font-weight:700;">${escHtml(c.user_name||'Unknown')}</div>
+          <div style="font-size:12px;color:var(--text-muted);">
+            📞 ${escHtml(c.user_phone||'No phone')} · ${escHtml(c.channel||'')} · ${relTime(c.created_at)}
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          ${statusBadge}
+          ${c.is_taken_over
+            ? `<button class="btn btn-teal btn-sm" onclick="handbackChat('${sessionId}')">🤖 Hand Back to Bot</button>`
+            : c.is_live
+              ? `<button class="btn btn-warning btn-sm" onclick="takeoverChat('${sessionId}')">🛡️ Take Over</button>`
+              : ''
+          }
+          <button class="btn btn-ghost btn-sm" onclick="tagForReview('${sessionId}', '', '')">🩺 Tag for Review</button>
+        </div>
+      </div>
+      ${c.reason ? `<div style="font-size:12px;color:var(--text-muted);margin-bottom:12px;">Reason: ${escHtml(c.reason)}</div>` : ''}
+      <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:14px;max-height:200px;overflow-y:auto;">
+        ${transcriptHtml || '<div style="color:var(--text-muted);font-size:13px;">No transcript yet.</div>'}
+      </div>
+      ${c.is_taken_over ? `
+        <div style="margin-top:12px;display:flex;gap:10px;">
+          <input type="text" class="input" id="admin-msg-${sessionId}" placeholder="Type a message to the customer…" style="flex:1;" onkeydown="if(event.key==='Enter') sendAdminMsg('${sessionId}')">
+          <button class="btn btn-teal btn-sm" onclick="sendAdminMsg('${sessionId}')">Send</button>
+        </div>
+      ` : ''}
+    </div>`;
+  }).join('');
+}
+
+async function takeoverChat(sessionId) {
+  const res = await API('/admin/chats/takeover', { method:'POST', body: JSON.stringify({session_id: sessionId}) });
+  if (res.status === 'taken_over') { showToast('🛡️ You have taken over the chat. Bot is paused.', 'success'); loadChats(); }
+  else showToast('❌ Failed: ' + (res.detail || 'Error'), 'error');
+}
+
+async function handbackChat(sessionId) {
+  const res = await API('/admin/chats/handback', { method:'POST', body: JSON.stringify({session_id: sessionId}) });
+  if (res.status === 'handed_back') { showToast('🤖 Chat handed back to bot.', 'success'); loadChats(); }
+  else showToast('❌ Failed: ' + (res.detail || 'Error'), 'error');
+}
+
+async function sendAdminMsg(sessionId) {
+  const input = document.getElementById('admin-msg-' + sessionId);
+  const msg = input?.value?.trim();
+  if (!msg) return;
+  const res = await API('/admin/chats/message', { method:'POST', body: JSON.stringify({session_id: sessionId, message: msg}) });
+  if (res.status === 'sent') { input.value = ''; showToast('✓ Message sent.', 'success'); loadChats(); }
+  else showToast('❌ Failed to send message.', 'error');
+}
+
+function tagForReview(sessionId, question, answer) {
+  const q = prompt('Customer question to tag for review:') || question;
+  const a = prompt('Chatbot answer to review:') || answer;
+  const note = prompt('What looks wrong? (optional):') || '';
+  if (!q) return;
+  API('/admin/reviews/tag', {
+    method: 'POST',
+    body: JSON.stringify({ session_id: sessionId, customer_question: q, chatbot_answer: a, tag_note: note })
+  }).then(res => {
+    if (res.status === 'tagged') showToast('🩺 Tagged for doctor review!', 'success');
+    else showToast('❌ Failed to tag.', 'error');
+  });
+}
+
+// ── Doctor Reviews ─────────────────────────────────────────────────────────
+let reviewsData = [];
+let currentEditReviewId = null;
+
+async function loadReviews() {
+  const status = document.getElementById('reviews-status-filter').value;
+  let url = '/admin/reviews';
+  if (status) url += '?status=' + status;
+  const data = await API(url);
+  reviewsData = data.reviews || [];
+
+  const el = document.getElementById('reviews-list');
+  if (reviewsData.length === 0) {
+    el.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:60px;">No reviews in queue.</div>';
+    return;
+  }
+
+  el.innerHTML = reviewsData.map(r => `
+    <div class="card" style="margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+        <div>
+          <div style="font-weight:700;font-size:15px;margin-bottom:4px;">Customer Q: ${escHtml(r.customer_question||'')}</div>
+          <div style="font-size:12px;color:var(--text-muted);">
+            Tagged by <strong>${escHtml(r.tagged_by||'admin')}</strong> · ${relTime(r.created_at)}
+            ${r.tag_note ? ` · Note: "${escHtml(r.tag_note)}"` : ''}
+          </div>
+        </div>
+        ${badgeHtml(r.status)}
+      </div>
+
+      <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px;">
+        <div style="font-size:11px;color:var(--text-muted);margin-bottom:4px;">Chatbot's Answer:</div>
+        ${escHtml(r.chatbot_answer||'')}
+      </div>
+
+      ${r.status === 'edited' ? `
+        <div style="background:rgba(22,163,74,0.08);border-radius:8px;padding:12px;margin-bottom:12px;font-size:13px;border:1px solid rgba(22,163,74,0.2);">
+          <div style="font-size:11px;color:#4ade80;margin-bottom:4px;">✏️ Doctor's Correction (by ${escHtml(r.reviewed_by||'')} · ${relTime(r.reviewed_at)}):</div>
+          ${escHtml(r.corrected_answer||'')}
+        </div>
+      ` : ''}
+
+      ${r.status === 'pending' ? `
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-success btn-sm" onclick="approveReview(${r.id})">✅ Approve — Answer is Correct</button>
+          <button class="btn btn-primary btn-sm" onclick="openDocEdit(${r.id})">✏️ Edit & Correct</button>
+        </div>
+      ` : `
+        <div style="font-size:12px;color:var(--text-muted);">
+          Reviewed by <strong>${escHtml(r.reviewed_by||'—')}</strong> · ${fmtDate(r.reviewed_at)}
+        </div>
+      `}
+    </div>
+  `).join('');
+}
+
+async function approveReview(id) {
+  const res = await API('/admin/reviews/' + id + '/approve', {
+    method: 'POST', body: JSON.stringify({})
+  });
+  if (res.status === 'approved') { showToast('✅ Answer approved!', 'success'); loadReviews(); loadPendingReviewsBadge(); }
+  else showToast('❌ Failed to approve.', 'error');
+}
+
+function openDocEdit(id) {
+  const r = reviewsData.find(x => x.id === id);
+  if (!r) return;
+  currentEditReviewId = id;
+  document.getElementById('doc-edit-review-id').value = id;
+  document.getElementById('doc-edit-question').textContent = r.customer_question || '';
+  document.getElementById('doc-edit-original').textContent = r.chatbot_answer || '';
+  document.getElementById('doc-edit-corrected').value = '';
+  openModal('modal-doc-edit');
+}
+
+async function submitDocEdit() {
+  const id = document.getElementById('doc-edit-review-id').value;
+  const corrected = document.getElementById('doc-edit-corrected').value.trim();
+  if (!corrected) { showToast('Please write the corrected answer.', 'error'); return; }
+
+  const res = await API('/admin/reviews/' + id + '/edit', {
+    method: 'POST', body: JSON.stringify({ corrected_answer: corrected })
+  });
+  if (res.status === 'edited') {
+    showToast('✏️ Correction saved and KB updated!', 'success');
+    closeModal('modal-doc-edit');
+    loadReviews();
+    loadPendingReviewsBadge();
+  } else showToast('❌ Failed: ' + (res.detail || 'Error'), 'error');
+}
+
+async function loadPendingReviewsBadge() {
+  const data = await API('/admin/reviews?status=pending');
+  const count = data.count || 0;
+  const badge = document.getElementById('pending-badge');
+  if (count > 0) { badge.textContent = count; badge.style.display = 'inline-block'; }
+  else badge.style.display = 'none';
+}
+
+// ── Analytics ──────────────────────────────────────────────────────────────
+async function loadAnalytics() {
+  const from = document.getElementById('analytics-from').value;
+  const to = document.getElementById('analytics-to').value;
+  const view = document.getElementById('analytics-view').value;
+
+  let funnelUrl = '/admin/analytics/funnel?';
+  if (from) funnelUrl += 'date_from=' + from + '&';
+  if (to)   funnelUrl += 'date_to=' + to;
+
+  let ordersUrl = '/admin/analytics/orders?view=' + view;
+  if (from) ordersUrl += '&date_from=' + from;
+  if (to)   ordersUrl += '&date_to=' + to;
+
+  const [funnel, orders] = await Promise.all([API(funnelUrl), API(ordersUrl)]);
+
+  // KPIs
+  const visitors = funnel.funnel?.[0]?.count || 0;
+  const opened = funnel.funnel?.[1]?.count || 0;
+  document.getElementById('kpi-visitors').textContent = visitors.toLocaleString();
+  document.getElementById('kpi-opened').textContent = opened.toLocaleString();
+  document.getElementById('kpi-orders').textContent = (orders.total_orders || 0).toLocaleString();
+  document.getElementById('kpi-revenue').textContent = '₹' + (orders.total_revenue || 0).toLocaleString();
+
+  // Funnel bars
+  const funnelEl = document.getElementById('funnel-chart');
+  const funnelMax = funnel.funnel?.[0]?.count || 1;
+  funnelEl.innerHTML = (funnel.funnel || []).map(stage => {
+    const pct = funnelMax > 0 ? ((stage.count / funnelMax) * 100).toFixed(1) : 0;
+    return `
+    <div class="funnel-bar-wrap">
+      <div class="funnel-label">
+        <span>${escHtml(stage.label)}</span>
+        <span style="font-weight:700;">${stage.count.toLocaleString()}</span>
+      </div>
+      <div class="funnel-bar">
+        <div class="funnel-fill" style="width:${pct}%;">${pct}%</div>
+      </div>
+      ${stage.dropoff_percent > 0 ? `<div class="funnel-drop">↓ ${stage.dropoff_percent}% drop-off from previous stage</div>` : ''}
+    </div>`;
+  }).join('');
+
+  // Non-openers panel
+  document.getElementById('non-openers-panel').innerHTML = `
+    <div style="font-size:56px;font-weight:800;font-family:'Outfit',sans-serif;color:#f87171;">${(funnel.non_openers||0).toLocaleString()}</div>
+    <div style="color:var(--text-muted);font-size:14px;margin-top:8px;">Visitors who never opened the chat</div>
+    <div style="font-size:28px;font-weight:700;color:var(--text);margin-top:12px;">${funnel.non_opener_percent||0}%</div>
+    <div style="color:var(--text-muted);font-size:13px;">of total visitors</div>
+  `;
+
+  // Orders chart
+  const timeline = orders.timeline || [];
+  const labels = timeline.map(t => t.period);
+  const orderVals = timeline.map(t => t.orders);
+  const revenueVals = timeline.map(t => t.revenue);
+
+  if (ordersChartInstance) ordersChartInstance.destroy();
+  const ctx = document.getElementById('ordersChart').getContext('2d');
+  ordersChartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Orders', data: orderVals, backgroundColor: 'rgba(124,58,237,0.7)', borderRadius: 6 },
+        { label: 'Revenue (₹)', data: revenueVals, backgroundColor: 'rgba(15,118,110,0.7)', borderRadius: 6, yAxisID: 'y2' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#94a3b8' } } },
+      scales: {
+        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } },
+        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' }, title: { display:true, text:'Orders', color:'#94a3b8' } },
+        y2: { position:'right', grid: { display:false }, ticks: { color:'#4ade80' }, title: { display:true, text:'Revenue ₹', color:'#4ade80' } }
+      }
+    }
+  });
+}
+
+function exportAnalytics(type) {
+  const from = document.getElementById('analytics-from').value;
+  const to = document.getElementById('analytics-to').value;
+  const view = document.getElementById('analytics-view').value;
+  let url = `/api/admin/analytics/export?type=${type}&view=${view}`;
+  if (from) url += '&date_from=' + from;
+  if (to) url += '&date_to=' + to;
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', '');
+  link.click();
+}
+
+// ── Change Log ─────────────────────────────────────────────────────────────
+let changelogPage = 1;
+
+async function loadChangelog(page = 1) {
+  changelogPage = page;
+  const from = document.getElementById('log-from').value;
+  const to = document.getElementById('log-to').value;
+  const type = document.getElementById('log-type-filter').value;
+  const user = document.getElementById('log-user-filter').value.trim();
+
+  let url = `/admin/audit-log?page=${page}&page_size=40`;
+  if (from) url += '&date_from=' + from;
+  if (to) url += '&date_to=' + to;
+  if (type) url += '&action_type=' + encodeURIComponent(type);
+  if (user) url += '&performed_by=' + encodeURIComponent(user);
+
+  const data = await API(url);
+
+  // Populate action type filter
+  const typeFilter = document.getElementById('log-type-filter');
+  if (data.action_types?.length) {
+    const current = typeFilter.value;
+    typeFilter.innerHTML = '<option value="">All Action Types</option>' +
+      (data.action_types||[]).map(t => `<option value="${escHtml(t)}" ${t===current?'selected':''}>${escHtml(t.replace(/_/g,' '))}</option>`).join('');
+  }
+
+  const tbody = document.getElementById('changelog-tbody');
+  const logs = data.logs || [];
+  if (logs.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:40px;color:var(--text-muted);">No log entries found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = logs.map((l, i) => `
+    <tr>
+      <td style="color:var(--text-dim);font-size:11px;">${l.id}</td>
+      <td><code style="background:rgba(124,58,237,0.15);color:#c4b5fd;padding:2px 8px;border-radius:4px;font-size:11px;">${escHtml(l.action_type||'').replace(/_/g,' ')}</code></td>
+      <td style="font-size:12px;">${escHtml(l.entity_name||l.entity_id||'')}</td>
+      <td style="font-size:11px;color:#f87171;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(l.old_value||'')}">${escHtml((l.old_value||'').substring(0,60))}</td>
+      <td style="font-size:11px;color:#4ade80;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escHtml(l.new_value||'')}">${escHtml((l.new_value||'').substring(0,60))}</td>
+      <td><span class="badge badge-admin" style="font-size:10px;">${escHtml(l.performed_by||'admin')}</span></td>
+      <td style="font-size:11px;color:var(--text-muted);">${relTime(l.performed_at)}</td>
+    </tr>
+  `).join('');
+
+  // Pagination
+  const pagDiv = document.getElementById('changelog-pagination');
+  const pages = data.pages || 1;
+  pagDiv.innerHTML = Array.from({length: Math.min(pages, 10)}, (_, i) => i+1).map(p =>
+    `<button class="btn ${p===page?'btn-primary':'btn-ghost'} btn-sm" onclick="loadChangelog(${p})">${p}</button>`
+  ).join('');
+}
+
+// ── Users ──────────────────────────────────────────────────────────────────
+let usersData = [];
+
+async function loadUsers() {
+  const data = await API('/admin/users');
+  usersData = data.users || [];
+  const tbody = document.getElementById('users-tbody');
+  tbody.innerHTML = usersData.map((u, i) => `
+    <tr>
+      <td>${u.id}</td>
+      <td style="font-weight:600;">${escHtml(u.username)}</td>
+      <td>${escHtml(u.full_name||'')}</td>
+      <td>${badgeHtml(u.role)}</td>
+      <td>${u.is_active ? '<span style="color:#4ade80;font-size:12px;font-weight:700;">● Active</span>' : '<span style="color:#f87171;font-size:12px;">● Inactive</span>'}</td>
+      <td style="font-size:11px;color:var(--text-muted);">${fmtDate(u.created_at)}</td>
+      <td>
+        <button class="btn btn-warning btn-sm" onclick="toggleUserActive(${u.id},${u.is_active})">
+          ${u.is_active ? 'Deactivate' : 'Activate'}
+        </button>
+        <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function openUserModal() {
+  document.getElementById('user-m-id').value = '';
+  document.getElementById('user-m-username').value = '';
+  document.getElementById('user-m-fullname').value = '';
+  document.getElementById('user-m-password').value = '';
+  document.getElementById('user-m-role').value = 'viewer';
+  document.getElementById('user-modal-title').textContent = 'Add User';
+  openModal('modal-user');
+}
+
+async function saveUser() {
+  const body = {
+    username: document.getElementById('user-m-username').value.trim(),
+    full_name: document.getElementById('user-m-fullname').value.trim(),
+    password: document.getElementById('user-m-password').value,
+    role: document.getElementById('user-m-role').value,
+  };
+  if (!body.username || !body.password) { showToast('Username and password are required.', 'error'); return; }
+
+  const res = await API('/admin/users', { method: 'POST', body: JSON.stringify(body) });
+  if (res.status === 'created') {
+    showToast(`✓ User "${res.username}" created as ${res.role}.`, 'success');
+    closeModal('modal-user');
+    loadUsers();
+  } else showToast('❌ Failed: ' + (res.detail || 'Error'), 'error');
+}
+
+async function toggleUserActive(id, currentActive) {
+  const res = await API('/admin/users/' + id, {
+    method: 'PUT',
+    body: JSON.stringify({ is_active: currentActive ? 0 : 1 })
+  });
+  if (res.status === 'updated') { showToast('✓ User status updated.', 'success'); loadUsers(); }
+  else showToast('❌ Failed.', 'error');
+}
+
+async function deleteUser(id) {
+  if (!confirm('Delete this user? This cannot be undone.')) return;
+  const res = await API('/admin/users/' + id, { method: 'DELETE' });
+  if (res.status === 'deleted') { showToast('✓ User deleted.', 'success'); loadUsers(); }
+  else showToast('❌ Failed: ' + (res.detail || 'Error'), 'error');
+}
+</script>
+</body>
+</html>
