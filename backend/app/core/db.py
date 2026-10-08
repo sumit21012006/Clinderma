@@ -92,3 +92,182 @@ def get_conn():
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
     conn = sqlite3.connect(db_path, check_same_thread=False)
     return _SQLiteConn(conn)
+
+
+def run_migrations():
+    """Create all tables (original + new PRD tables) if they don't exist.
+    Safe to call on every startup — uses IF NOT EXISTS throughout.
+    """
+    conn = get_conn()
+    cursor = conn.cursor()
+
+    # ─── Original Tables ──────────────────────────────────────────────────────
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS leads (
+            lead_id TEXT PRIMARY KEY,
+            name TEXT,
+            phone_number TEXT,
+            concern TEXT,
+            channel TEXT DEFAULT 'website',
+            kylas_synced INTEGER DEFAULT 0,
+            created_at TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS handoffs (
+            session_id TEXT PRIMARY KEY,
+            user_name TEXT,
+            user_phone TEXT,
+            reason TEXT,
+            channel TEXT,
+            status TEXT DEFAULT 'pending',
+            severity TEXT DEFAULT 'moderate',
+            doctor_notes TEXT DEFAULT '',
+            ai_summary TEXT DEFAULT '',
+            takeover_by TEXT DEFAULT NULL,
+            created_at TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS transcripts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT,
+            sender TEXT,
+            message TEXT,
+            timestamp TEXT
+        )
+    """)
+
+    # ─── PRD Phase 1: New Tables ──────────────────────────────────────────────
+
+    # Admin-editable Knowledge Base entries
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS kb_entries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            category TEXT,
+            question TEXT,
+            answer TEXT,
+            status TEXT DEFAULT 'draft',
+            live_answer TEXT DEFAULT '',
+            created_by TEXT DEFAULT 'admin',
+            updated_at TEXT,
+            created_at TEXT
+        )
+    """)
+
+    # Uploaded KB documents
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS kb_documents (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            filename TEXT,
+            original_filename TEXT,
+            category TEXT DEFAULT 'General',
+            status TEXT DEFAULT 'draft',
+            file_path TEXT,
+            uploaded_by TEXT DEFAULT 'admin',
+            uploaded_at TEXT
+        )
+    """)
+
+    # Publish history snapshots (for undo/restore)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS publish_history (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            snapshot TEXT,
+            pushed_by TEXT DEFAULT 'admin',
+            pushed_at TEXT
+        )
+    """)
+
+    # Offers management
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS offers (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            discount_code TEXT,
+            discount_type TEXT DEFAULT 'percentage',
+            discount_value REAL DEFAULT 0,
+            applicable_products TEXT DEFAULT '[]',
+            conditions TEXT DEFAULT '{}',
+            start_date TEXT,
+            end_date TEXT,
+            status TEXT DEFAULT 'scheduled',
+            created_by TEXT DEFAULT 'admin',
+            created_at TEXT
+        )
+    """)
+
+    # Doctor review queue
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS doctor_reviews (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT,
+            customer_question TEXT,
+            chatbot_answer TEXT,
+            tagged_by TEXT DEFAULT 'admin',
+            tag_note TEXT DEFAULT '',
+            status TEXT DEFAULT 'pending',
+            reviewed_by TEXT DEFAULT NULL,
+            corrected_answer TEXT DEFAULT NULL,
+            reviewed_at TEXT DEFAULT NULL,
+            created_at TEXT
+        )
+    """)
+
+    # Audit / Change log
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS audit_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            action_type TEXT,
+            entity_id TEXT DEFAULT '',
+            entity_name TEXT DEFAULT '',
+            old_value TEXT DEFAULT '',
+            new_value TEXT DEFAULT '',
+            performed_by TEXT DEFAULT 'admin',
+            performed_at TEXT
+        )
+    """)
+
+    # Funnel events for analytics
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS funnel_events (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT DEFAULT '',
+            event_type TEXT,
+            metadata TEXT DEFAULT '{}',
+            created_at TEXT
+        )
+    """)
+
+    # Admin users with roles (JWT auth)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS admin_users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            password_hash TEXT NOT NULL,
+            role TEXT DEFAULT 'viewer',
+            full_name TEXT DEFAULT '',
+            is_active INTEGER DEFAULT 1,
+            created_at TEXT
+        )
+    """)
+
+    # ─── Safe column migrations for older deployments ─────────────────────────
+    for col_def in [
+        ("severity", "TEXT DEFAULT 'moderate'"),
+        ("doctor_notes", "TEXT DEFAULT ''"),
+        ("ai_summary", "TEXT DEFAULT ''"),
+        ("takeover_by", "TEXT DEFAULT NULL"),
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE handoffs ADD COLUMN {col_def[0]} {col_def[1]}")
+            conn.commit()
+        except Exception:
+            pass
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print("[DB] Migrations complete — all tables ready.")
