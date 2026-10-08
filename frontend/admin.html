@@ -4,66 +4,67 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Clinderma Admin Panel — Knowledge Base, Offers, Live Chats & Analytics</title>
-  <meta name="description" content="Clinderma Enterprise Admin Panel: Real-time clinical chatbot administration, offers engine, tele-dermatology review queue, and conversion analytics.">
+  <meta name="description" content="Clinderma Enterprise Clinical Console: Knowledge Base administration, monthly offers engine, tele-dermatology review queue, and conversion analytics.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-hover: #4f46e5;
-      --primary-light: rgba(99, 102, 241, 0.15);
-      --primary-glow: rgba(99, 102, 241, 0.35);
-      --teal: #0f766e;
-      --teal-light: rgba(15, 118, 110, 0.15);
-      --emerald: #10b981;
-      --emerald-light: rgba(16, 185, 129, 0.15);
-      --accent: #f59e0b;
-      --danger: #ef4444;
-      --danger-light: rgba(239, 68, 68, 0.15);
-      --warning: #f59e0b;
-      --warning-light: rgba(245, 158, 11, 0.15);
-      --info: #06b6d4;
-      --info-light: rgba(6, 182, 212, 0.15);
+      /* Clinderma Dermatological Brand Color Scheme */
+      --clin-primary: #0f766e;
+      --clin-primary-dark: #0d5e58;
+      --clin-primary-light: #f0fdfa;
+      --clin-primary-border: #ccfbf1;
+      --clin-secondary: #0284c7;
+      --clin-secondary-light: #f0f9ff;
+      --clin-accent: #e36414;
+      --clin-accent-light: #fff7ed;
+      --clin-danger: #dc2626;
+      --clin-danger-light: #fef2f2;
+      --clin-warning: #d97706;
+      --clin-warning-light: #fffbeb;
+      --clin-success: #16a34a;
+      --clin-success-light: #f0fdf4;
 
-      --bg-base: #090d16;
-      --bg-surface: #111726;
-      --bg-surface-elevated: #182032;
-      --bg-card: rgba(24, 32, 50, 0.7);
-      --bg-card-hover: rgba(30, 41, 64, 0.85);
+      /* Surfaces & Theme */
+      --clin-bg: #f8fafc;
+      --clin-card: #ffffff;
+      --clin-card-muted: #f1f5f9;
+      --clin-header: #042f2e;
+      --clin-sidebar: #ffffff;
 
-      --border: rgba(255, 255, 255, 0.08);
-      --border-focus: rgba(99, 102, 241, 0.5);
-      --border-subtle: rgba(255, 255, 255, 0.04);
-
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
+      /* Typography & Borders */
+      --clin-text: #0f172a;
+      --clin-text-muted: #475569;
+      --clin-text-dim: #94a3b8;
+      --clin-border: #e2e8f0;
+      --clin-border-subtle: #f1f5f9;
 
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
-      --radius-xl: 22px;
+      --radius-xl: 20px;
 
-      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
-      --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
-      --transition-fast: 0.15s ease;
-      --transition-base: 0.25s ease;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+      --shadow-md: 0 4px 16px -2px rgba(15, 118, 110, 0.08), 0 2px 6px -1px rgba(0,0,0,0.04);
+      --shadow-lg: 0 10px 25px -3px rgba(15, 118, 110, 0.12), 0 4px 10px -2px rgba(0,0,0,0.04);
+      --transition: 0.2s ease;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background: var(--bg-base);
-      color: var(--text);
+      background: var(--clin-bg);
+      color: var(--clin-text);
+      line-height: 1.55;
       min-height: 100vh;
-      line-height: 1.5;
-      overflow-x: hidden;
     }
-    h1, h2, h3, h4, .font-heading { font-family: 'Outfit', sans-serif; letter-spacing: -0.02em; }
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Outfit', sans-serif;
+      letter-spacing: -0.02em;
+    }
 
     /* ── Login Screen ───────────────────────────────────────────────────────── */
     #login-screen {
@@ -71,18 +72,16 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.18) 0%, rgba(9, 13, 22, 0.95) 75%), var(--bg-base);
+      background: radial-gradient(circle at 50% 15%, #ccfbf1 0%, #f0fdfa 40%, #f8fafc 80%);
       padding: 24px;
     }
-    .login-container {
-      width: 440px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+    .login-box {
+      width: 460px;
+      background: var(--clin-card);
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-xl);
-      padding: 44px 38px;
-      box-shadow: var(--shadow-lg), 0 0 60px rgba(99, 102, 241, 0.15);
-      backdrop-filter: blur(20px);
-      position: relative;
+      padding: 44px 40px;
+      box-shadow: var(--shadow-lg), 0 20px 40px rgba(15, 118, 110, 0.08);
     }
     .login-brand {
       display: flex;
@@ -90,97 +89,104 @@
       gap: 10px;
       margin-bottom: 6px;
     }
-    .login-brand-logo {
-      font-size: 26px;
+    .login-logo {
+      font-size: 28px;
       font-weight: 800;
-      background: linear-gradient(135deg, #a5b4fc, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--clin-primary);
       font-family: 'Outfit', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
-    .login-brand-pill {
+    .login-logo span { color: var(--clin-accent); }
+    .login-badge {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 3px 8px;
+      padding: 3px 9px;
       border-radius: 20px;
-      background: var(--primary-light);
-      color: #c7d2fe;
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      background: var(--clin-primary-light);
+      color: var(--clin-primary);
+      border: 1px solid var(--clin-primary-border);
     }
-    .login-desc {
-      color: var(--text-muted);
+    .login-sub {
+      color: var(--clin-text-muted);
       font-size: 13.5px;
-      margin-bottom: 28px;
+      margin-bottom: 26px;
     }
-    .quick-roles-title {
+
+    /* 3 Stakeholders Role Switcher */
+    .stakeholders-title {
       font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.6px;
-      font-weight: 700;
-      color: var(--text-dim);
+      color: var(--clin-text-dim);
       margin-bottom: 10px;
     }
-    .quick-role-buttons {
+    .stakeholder-cards {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
       margin-bottom: 24px;
     }
-    .btn-quick-role {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
+    .stakeholder-btn {
+      background: var(--clin-card-muted);
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-sm);
-      padding: 8px 6px;
-      color: var(--text);
+      padding: 10px 6px;
+      color: var(--clin-text);
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 4px;
-      transition: all var(--transition-fast);
+      gap: 3px;
+      transition: all var(--transition);
+      text-align: center;
     }
-    .btn-quick-role:hover {
-      background: var(--primary-light);
-      border-color: var(--primary);
+    .stakeholder-btn:hover {
+      background: var(--clin-primary-light);
+      border-color: var(--clin-primary);
       transform: translateY(-1px);
     }
-    .btn-quick-role small {
+    .stakeholder-btn small {
       font-size: 9.5px;
-      color: var(--text-dim);
+      color: var(--clin-text-muted);
+      font-weight: 500;
     }
+
     .form-group { margin-bottom: 18px; }
     .form-label {
       display: block;
       font-size: 12px;
-      font-weight: 600;
-      color: var(--text-muted);
+      font-weight: 700;
+      color: var(--clin-text-muted);
       margin-bottom: 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
     .form-input {
       width: 100%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      background: #ffffff;
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-sm);
       padding: 12px 14px;
-      color: var(--text);
+      color: var(--clin-text);
       font-size: 14px;
       font-family: inherit;
       outline: none;
-      transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+      transition: border-color var(--transition), box-shadow var(--transition);
     }
     .form-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+      border-color: var(--clin-primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
     }
     .btn-submit-login {
       width: 100%;
-      background: linear-gradient(135deg, var(--primary), #4338ca);
+      background: linear-gradient(135deg, var(--clin-primary), var(--clin-secondary));
       color: white;
       border: none;
       padding: 13px;
@@ -189,8 +195,9 @@
       font-weight: 700;
       cursor: pointer;
       font-family: 'Outfit', sans-serif;
-      transition: all var(--transition-fast);
+      transition: all var(--transition);
       margin-top: 6px;
+      box-shadow: 0 4px 14px rgba(15, 118, 110, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -199,90 +206,153 @@
     .btn-submit-login:hover {
       opacity: 0.95;
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.35);
+      box-shadow: 0 6px 18px rgba(15, 118, 110, 0.35);
     }
     .login-error {
-      color: #f87171;
+      color: var(--clin-danger);
       font-size: 13px;
       text-align: center;
       margin-top: 14px;
       display: none;
       padding: 8px;
-      background: rgba(239, 68, 68, 0.1);
+      background: var(--clin-danger-light);
       border-radius: var(--radius-sm);
-      border: 1px solid rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(220, 38, 38, 0.2);
     }
 
-    /* ── App Shell ──────────────────────────────────────────────────────────── */
+    /* ── Main Application Shell ─────────────────────────────────────────────── */
     #app-shell {
       display: none;
       flex-direction: column;
       min-height: 100vh;
     }
 
-    /* Topbar */
+    /* Top Command Header (Matches Clinical Dashboard & Chat Header) */
     .topbar {
       height: 64px;
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, #042f2e 0%, #083d3b 50%, #0f766e 100%);
+      color: white;
+      padding: 0 32px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 28px;
       position: sticky;
       top: 0;
-      z-index: 90;
-      backdrop-filter: blur(16px);
+      z-index: 100;
+      box-shadow: 0 4px 16px rgba(4, 47, 46, 0.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Stakeholder Context Workspace Banner */
+    .stakeholder-banner {
+      background: #f0fdfa;
+      border-bottom: 1px solid #ccfbf1;
+      padding: 8px 32px;
+      font-size: 12.5px;
+      color: #0f766e;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all var(--transition);
+    }
+    .stakeholder-banner.doctor {
+      background: #f0f9ff;
+      border-bottom: 1px solid #bae6fd;
+      color: #0284c7;
+    }
+    .stakeholder-banner.viewer {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      color: #475569;
+    }
+    .stakeholder-banner-inner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .stakeholder-mode-pill {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: white;
+      border: 1px solid currentColor;
     }
     .topbar-left {
       display: flex;
       align-items: center;
       gap: 20px;
     }
-    .brand-group {
+    .brand-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #5eead4;
+      font-family: 'Outfit', sans-serif;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 3px;
     }
-    .brand-title {
-      font-size: 20px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #a5b4fc, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-family: 'Outfit', sans-serif;
-    }
-    .brand-tag {
-      font-size: 10px;
+    .brand-title span { color: var(--clin-accent); }
+    .brand-badge {
+      background: rgba(94, 234, 212, 0.15);
+      color: #5eead4;
+      font-size: 11px;
       font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      padding: 3px 8px;
-      border-radius: 12px;
-      background: var(--primary-light);
-      color: #c7d2fe;
-      border: 1px solid rgba(99, 102, 241, 0.3);
+      border: 1px solid rgba(94, 234, 212, 0.3);
     }
     .breadcrumb {
       display: flex;
       align-items: center;
       gap: 8px;
       font-size: 13px;
-      color: var(--text-dim);
-      border-left: 1px solid var(--border);
+      color: rgba(255, 255, 255, 0.6);
+      border-left: 1px solid rgba(255, 255, 255, 0.15);
       padding-left: 18px;
     }
-    .breadcrumb-active { color: var(--text); font-weight: 600; }
+    .breadcrumb-active { color: white; font-weight: 600; }
     .topbar-right {
       display: flex;
       align-items: center;
       gap: 12px;
     }
+    .live-stream-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #a7f3d0;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.15);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      margin-right: 6px;
+    }
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
     .btn-toplink {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 6px 14px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 6px 13px;
       border-radius: var(--radius-sm);
       font-size: 12.5px;
       font-weight: 600;
@@ -291,43 +361,43 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      transition: all var(--transition-fast);
+      transition: all var(--transition);
     }
     .btn-toplink:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text);
+      background: rgba(255, 255, 255, 0.22);
+      color: #5eead4;
     }
-    .user-profile-chip {
+    .user-pill {
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 5px 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      gap: 9px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 4px 12px;
       border-radius: 20px;
     }
     .avatar-circle {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--primary), #3b82f6);
+      background: var(--clin-primary);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      font-weight: 800;
       font-size: 12px;
       color: white;
     }
-    .role-tag {
+    .role-badge {
       font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       padding: 2px 7px;
       border-radius: 10px;
     }
-    .role-tag.admin { background: var(--primary-light); color: #c7d2fe; }
-    .role-tag.doctor { background: var(--emerald-light); color: #6ee7b7; }
-    .role-tag.viewer { background: rgba(148, 163, 184, 0.15); color: #94a3b8; }
+    .role-badge.admin { background: #ccfbf1; color: var(--clin-primary); }
+    .role-badge.doctor { background: #e0f2fe; color: var(--clin-secondary); }
+    .role-badge.viewer { background: #f1f5f9; color: var(--clin-text-muted); }
 
     /* Layout */
     .app-layout {
@@ -338,8 +408,8 @@
     /* Sidebar Navigation */
     .app-sidebar {
       width: 240px;
-      background: var(--bg-surface);
-      border-right: 1px solid var(--border);
+      background: var(--clin-sidebar);
+      border-right: 1px solid var(--clin-border);
       padding: 20px 0;
       flex-shrink: 0;
       position: sticky;
@@ -352,7 +422,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: var(--text-dim);
+      color: var(--clin-text-dim);
       padding: 12px 22px 6px;
     }
     .nav-btn {
@@ -361,19 +431,19 @@
       gap: 12px;
       padding: 10px 22px;
       cursor: pointer;
-      color: var(--text-muted);
+      color: var(--clin-text-muted);
       font-size: 13.5px;
-      font-weight: 500;
-      transition: all var(--transition-fast);
+      font-weight: 600;
+      transition: all var(--transition);
       position: relative;
     }
     .nav-btn:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.03);
+      color: var(--clin-primary);
+      background: #f8fafc;
     }
     .nav-btn.active {
-      color: #a5b4fc;
-      background: rgba(99, 102, 241, 0.12);
+      color: var(--clin-primary);
+      background: var(--clin-primary-light);
       font-weight: 700;
     }
     .nav-btn.active::before {
@@ -383,13 +453,13 @@
       top: 0;
       bottom: 0;
       width: 3.5px;
-      background: var(--primary);
+      background: var(--clin-primary);
       border-radius: 0 4px 4px 0;
     }
     .nav-icon { font-size: 17px; width: 20px; text-align: center; }
     .nav-counter {
       margin-left: auto;
-      background: var(--danger);
+      background: var(--clin-danger);
       color: white;
       font-size: 10px;
       font-weight: 800;
@@ -400,7 +470,7 @@
     /* Main Content Area */
     .app-main {
       flex: 1;
-      padding: 32px 40px;
+      padding: 32px 38px;
       overflow-y: auto;
       max-width: 1400px;
     }
@@ -408,7 +478,7 @@
     .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Page Titles */
+    /* Page Header */
     .page-header {
       display: flex;
       justify-content: space-between;
@@ -417,13 +487,13 @@
       flex-wrap: wrap;
       gap: 16px;
     }
-    .page-heading { font-size: 24px; font-weight: 800; color: var(--text); margin-bottom: 4px; }
-    .page-subtext { font-size: 13.5px; color: var(--text-muted); }
+    .page-heading { font-size: 24px; font-weight: 800; color: var(--clin-text); margin-bottom: 4px; }
+    .page-subtext { font-size: 13.5px; color: var(--clin-text-muted); }
 
     /* Cards */
     .card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+      background: var(--clin-card);
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-lg);
       padding: 24px;
       box-shadow: var(--shadow-sm);
@@ -435,8 +505,8 @@
       align-items: center;
       margin-bottom: 18px;
     }
-    .card-title { font-size: 16px; font-weight: 700; }
-    .card-subtitle { font-size: 12px; color: var(--text-muted); }
+    .card-title { font-size: 16px; font-weight: 700; color: var(--clin-text); }
+    .card-subtitle { font-size: 12px; color: var(--clin-text-muted); }
 
     /* Buttons */
     .btn {
@@ -450,43 +520,52 @@
       cursor: pointer;
       border: none;
       font-family: inherit;
-      transition: all var(--transition-fast);
+      transition: all var(--transition);
       white-space: nowrap;
     }
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
     .btn:active { transform: translateY(0); }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), #4f46e5); color: white; box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25); }
-    .btn-emerald { background: linear-gradient(135deg, var(--emerald), #059669); color: white; }
-    .btn-danger  { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
-    .btn-warning { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
-    .btn-ghost {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
+    .btn-primary {
+      background: linear-gradient(135deg, var(--clin-primary), var(--clin-secondary));
+      color: white;
+      box-shadow: 0 4px 12px rgba(15, 118, 110, 0.2);
     }
-    .btn-ghost:hover { background: rgba(255, 255, 255, 0.1); color: var(--text); }
+    .btn-teal { background: var(--clin-primary); color: white; }
+    .btn-accent { background: var(--clin-accent); color: white; }
+    .btn-danger { background: var(--clin-danger); color: white; }
+    .btn-warning { background: var(--clin-warning); color: white; }
+    .btn-ghost {
+      background: #ffffff;
+      border: 1px solid var(--clin-border);
+      color: var(--clin-text-muted);
+    }
+    .btn-ghost:hover {
+      background: var(--clin-primary-light);
+      border-color: var(--clin-primary-border);
+      color: var(--clin-primary);
+    }
     .btn-sm { padding: 6px 12px; font-size: 12px; }
 
     /* Form Inputs */
     .input, .select, .textarea {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
+      background: #ffffff;
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-sm);
       padding: 9px 13px;
-      color: var(--text);
+      color: var(--clin-text);
       font-size: 13.5px;
       font-family: inherit;
       outline: none;
-      transition: border-color var(--transition-fast);
+      transition: border-color var(--transition);
     }
     .input:focus, .select:focus, .textarea:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+      border-color: var(--clin-primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
     }
-    .select option { background: var(--bg-surface-elevated); color: var(--text); }
+    .select option { background: #ffffff; color: var(--clin-text); }
     .textarea { resize: vertical; min-height: 90px; }
 
-    /* Filter Bar */
+    /* Filter Bar & Pills */
     .filter-bar {
       display: flex;
       align-items: center;
@@ -500,44 +579,46 @@
       flex-wrap: wrap;
     }
     .filter-pill {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--border);
-      padding: 5px 12px;
+      background: #ffffff;
+      border: 1px solid var(--clin-border);
+      padding: 5px 13px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 600;
-      color: var(--text-muted);
+      color: var(--clin-text-muted);
       cursor: pointer;
-      transition: all var(--transition-fast);
+      transition: all var(--transition);
     }
-    .filter-pill:hover { color: var(--text); background: rgba(255, 255, 255, 0.08); }
+    .filter-pill:hover { color: var(--clin-primary); border-color: var(--clin-primary-border); }
     .filter-pill.active {
-      background: var(--primary-light);
-      border-color: var(--primary);
-      color: #a5b4fc;
+      background: var(--clin-primary-light);
+      border-color: var(--clin-primary);
+      color: var(--clin-primary);
+      font-weight: 700;
     }
 
     /* Tables */
     .table-responsive { overflow-x: auto; border-radius: var(--radius-md); }
     table { width: 100%; border-collapse: collapse; text-align: left; }
-    thead tr { border-bottom: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); }
+    thead tr { border-bottom: 1px solid var(--clin-border); background: #f8fafc; }
     th {
       padding: 12px 16px;
       font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.6px;
-      color: var(--text-dim);
+      color: var(--clin-text-muted);
     }
     td {
       padding: 14px 16px;
       font-size: 13px;
-      color: var(--text);
-      border-bottom: 1px solid var(--border-subtle);
+      color: var(--clin-text);
+      border-bottom: 1px solid var(--clin-border-subtle);
+      background: #ffffff;
     }
-    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+    tr:hover td { background: rgba(15, 118, 110, 0.02); }
 
-    /* Status Badges */
+    /* Badges */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -549,14 +630,14 @@
       text-transform: capitalize;
     }
     .badge::before { content: '•'; font-size: 12px; }
-    .badge-draft { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.2); }
-    .badge-live, .badge-active, .badge-approved { background: var(--emerald-light); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-    .badge-scheduled { background: var(--info-light); color: #38bdf8; border: 1px solid rgba(6, 182, 212, 0.3); }
-    .badge-paused, .badge-pending { background: var(--warning-light); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-expired { background: var(--danger-light); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-    .badge-edited { background: var(--primary-light); color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.3); }
+    .badge-draft { background: #f1f5f9; color: var(--clin-text-muted); border: 1px solid #cbd5e1; }
+    .badge-live, .badge-active, .badge-approved { background: var(--clin-success-light); color: var(--clin-success); border: 1px solid #bbf7d0; }
+    .badge-scheduled { background: var(--clin-secondary-light); color: var(--clin-secondary); border: 1px solid #bae6fd; }
+    .badge-paused, .badge-pending { background: var(--clin-warning-light); color: var(--clin-warning); border: 1px solid #fde68a; }
+    .badge-expired { background: var(--clin-danger-light); color: var(--clin-danger); border: 1px solid #fecaca; }
+    .badge-edited { background: var(--clin-primary-light); color: var(--clin-primary); border: 1px solid var(--clin-primary-border); }
 
-    /* KPI Grid */
+    /* KPI Row */
     .kpi-row {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -565,67 +646,193 @@
     }
     @media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
     .kpi-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+      background: var(--clin-card);
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-lg);
       padding: 22px;
       position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-sm);
     }
     .kpi-box::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--primary);
+      height: 3.5px;
+      background: var(--clin-primary);
     }
-    .kpi-box.emerald::after { background: var(--emerald); }
-    .kpi-box.amber::after { background: var(--accent); }
-    .kpi-box.cyan::after { background: var(--info); }
-    .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-dim); margin-bottom: 6px; }
-    .kpi-num { font-size: 34px; font-weight: 800; font-family: 'Outfit', sans-serif; }
-    .kpi-trend { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+    .kpi-box.cyan::after { background: var(--clin-secondary); }
+    .kpi-box.emerald::after { background: var(--clin-success); }
+    .kpi-box.coral::after { background: var(--clin-accent); }
+    .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--clin-text-dim); margin-bottom: 6px; }
+    .kpi-num { font-size: 34px; font-weight: 800; font-family: 'Outfit', sans-serif; color: var(--clin-text); }
+    .kpi-trend { font-size: 12px; color: var(--clin-text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
 
     /* Modals */
     .modal-backdrop {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
+      background: rgba(4, 47, 46, 0.6);
+      backdrop-filter: blur(4px);
       display: none; align-items: center; justify-content: center;
       z-index: 500;
     }
     .modal-backdrop.open { display: flex; animation: modalIn 0.2s ease; }
     @keyframes modalIn { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
     .modal-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+      background: var(--clin-card);
+      border: 1px solid var(--clin-border);
       border-radius: var(--radius-xl);
       padding: 32px;
       width: 580px;
       max-width: 94vw;
       max-height: 90vh;
       overflow-y: auto;
-      box-shadow: var(--shadow-lg), 0 0 50px rgba(0,0,0,0.5);
+      box-shadow: var(--shadow-lg);
     }
     .modal-head {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 22px;
     }
-    .modal-title { font-size: 19px; font-weight: 700; }
+    .modal-title { font-size: 19px; font-weight: 700; color: var(--clin-text); }
     .btn-close-modal {
-      background: none; border: none; color: var(--text-dim);
+      background: none; border: none; color: var(--clin-text-dim);
       font-size: 24px; cursor: pointer; line-height: 1;
     }
-    .btn-close-modal:hover { color: var(--text); }
+    .btn-close-modal:hover { color: var(--clin-text); }
     .modal-field { margin-bottom: 16px; }
-    .modal-field label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .modal-field label { display: block; font-size: 12px; font-weight: 700; color: var(--clin-text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* Master-Detail Customer Chats Layout */
+    .chats-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+      height: 620px;
+    }
+    .chats-list-pane {
+      background: var(--clin-card);
+      border: 1px solid var(--clin-border);
+      border-radius: var(--radius-lg);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-sm);
+    }
+    .chat-session-card {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--clin-border-subtle);
+      cursor: pointer;
+      transition: background var(--transition);
+      background: #ffffff;
+    }
+    .chat-session-card:hover { background: #f8fafc; }
+    .chat-session-card.active {
+      background: var(--clin-primary-light);
+      border-left: 3.5px solid var(--clin-primary);
+    }
+    .chats-view-pane {
+      background: var(--clin-card);
+      border: 1px solid var(--clin-border);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .chats-view-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--clin-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+    }
+    .chats-transcript-body {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f1f5f9;
+    }
+    .chats-view-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--clin-border);
+      display: flex;
+      gap: 10px;
+      background: var(--clin-card);
+    }
+
+    /* Chat Bubbles (Matches chat-widget.css styling) */
+    .bubble {
+      padding: 10px 15px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+      max-width: 78%;
+      line-height: 1.45;
+    }
+    .bubble-user {
+      background: var(--clin-secondary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
+    }
+    .bubble-bot {
+      background: #ffffff;
+      border: 1px solid var(--clin-border);
+      color: var(--clin-text);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+      box-shadow: var(--shadow-sm);
+    }
+    .bubble-admin {
+      background: var(--clin-primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.2);
+    }
+    .bubble-system {
+      background: #e2e8f0;
+      color: var(--clin-text-muted);
+      font-size: 11px;
+      align-self: center;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-style: italic;
+    }
+    .bubble-meta { font-size: 10px; color: var(--clin-text-dim); margin-top: 4px; }
+
+    /* Funnel Bars */
+    .funnel-step { margin-bottom: 12px; }
+    .funnel-head { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; }
+    .funnel-track {
+      height: 32px;
+      background: #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .funnel-progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--clin-primary), var(--clin-secondary));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      padding-left: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      transition: width 0.6s ease;
+    }
+    .funnel-drop-badge { font-size: 11px; color: var(--clin-danger); text-align: right; margin-top: 3px; }
 
     /* Toast */
     #toast {
       position: fixed; bottom: 30px; right: 30px;
-      background: var(--bg-surface-elevated);
-      color: var(--text);
-      border: 1px solid var(--border);
+      background: #042f2e;
+      color: white;
       padding: 14px 22px;
       border-radius: var(--radius-md);
       font-size: 13.5px; font-weight: 600;
@@ -636,173 +843,38 @@
     }
     @keyframes toastIn { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    /* Master-Detail Customer Chats Layout */
-    .chats-layout {
-      display: grid;
-      grid-template-columns: 340px 1fr;
-      gap: 20px;
-      height: 620px;
-    }
-    .chats-list-pane {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
-    .chat-session-card {
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border-subtle);
-      cursor: pointer;
-      transition: background var(--transition-fast);
-    }
-    .chat-session-card:hover { background: rgba(255, 255, 255, 0.03); }
-    .chat-session-card.active {
-      background: rgba(99, 102, 241, 0.12);
-      border-left: 3px solid var(--primary);
-    }
-    .chats-view-pane {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .chats-view-header {
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.02);
-    }
-    .chats-transcript-body {
-      flex: 1;
-      padding: 20px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      background: rgba(0, 0, 0, 0.2);
-    }
-    .chats-view-footer {
-      padding: 14px 20px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      gap: 10px;
-      background: var(--bg-surface);
-    }
-
-    /* Chat Bubbles */
-    .bubble {
-      padding: 10px 14px;
-      border-radius: var(--radius-md);
-      font-size: 13px;
-      max-width: 78%;
-      line-height: 1.45;
-    }
-    .bubble-user {
-      background: rgba(99, 102, 241, 0.18);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      color: #e0e7ff;
-      align-self: flex-end;
-      border-bottom-right-radius: 2px;
-    }
-    .bubble-bot {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border);
-      color: var(--text);
-      align-self: flex-start;
-      border-bottom-left-radius: 2px;
-    }
-    .bubble-admin {
-      background: rgba(16, 185, 129, 0.18);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      color: #d1fae5;
-      align-self: flex-end;
-      border-bottom-right-radius: 2px;
-    }
-    .bubble-system {
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--text-dim);
-      font-size: 11px;
-      align-self: center;
-      border-radius: 20px;
-      padding: 4px 12px;
-      font-style: italic;
-    }
-    .bubble-meta { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
-
-    /* Funnel visualizer */
-    .funnel-step {
-      margin-bottom: 12px;
-    }
-    .funnel-head {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      margin-bottom: 5px;
-    }
-    .funnel-track {
-      height: 32px;
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border-subtle);
-    }
-    .funnel-progress {
-      height: 100%;
-      background: linear-gradient(90deg, #6366f1, #38bdf8);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      padding-left: 12px;
-      font-size: 12px;
-      font-weight: 700;
-      color: white;
-      transition: width 0.6s ease;
-    }
-    .funnel-drop-badge {
-      font-size: 11px;
-      color: #f87171;
-      text-align: right;
-      margin-top: 3px;
-    }
-
     /* Scrollbars */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
   </style>
 </head>
 <body>
 
 <!-- ════════════════════════════════════════════════════════════════════════ -->
-<!--  LOGIN SCREEN                                                            -->
+<!--  LOGIN SCREEN (Clinical Dermatological Theme)                            -->
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <div id="login-screen">
-  <div class="login-container">
+  <div class="login-box">
     <div class="login-brand">
-      <div class="login-brand-logo">CLINDERMA</div>
-      <span class="login-brand-pill">Admin Console</span>
+      <div class="login-logo">CLINDERMA<span>.</span></div>
+      <span class="login-badge">Clinical Admin</span>
     </div>
-    <div class="login-desc">Sign in to manage clinical knowledge, live chats, offers & telemetry.</div>
+    <div class="login-sub">Internal clinical console for chatbot knowledge, offers, and patient chats.</div>
 
-    <div class="quick-roles-title">⚡ 1-Click Role Switcher</div>
-    <div class="quick-role-buttons">
-      <button class="btn-quick-role" onclick="quickFill('admin')">
+    <div class="stakeholders-title">⚡ 1-Click Login for Stakeholders</div>
+    <div class="stakeholder-cards">
+      <button class="stakeholder-btn" onclick="quickFill('admin')">
         <span>🛡️ Admin</span>
         <small>Full Control</small>
       </button>
-      <button class="btn-quick-role" onclick="quickFill('doctor')">
+      <button class="stakeholder-btn" onclick="quickFill('doctor')">
         <span>🩺 Doctor</span>
         <small>Medical Review</small>
       </button>
-      <button class="btn-quick-role" onclick="quickFill('viewer')">
+      <button class="stakeholder-btn" onclick="quickFill('viewer')">
         <span>👁️ Viewer</span>
-        <small>Read Only</small>
+        <small>Analytics Read</small>
       </button>
     </div>
 
@@ -815,8 +887,8 @@
       <input id="l-password" class="form-input" type="password" placeholder="Enter password" autocomplete="current-password">
     </div>
     <button class="btn-submit-login" id="btn-do-login" onclick="doLogin()">
-      <span>Sign In to Dashboard</span>
-      <span>→</span>
+      <span>Sign In to Clinderma Console</span>
+      <span>➔</span>
     </button>
     <div id="login-error" class="login-error">Invalid username or password. Please verify credentials.</div>
   </div>
@@ -827,39 +899,47 @@
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <div id="app-shell">
 
-  <!-- Top Navigation Bar -->
+  <!-- Top Command Header (Deep Pine Teal — Matches Clinical Command Center) -->
   <header class="topbar">
     <div class="topbar-left">
-      <div class="brand-group">
-        <div class="brand-title">CLINDERMA</div>
-        <span class="brand-tag">Enterprise Admin</span>
-      </div>
+      <div class="brand-title">CLINDERMA<span>.</span></div>
+      <span class="brand-badge">Clinical Console</span>
       <div class="breadcrumb">
-        <span>Console</span>
+        <span>Admin</span>
         <span>/</span>
         <span class="breadcrumb-active" id="active-breadcrumb-name">Knowledge Base & FAQs</span>
       </div>
     </div>
+
     <div class="topbar-right">
-      <div style="font-size:12px; color:#34d399; display:flex; align-items:center; gap:6px; margin-right:8px;">
-        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:#34d399; box-shadow:0 0 8px #34d399;"></span>
-        <span>Groq LPU + Gemini Active</span>
+      <div class="live-stream-badge">
+        <div class="pulse-dot"></div>
+        <span>Live Tele-Dermatology Stream</span>
       </div>
-      <a href="/dashboard.html" class="btn-toplink" target="_blank">🩺 Clinical Command Center</a>
-      <a href="/" class="btn-toplink" target="_blank">🌐 Storefront ↗</a>
-      <div class="user-profile-chip">
+      <a href="/dashboard.html" class="btn-toplink" target="_blank">🩺 Skin Coach Center</a>
+      <a href="/" class="btn-toplink" target="_blank">🌐 Patient Website ➔</a>
+      <div class="user-pill">
         <div class="avatar-circle" id="user-avatar-initial">A</div>
-        <span id="user-display-name" style="font-size:13px; font-weight:600;">Admin</span>
-        <span id="user-role-badge" class="role-tag admin">admin</span>
+        <span id="user-display-name" style="font-size:13px; font-weight:700;">Admin</span>
+        <span id="user-role-badge" class="role-badge admin">admin</span>
       </div>
       <button class="btn-toplink" onclick="doLogout()">Sign Out</button>
     </div>
   </header>
 
+  <!-- Stakeholder Context Workspace Banner -->
+  <div class="stakeholder-banner" id="stakeholder-banner">
+    <div class="stakeholder-banner-inner">
+      <span id="stakeholder-banner-icon" style="font-size:16px;">🛡️</span>
+      <span id="stakeholder-banner-text"><strong>Clinic Operations & Administrator Console</strong> — Full operational authority over Knowledge Engine, Live Takeover, Offers, and Team Roles</span>
+    </div>
+    <span class="stakeholder-mode-pill" id="stakeholder-mode-pill">Master Control</span>
+  </div>
+
   <div class="app-layout">
     <!-- Sidebar Navigation -->
     <nav class="app-sidebar">
-      <div class="nav-group-title">Knowledge Engine</div>
+      <div class="nav-group-title" id="nav-sec-kb">Knowledge Engine</div>
       <div class="nav-btn active" id="nav-kb" onclick="switchTab('kb')">
         <span class="nav-icon">📚</span>
         <span>KB & FAQs</span>
@@ -873,7 +953,7 @@
         <span>Test Chat (Draft)</span>
       </div>
 
-      <div class="nav-group-title">Live Operations</div>
+      <div class="nav-group-title" id="nav-sec-live">Live Operations</div>
       <div class="nav-btn" id="nav-chats" onclick="switchTab('chats')">
         <span class="nav-icon">💬</span>
         <span>Customer Chats</span>
@@ -884,7 +964,7 @@
         <span class="nav-counter" id="pending-badge" style="display:none;">0</span>
       </div>
 
-      <div class="nav-group-title">Analytics & Audit</div>
+      <div class="nav-group-title" id="nav-sec-analytics">Analytics & Audit</div>
       <div class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">
         <span class="nav-icon">📊</span>
         <span>Funnel & Revenue</span>
@@ -894,14 +974,14 @@
         <span>Change Log</span>
       </div>
 
-      <div class="nav-group-title">Administration</div>
+      <div class="nav-group-title" id="nav-sec-admin">Administration</div>
       <div class="nav-btn" id="nav-users" onclick="switchTab('users')">
         <span class="nav-icon">👥</span>
         <span>Users & Roles</span>
       </div>
     </nav>
 
-    <!-- Main Dynamic Content Workspace -->
+    <!-- Main Workspace -->
     <main class="app-main">
 
       <!-- ════════════════════════════════════════════════════════════════ -->
@@ -911,17 +991,17 @@
         <div class="page-header">
           <div>
             <h1 class="page-heading">📚 Knowledge Base & FAQs</h1>
-            <p class="page-subtext">Manage clinical and FAQ documents. All new changes save as drafts until tested and pushed live.</p>
+            <p class="page-subtext">Manage clinical documents and chatbot answers. All new entries save as drafts until tested and pushed live.</p>
           </div>
           <div style="display:flex; gap:10px; align-items:center;">
-            <button class="btn btn-primary" onclick="openKBModal()">+ New FAQ Entry</button>
-            <button class="btn btn-emerald" onclick="pushToLive()" id="btn-push-live">🚀 Push Drafts Live</button>
+            <button class="btn btn-primary" id="btn-new-kb" onclick="openKBModal()">+ New FAQ Entry</button>
+            <button class="btn btn-teal" onclick="pushToLive()" id="btn-push-live">🚀 Push Drafts Live</button>
             <button class="btn btn-ghost" onclick="restoreKB()" id="btn-restore">↩ Undo / Restore</button>
-            <button class="btn btn-ghost" onclick="openDocUploadModal()">📎 Upload Doc</button>
+            <button class="btn btn-ghost" id="btn-upload-doc" onclick="openDocUploadModal()">📎 Upload Doc</button>
           </div>
         </div>
 
-        <!-- Category Pills & Filter Bar -->
+        <!-- Category Filter Pills -->
         <div class="filter-bar">
           <div class="pill-group" id="kb-category-pills">
             <span class="filter-pill active" onclick="selectKBCatPill('', this)">All Categories</span>
@@ -937,10 +1017,10 @@
             <option value="draft">Draft Only</option>
             <option value="live">Live Only</option>
           </select>
-          <span id="kb-draft-count" style="font-size:12.5px; font-weight:600; color:#a5b4fc;"></span>
+          <span id="kb-draft-count" style="font-size:12.5px; font-weight:700; color:var(--clin-primary);"></span>
         </div>
 
-        <!-- KB Entries Table -->
+        <!-- Table -->
         <div class="card" style="margin-bottom:24px;">
           <div class="table-responsive">
             <table>
@@ -955,13 +1035,13 @@
                 </tr>
               </thead>
               <tbody id="kb-tbody">
-                <tr><td colspan="6" style="text-align:center; padding:36px; color:var(--text-dim);">Loading Knowledge Base…</td></tr>
+                <tr><td colspan="6" style="text-align:center; padding:36px; color:var(--clin-text-dim);">Loading Knowledge Base…</td></tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- Uploaded Documents Repository -->
+        <!-- Documents Repository -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -983,7 +1063,7 @@
                 </tr>
               </thead>
               <tbody id="docs-tbody">
-                <tr><td colspan="6" style="text-align:center; padding:28px; color:var(--text-dim);">No documents uploaded yet.</td></tr>
+                <tr><td colspan="6" style="text-align:center; padding:28px; color:var(--clin-text-dim);">No documents uploaded yet.</td></tr>
               </tbody>
             </table>
           </div>
@@ -991,19 +1071,19 @@
       </section>
 
       <!-- ════════════════════════════════════════════════════════════════ -->
-      <!-- TAB 2: OFFERS MANAGEMENT                                         -->
+      <!-- TAB 2: OFFERS & PROMOTIONS                                       -->
       <!-- ════════════════════════════════════════════════════════════════ -->
       <section class="tab-panel" id="tab-offers">
         <div class="page-header">
           <div>
             <h1 class="page-heading">🏷️ Offers & Promotional Rules</h1>
-            <p class="page-subtext">Schedule discount offers across the month. The chatbot dynamically displays active offers and never invents discounts.</p>
+            <p class="page-subtext">Schedule discount promotions across the month. The chatbot dynamically displays active offers and never invents discounts.</p>
           </div>
           <button class="btn btn-primary" onclick="openOfferModal()">+ Create New Offer</button>
         </div>
 
         <div id="offers-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap:20px;">
-          <div style="text-align:center; color:var(--text-dim); padding:60px; grid-column:1/-1;">Loading promotional offers…</div>
+          <div style="text-align:center; color:var(--clin-text-dim); padding:60px; grid-column:1/-1;">Loading promotional offers…</div>
         </div>
       </section>
 
@@ -1019,37 +1099,44 @@
         </div>
 
         <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:24px;">
-          <!-- Left: Chat simulator -->
-          <div class="card" style="display:flex; flex-direction:column; height:580px;">
-            <div class="card-header" style="margin-bottom:12px;">
-              <div>
-                <div class="card-title">Draft Knowledge Simulator</div>
-                <div class="card-subtitle">Grounded in draft FAQs & upcoming offers</div>
+          <!-- Simulator (Styled to match Live Bot Widget) -->
+          <div class="card" style="display:flex; flex-direction:column; height:600px; padding:0; overflow:hidden;">
+            <!-- Mini Live Bot Widget Header matching chat-widget.css -->
+            <div style="background:linear-gradient(135deg, #0f766e, #0f4c5c); color:white; padding:16px 20px; display:flex; align-items:center; justify-content:space-between;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.2); backdrop-filter:blur(4px); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px; position:relative;">
+                  <span>CL</span>
+                  <div style="position:absolute; bottom:0; right:0; width:12px; height:12px; background-color:#22c55e; border:2px solid white; border-radius:50%;"></div>
+                </div>
+                <div>
+                  <div style="font-weight:700; font-size:15px; font-family:'Outfit',sans-serif;">Clinderma Clinical Assistant</div>
+                  <div style="font-size:12px; opacity:0.85;">Sandbox Simulator · Drafts & Promotions</div>
+                </div>
               </div>
-              <span class="badge badge-draft">🔒 Sandbox Mode</span>
+              <span class="badge" style="background:rgba(255,255,255,0.18); color:white; border:1px solid rgba(255,255,255,0.25);">🔒 Sandbox Mode</span>
             </div>
 
-            <!-- Quick prompt chips -->
-            <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px;">
-              <span style="font-size:11px; color:var(--text-dim); align-self:center;">Try:</span>
+            <!-- Chips -->
+            <div style="padding:12px 18px; background:#f8fafc; border-bottom:1px solid var(--clin-border-subtle); display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+              <span style="font-size:11px; font-weight:700; color:var(--clin-text-dim);">TRY:</span>
               <button class="filter-pill" onclick="sendTestChip('What is the acne guarantee?')">Acne Guarantee?</button>
               <button class="filter-pill" onclick="sendTestChip('Can I use tretinoin while pregnant?')">Retinoid Safety?</button>
               <button class="filter-pill" onclick="sendTestChip('Do you have any discount offers?')">Active Discounts?</button>
             </div>
 
-            <!-- Transcript window -->
-            <div id="test-chat-window" style="flex:1; background:rgba(0,0,0,0.3); border-radius:var(--radius-md); padding:16px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; border:1px solid var(--border);">
-              <div class="bubble-system">Send a message to test your draft Knowledge Base content</div>
+            <!-- Window -->
+            <div id="test-chat-window" style="flex:1; background:#f8fafc; padding:18px; overflow-y:auto; display:flex; flex-direction:column; gap:12px;">
+              <div class="bubble-system">Send a message to test your draft Knowledge Base content & active discounts</div>
             </div>
 
-            <!-- Input bar -->
-            <div style="display:flex; gap:10px; margin-top:14px;">
+            <!-- Input -->
+            <div style="padding:14px 18px; background:#ffffff; border-top:1px solid var(--clin-border); display:flex; gap:10px;">
               <input type="text" class="input" id="test-chat-input" placeholder="Type a test clinical or FAQ query…" style="flex:1;" onkeydown="if(event.key==='Enter') sendTestMessage()">
               <button class="btn btn-primary" onclick="sendTestMessage()">Send</button>
             </div>
           </div>
 
-          <!-- Right: Push to Live pipeline & Restore -->
+          <!-- Deploy Box -->
           <div class="card" style="display:flex; flex-direction:column; justify-content:space-between; height:580px;">
             <div>
               <div class="card-header">
@@ -1058,20 +1145,20 @@
                   <div class="card-subtitle">Review draft snapshot and deploy</div>
                 </div>
               </div>
-              <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:18px;">
+              <p style="font-size:13.5px; color:var(--clin-text-muted); margin-bottom:18px;">
                 Once you have validated answers in the test chat sandbox, click <strong>Push to Live</strong> to deploy your changes. Customers will immediately receive the updated answers.
               </p>
 
               <div id="drafts-summary-box" style="margin-bottom:24px;"></div>
               
-              <button class="btn btn-emerald" onclick="pushToLive()" style="width:100%; padding:14px; font-size:14px; font-weight:700;">
+              <button class="btn btn-teal" onclick="pushToLive()" style="width:100%; padding:14px; font-size:14px; font-weight:700;">
                 🚀 Deploy All Drafts to Live Customers
               </button>
             </div>
 
-            <div style="border-top:1px solid var(--border); padding-top:20px;">
+            <div style="border-top:1px solid var(--clin-border); padding-top:20px;">
               <div style="font-weight:700; font-size:14px; margin-bottom:6px;">↩ One-Click Rollback</div>
-              <p style="font-size:12.5px; color:var(--text-dim); margin-bottom:12px;">
+              <p style="font-size:12.5px; color:var(--clin-text-dim); margin-bottom:12px;">
                 Need to revert a recent push? Restore the previous live snapshot:
               </p>
               <button class="btn btn-ghost" onclick="restoreKB()" style="width:100%;">
@@ -1089,7 +1176,7 @@
         <div class="page-header">
           <div>
             <h1 class="page-heading">💬 Customer Support & Live Takeover</h1>
-            <p class="page-subtext">Monitor active conversations. Step in to take over the chat from the AI bot whenever necessary.</p>
+            <p class="page-subtext">Monitor active patient conversations. Step in to take over the chat from the AI bot whenever necessary.</p>
           </div>
           <div style="display:flex; gap:10px;">
             <select class="select" id="chats-status-filter" onchange="loadChats()" style="max-width:180px;">
@@ -1105,11 +1192,11 @@
         <div class="chats-layout">
           <!-- Left list pane -->
           <div class="chats-list-pane">
-            <div style="padding:14px 16px; border-bottom:1px solid var(--border);">
+            <div style="padding:14px 16px; border-bottom:1px solid var(--clin-border);">
               <input type="text" class="input" id="chats-search" placeholder="🔍 Search name or phone…" style="width:100%;" oninput="loadChats()">
             </div>
             <div id="chats-list" style="overflow-y:auto; flex:1;">
-              <div style="text-align:center; color:var(--text-dim); padding:40px;">Loading customer sessions…</div>
+              <div style="text-align:center; color:var(--clin-text-dim); padding:40px;">Loading customer sessions…</div>
             </div>
           </div>
 
@@ -1118,7 +1205,7 @@
             <div class="chats-view-header">
               <div>
                 <div style="font-weight:700; font-size:16px;" id="cd-user-name">Select a conversation</div>
-                <div style="font-size:12px; color:var(--text-dim);" id="cd-user-meta">Click any chat from the list to view transcripts</div>
+                <div style="font-size:12px; color:var(--clin-text-dim);" id="cd-user-meta">Click any chat from the list to view transcripts</div>
               </div>
               <div id="cd-actions-bar" style="display:flex; gap:10px; align-items:center;"></div>
             </div>
@@ -1127,7 +1214,7 @@
             </div>
             <div class="chats-view-footer" id="cd-reply-bar" style="display:none;">
               <input type="text" class="input" id="admin-reply-input" placeholder="Type a direct response to the customer…" style="flex:1;" onkeydown="if(event.key==='Enter') sendActiveAdminMsg()">
-              <button class="btn btn-emerald" onclick="sendActiveAdminMsg()">Send Reply</button>
+              <button class="btn btn-teal" onclick="sendActiveAdminMsg()">Send Reply</button>
             </div>
           </div>
         </div>
@@ -1154,7 +1241,7 @@
         </div>
 
         <div id="reviews-list">
-          <div style="text-align:center; color:var(--text-dim); padding:60px;">Loading review queue…</div>
+          <div style="text-align:center; color:var(--clin-text-dim); padding:60px;">Loading review queue…</div>
         </div>
       </section>
 
@@ -1171,7 +1258,7 @@
             <button class="btn btn-ghost btn-sm" onclick="setAnalyticsPreset(7)">Last 7 Days</button>
             <button class="btn btn-ghost btn-sm" onclick="setAnalyticsPreset(30)">Last 30 Days</button>
             <input type="date" class="input" id="analytics-from" style="max-width:140px; font-size:12px;">
-            <span style="color:var(--text-dim); font-size:12px;">→</span>
+            <span style="color:var(--clin-text-dim); font-size:12px;">➔</span>
             <input type="date" class="input" id="analytics-to" style="max-width:140px; font-size:12px;">
             <select class="select" id="analytics-view" style="max-width:110px; font-size:12px;">
               <option value="daily">Daily</option>
@@ -1201,14 +1288,14 @@
             <div class="kpi-num" id="kpi-orders">—</div>
             <div class="kpi-trend">Converted from chat</div>
           </div>
-          <div class="kpi-box amber">
+          <div class="kpi-box coral">
             <div class="kpi-title">Chat Revenue</div>
             <div class="kpi-num" id="kpi-revenue">—</div>
             <div class="kpi-trend">Attributed sales</div>
           </div>
         </div>
 
-        <!-- 6-Stage Funnel & Non-Openers -->
+        <!-- Funnel & Non-Openers -->
         <div style="display:grid; grid-template-columns: 1.3fr 0.7fr; gap:24px; margin-bottom:24px;">
           <div class="card">
             <div class="card-header">
@@ -1218,22 +1305,22 @@
               </div>
             </div>
             <div id="funnel-chart" style="margin-top:10px;">
-              <div style="text-align:center; padding:40px; color:var(--text-dim);">Loading funnel data…</div>
+              <div style="text-align:center; padding:40px; color:var(--clin-text-dim);">Loading funnel data…</div>
             </div>
           </div>
 
           <div class="card" style="display:flex; flex-direction:column; justify-content:center; text-align:center; padding:36px;">
             <div class="card-title" style="margin-bottom:12px;">Visitors Who Never Opened Chat</div>
             <div id="non-openers-panel">
-              <div style="font-size:54px; font-weight:800; color:#f87171; font-family:'Outfit',sans-serif;" id="non-openers-val">—</div>
-              <div style="font-size:13px; color:var(--text-muted); margin-top:4px;">Non-openers count</div>
-              <div style="font-size:26px; font-weight:700; color:var(--text); margin-top:14px;" id="non-openers-pct">—%</div>
-              <div style="font-size:12px; color:var(--text-dim);">of total website traffic</div>
+              <div style="font-size:54px; font-weight:800; color:var(--clin-danger); font-family:'Outfit',sans-serif;" id="non-openers-val">—</div>
+              <div style="font-size:13px; color:var(--clin-text-muted); margin-top:4px;">Non-openers count</div>
+              <div style="font-size:26px; font-weight:700; color:var(--clin-text); margin-top:14px;" id="non-openers-pct">—%</div>
+              <div style="font-size:12px; color:var(--clin-text-dim);">of total website traffic</div>
             </div>
           </div>
         </div>
 
-        <!-- Orders & Revenue Chart -->
+        <!-- Orders Chart -->
         <div class="card">
           <div class="card-header">
             <div>
@@ -1280,7 +1367,7 @@
                 </tr>
               </thead>
               <tbody id="changelog-tbody">
-                <tr><td colspan="7" style="text-align:center; padding:36px; color:var(--text-dim);">Loading change log…</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:36px; color:var(--clin-text-dim);">Loading change log…</td></tr>
               </tbody>
             </table>
           </div>
@@ -1315,7 +1402,7 @@
                 </tr>
               </thead>
               <tbody id="users-tbody">
-                <tr><td colspan="7" style="text-align:center; padding:36px; color:var(--text-dim);">Loading users…</td></tr>
+                <tr><td colspan="7" style="text-align:center; padding:36px; color:var(--clin-text-dim);">Loading users…</td></tr>
               </tbody>
             </table>
           </div>
@@ -1368,13 +1455,13 @@
       <label>Category</label>
       <select class="select" id="upload-cat" style="width:100%;"></select>
     </div>
-    <div style="border:2px dashed var(--border); border-radius:var(--radius-md); padding:32px; text-align:center; cursor:pointer;" onclick="document.getElementById('doc-file-input').click()">
+    <div style="border:2px dashed var(--clin-border); border-radius:var(--radius-md); padding:32px; text-align:center; cursor:pointer; background:#f8fafc;" onclick="document.getElementById('doc-file-input').click()">
       <div style="font-size:36px; margin-bottom:8px;">📎</div>
-      <div style="font-size:14px; font-weight:600;">Click to select document file</div>
-      <div style="font-size:12px; color:var(--text-dim); margin-top:4px;">Supported: PDF, DOCX, TXT, XLSX (Max 10MB)</div>
+      <div style="font-size:14px; font-weight:700; color:var(--clin-primary);">Click to select document file</div>
+      <div style="font-size:12px; color:var(--clin-text-dim); margin-top:4px;">Supported: PDF, DOCX, TXT, XLSX (Max 10MB)</div>
       <input type="file" id="doc-file-input" style="display:none;" accept=".pdf,.docx,.txt,.xlsx" onchange="handleFileSelect(this)">
     </div>
-    <div id="upload-file-name" style="margin-top:12px; color:var(--primary); font-size:13px; font-weight:600;"></div>
+    <div id="upload-file-name" style="margin-top:12px; color:var(--clin-primary); font-size:13px; font-weight:700;"></div>
     <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:24px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-upload')">Cancel</button>
       <button class="btn btn-primary" onclick="uploadDocument()">Upload Document</button>
@@ -1447,11 +1534,11 @@
     </div>
     <div class="modal-field">
       <label>Customer Question</label>
-      <div id="doc-edit-question" style="padding:12px; background:rgba(255,255,255,0.04); border-radius:8px; font-size:13.5px; font-weight:600;"></div>
+      <div id="doc-edit-question" style="padding:12px; background:#f8fafc; border:1px solid var(--clin-border); border-radius:8px; font-size:13.5px; font-weight:700;"></div>
     </div>
     <div class="modal-field">
       <label>Original Chatbot Answer (Flagged)</label>
-      <div id="doc-edit-original" style="padding:12px; background:rgba(239, 68, 68, 0.08); border:1px solid rgba(239, 68, 68, 0.2); border-radius:8px; font-size:13px; color:#fca5a5; max-height:120px; overflow-y:auto;"></div>
+      <div id="doc-edit-original" style="padding:12px; background:var(--clin-danger-light); border:1px solid rgba(220, 38, 38, 0.2); border-radius:8px; font-size:13px; color:var(--clin-danger); max-height:120px; overflow-y:auto;"></div>
     </div>
     <div class="modal-field">
       <label>Doctor's Corrected Answer</label>
@@ -1459,7 +1546,7 @@
     </div>
     <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px;">
       <button class="btn btn-ghost" onclick="closeModal('modal-doc-edit')">Cancel</button>
-      <button class="btn btn-emerald" onclick="submitDocEdit()">Approve Correction & Update KB</button>
+      <button class="btn btn-teal" onclick="submitDocEdit()">Approve Correction & Update KB</button>
     </div>
     <input type="hidden" id="doc-edit-review-id" value="">
   </div>
@@ -1531,7 +1618,7 @@ function showToast(msg, type = 'info') {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.style.display = 'block';
-  t.style.borderLeft = `4px solid ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#6366f1'}`;
+  t.style.borderLeft = `4px solid ${type === 'error' ? '#dc2626' : type === 'success' ? '#16a34a' : '#0f766e'}`;
   clearTimeout(t._timer);
   t._timer = setTimeout(() => { t.style.display = 'none'; }, 3400);
 }
@@ -1567,7 +1654,7 @@ function badgeHtml(status) {
   return `<span class="badge badge-${status}">${escHtml(status)}</span>`;
 }
 
-// ── Auth & Quick Fill ──────────────────────────────────────────────────────
+// ── Auth & Stakeholder Quick Switcher ──────────────────────────────────────
 const CRED_MAP = {
   admin:  { u: 'admin',  p: 'clinderma@admin2026' },
   doctor: { u: 'doctor', p: 'doctor@clinderma2026' },
@@ -1597,7 +1684,7 @@ async function doLogin() {
     body: JSON.stringify({ username, password })
   }).then(r => r.json()).catch(() => ({}));
 
-  btn.innerHTML = '<span>Sign In to Dashboard</span><span>→</span>';
+  btn.innerHTML = '<span>Sign In to Clinderma Console</span><span>➔</span>';
   btn.disabled = false;
 
   if (res.access_token) {
@@ -1633,21 +1720,66 @@ function renderUserChip() {
   const role = CURRENT_USER.role;
   const rb = document.getElementById('user-role-badge');
   rb.textContent = role;
-  rb.className = `role-tag ${role}`;
+  rb.className = `role-badge ${role}`;
 
-  // Role permissions UI
-  if (role !== 'admin') {
-    document.getElementById('nav-users').style.display = 'none';
+  // Reset all nav items and section headers
+  document.querySelectorAll('.nav-btn').forEach(btn => btn.style.display = 'flex');
+  document.querySelectorAll('.nav-group-title').forEach(t => t.style.display = 'block');
+  document.getElementById('btn-push-live')?.style.setProperty('display', 'inline-flex');
+  document.getElementById('btn-restore')?.style.setProperty('display', 'inline-flex');
+  document.getElementById('btn-new-kb')?.style.setProperty('display', 'inline-flex');
+  document.getElementById('btn-upload-doc')?.style.setProperty('display', 'inline-flex');
+
+  const banner = document.getElementById('stakeholder-banner');
+  const bannerText = document.getElementById('stakeholder-banner-text');
+  const bannerIcon = document.getElementById('stakeholder-banner-icon');
+  const modePill = document.getElementById('stakeholder-mode-pill');
+
+  if (role === 'admin') {
+    banner.className = 'stakeholder-banner';
+    bannerIcon.textContent = '🛡️';
+    bannerText.innerHTML = '<strong>Clinic Operations & Administrator Console</strong> — Full operational authority over Knowledge Engine, Live Takeover, Offers, and Team Roles';
+    modePill.textContent = 'Master Control';
+  } else if (role === 'doctor') {
+    banner.className = 'stakeholder-banner doctor';
+    bannerIcon.textContent = '🩺';
+    bannerText.innerHTML = '<strong>Tele-Dermatology Medical Review Workspace</strong> — Clinical oversight of flagged chatbot answers, medical corrections, and patient care transcripts';
+    modePill.textContent = 'Clinical Oversight';
+
+    document.getElementById('nav-offers')?.style.setProperty('display', 'none');
+    document.getElementById('nav-changelog')?.style.setProperty('display', 'none');
+    document.getElementById('nav-users')?.style.setProperty('display', 'none');
+    document.getElementById('nav-sec-admin')?.style.setProperty('display', 'none');
     document.getElementById('btn-push-live')?.style.setProperty('display', 'none');
     document.getElementById('btn-restore')?.style.setProperty('display', 'none');
-  }
-  if (role === 'doctor') {
-    document.getElementById('nav-offers')?.style.setProperty('display', 'none');
-  }
-  if (role === 'viewer') {
+
+    // Default to doctor reviews
+    if (['users', 'offers', 'changelog'].includes(currentTab) || currentTab === 'kb') {
+      switchTab('reviews');
+    }
+  } else if (role === 'viewer') {
+    banner.className = 'stakeholder-banner viewer';
+    bannerIcon.textContent = '👁️';
+    bannerText.innerHTML = '<strong>Executive & Analyst Read-Only Console</strong> — Conversion funnel metrics, drop-off analysis, attributed revenue, and patient transcripts';
+    modePill.textContent = 'Read-Only Analyst';
+
+    document.getElementById('nav-sec-kb')?.style.setProperty('display', 'none');
+    document.getElementById('nav-kb')?.style.setProperty('display', 'none');
     document.getElementById('nav-offers')?.style.setProperty('display', 'none');
     document.getElementById('nav-testchat')?.style.setProperty('display', 'none');
+    document.getElementById('nav-reviews')?.style.setProperty('display', 'none');
     document.getElementById('nav-changelog')?.style.setProperty('display', 'none');
+    document.getElementById('nav-users')?.style.setProperty('display', 'none');
+    document.getElementById('nav-sec-admin')?.style.setProperty('display', 'none');
+    document.getElementById('btn-push-live')?.style.setProperty('display', 'none');
+    document.getElementById('btn-restore')?.style.setProperty('display', 'none');
+    document.getElementById('btn-new-kb')?.style.setProperty('display', 'none');
+    document.getElementById('btn-upload-doc')?.style.setProperty('display', 'none');
+
+    // Default to analytics
+    if (['kb', 'offers', 'testchat', 'reviews', 'changelog', 'users'].includes(currentTab)) {
+      switchTab('analytics');
+    }
   }
 }
 
@@ -1742,23 +1874,24 @@ async function loadKBEntries() {
 
   const tbody = document.getElementById('kb-tbody');
   if (kbEntries.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:36px; color:var(--text-dim);">No matching Knowledge Base entries found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:36px; color:var(--clin-text-dim);">No matching Knowledge Base entries found.</td></tr>';
     return;
   }
 
   tbody.innerHTML = kbEntries.map(e => `
     <tr>
-      <td style="color:var(--text-dim); font-size:12px;">#${e.id}</td>
-      <td><span style="font-size:11px; font-weight:600; background:rgba(99,102,241,0.12); color:#a5b4fc; padding:3px 8px; border-radius:6px;">${escHtml(e.category || 'General')}</span></td>
+      <td style="color:var(--clin-text-dim); font-size:12px;">#${e.id}</td>
+      <td><span style="font-size:11px; font-weight:700; background:var(--clin-primary-light); color:var(--clin-primary); padding:3px 8px; border-radius:6px; border:1px solid var(--clin-primary-border);">${escHtml(e.category || 'General')}</span></td>
       <td>
-        <div style="font-weight:600; font-size:13.5px; margin-bottom:3px;">${escHtml(e.question || '')}</div>
-        <div style="font-size:12px; color:var(--text-muted); line-height:1.4;">${escHtml(e.answer || '').substring(0, 110)}…</div>
+        <div style="font-weight:700; font-size:13.5px; margin-bottom:3px;">${escHtml(e.question || '')}</div>
+        <div style="font-size:12px; color:var(--clin-text-muted); line-height:1.4;">${escHtml(e.answer || '').substring(0, 110)}…</div>
       </td>
       <td>${badgeHtml(e.status)}</td>
-      <td style="font-size:11.5px; color:var(--text-dim);">${relTime(e.updated_at)}</td>
+      <td style="font-size:11.5px; color:var(--clin-text-dim);">${relTime(e.updated_at)}</td>
       <td style="text-align:right;">
-        <button class="btn btn-ghost btn-sm" onclick="editKBEntry(${e.id})">Edit</button>
-        <button class="btn btn-danger btn-sm" onclick="deleteKBEntry(${e.id})">Del</button>
+        ${CURRENT_USER?.role === 'viewer'
+          ? '<span style="font-size:11.5px; color:var(--clin-text-dim);">Read-Only</span>'
+          : `<button class="btn btn-ghost btn-sm" onclick="editKBEntry(${e.id})">Edit</button>${CURRENT_USER?.role === 'admin' ? ` <button class="btn btn-danger btn-sm" onclick="deleteKBEntry(${e.id})">Del</button>` : ''}`}
       </td>
     </tr>
   `).join('');
@@ -1836,11 +1969,11 @@ async function loadDraftsSummary() {
   if (!box) return;
   const count = data.count || 0;
   box.innerHTML = count > 0
-    ? `<div style="background:rgba(99,102,241,0.12); border:1px solid rgba(99,102,241,0.25); border-radius:12px; padding:18px;">
-        <div style="font-size:28px; font-weight:800; font-family:'Outfit',sans-serif; color:#a5b4fc;">${count}</div>
-        <div style="font-size:13px; color:var(--text-muted); margin-top:2px;">Draft entries awaiting live deployment</div>
+    ? `<div style="background:var(--clin-primary-light); border:1px solid var(--clin-primary-border); border-radius:12px; padding:18px;">
+        <div style="font-size:28px; font-weight:800; font-family:'Outfit',sans-serif; color:var(--clin-primary);">${count}</div>
+        <div style="font-size:13px; color:var(--clin-text-muted); margin-top:2px;">Draft entries awaiting live deployment</div>
        </div>`
-    : `<div style="background:rgba(16,185,129,0.1); border:1px solid rgba(16,185,129,0.25); border-radius:12px; padding:18px; color:#34d399; font-size:13.5px; font-weight:600;">
+    : `<div style="background:var(--clin-success-light); border:1px solid #bbf7d0; border-radius:12px; padding:18px; color:var(--clin-success); font-size:13.5px; font-weight:700;">
         ✓ All Knowledge Base entries are currently live.
        </div>`;
 }
@@ -1851,17 +1984,17 @@ async function loadDocuments() {
   const docs = data.documents || [];
   const tbody = document.getElementById('docs-tbody');
   if (docs.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:28px; color:var(--text-dim);">No documents uploaded yet.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:28px; color:var(--clin-text-dim);">No documents uploaded yet.</td></tr>';
     return;
   }
   tbody.innerHTML = docs.map((d, i) => `
     <tr>
-      <td style="color:var(--text-dim); font-size:12px;">#${i + 1}</td>
-      <td style="font-weight:600;">📎 ${escHtml(d.original_filename)}</td>
-      <td><span style="font-size:11px; background:rgba(255,255,255,0.06); padding:2px 8px; border-radius:6px;">${escHtml(d.category || 'General')}</span></td>
-      <td style="font-size:12px; color:var(--text-dim);">${d.file_size ? (d.file_size / 1024).toFixed(1) + ' KB' : '—'}</td>
+      <td style="color:var(--clin-text-dim); font-size:12px;">#${i + 1}</td>
+      <td style="font-weight:700; color:var(--clin-primary);">📎 ${escHtml(d.original_filename)}</td>
+      <td><span style="font-size:11px; font-weight:600; background:#f1f5f9; padding:2px 8px; border-radius:6px;">${escHtml(d.category || 'General')}</span></td>
+      <td style="font-size:12px; color:var(--clin-text-dim);">${d.file_size ? (d.file_size / 1024).toFixed(1) + ' KB' : '—'}</td>
       <td style="font-size:12px;">${escHtml(d.uploaded_by || 'admin')}</td>
-      <td style="font-size:11.5px; color:var(--text-dim);">${fmtDate(d.uploaded_at)}</td>
+      <td style="font-size:11.5px; color:var(--clin-text-dim);">${fmtDate(d.uploaded_at)}</td>
     </tr>
   `).join('');
 }
@@ -1920,7 +2053,7 @@ async function sendTestMessage() {
   });
 
   const citation = res.matched_question
-    ? `<div style="font-size:11px; color:#a5b4fc; font-weight:700; margin-bottom:4px;">🧪 Matched Draft FAQ: "${escHtml(res.matched_question)}"</div>`
+    ? `<div style="font-size:11px; color:var(--clin-primary); font-weight:700; margin-bottom:4px;">🧪 Matched Draft FAQ: "${escHtml(res.matched_question)}"</div>`
     : '';
 
   win.innerHTML += `<div class="bubble bubble-bot">
@@ -1931,7 +2064,7 @@ async function sendTestMessage() {
   win.scrollTop = win.scrollHeight;
 }
 
-// ── Offers ─────────────────────────────────────────────────────────────────
+// ── Offers & Promotions ────────────────────────────────────────────────────
 let offersData = [];
 
 async function loadOffers() {
@@ -1939,7 +2072,7 @@ async function loadOffers() {
   offersData = data.offers || [];
   const grid = document.getElementById('offers-grid');
   if (offersData.length === 0) {
-    grid.innerHTML = '<div style="text-align:center; color:var(--text-dim); padding:60px; grid-column:1/-1;">No promotional offers found. Create your first offer!</div>';
+    grid.innerHTML = '<div style="text-align:center; color:var(--clin-text-dim); padding:60px; grid-column:1/-1;">No promotional offers found. Create your first offer!</div>';
     return;
   }
   grid.innerHTML = offersData.map(o => {
@@ -1951,20 +2084,20 @@ async function loadOffers() {
         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
           <div>
             <div style="font-size:16px; font-weight:700;">${escHtml(o.name)}</div>
-            <div style="font-size:12.5px; font-weight:700; color:#38bdf8; margin-top:2px;">
+            <div style="font-size:13px; font-weight:700; color:var(--clin-secondary); margin-top:2px;">
               🎟️ ${escHtml(o.discount_code)} · ${valText}
             </div>
           </div>
           ${badgeHtml(o.status)}
         </div>
-        ${prods ? `<div style="font-size:12px; color:var(--text-muted); margin-bottom:8px;">Target: ${escHtml(prods)}</div>` : ''}
-        <div style="font-size:11.5px; color:var(--text-dim); margin-bottom:16px;">
-          📅 Valid: ${escHtml(o.start_date)} → ${escHtml(o.end_date)}
+        ${prods ? `<div style="font-size:12px; color:var(--clin-text-muted); margin-bottom:8px;">Target: ${escHtml(prods)}</div>` : ''}
+        <div style="font-size:11.5px; color:var(--clin-text-dim); margin-bottom:16px;">
+          📅 Valid: ${escHtml(o.start_date)} ➔ ${escHtml(o.end_date)}
         </div>
       </div>
-      <div style="display:flex; gap:8px; border-top:1px solid var(--border-subtle); padding-top:14px;">
+      <div style="display:flex; gap:8px; border-top:1px solid var(--clin-border-subtle); padding-top:14px;">
         <button class="btn btn-ghost btn-sm" onclick="editOffer(${o.id})">Edit</button>
-        <button class="btn ${o.status === 'paused' ? 'btn-emerald' : 'btn-warning'} btn-sm" onclick="togglePauseOffer(${o.id})">
+        <button class="btn ${o.status === 'paused' ? 'btn-teal' : 'btn-warning'} btn-sm" onclick="togglePauseOffer(${o.id})">
           ${o.status === 'paused' ? 'Resume' : 'Pause'}
         </button>
         <button class="btn btn-danger btn-sm" onclick="deleteOffer(${o.id})">Delete</button>
@@ -2057,7 +2190,7 @@ async function loadChats() {
 
   const listEl = document.getElementById('chats-list');
   if (allChats.length === 0) {
-    listEl.innerHTML = '<div style="text-align:center; color:var(--text-dim); padding:40px;">No sessions found.</div>';
+    listEl.innerHTML = '<div style="text-align:center; color:var(--clin-text-dim); padding:40px;">No sessions found.</div>';
     return;
   }
 
@@ -2067,7 +2200,7 @@ async function loadChats() {
         <span style="font-weight:700; font-size:13.5px;">${escHtml(c.user_name || 'Anonymous Visitor')}</span>
         ${c.is_taken_over ? '<span class="badge badge-edited">🛡️ Agent</span>' : c.is_live ? '<span class="badge badge-live">🔴 Live</span>' : '<span class="badge badge-draft">Ended</span>'}
       </div>
-      <div style="font-size:11.5px; color:var(--text-dim); display:flex; justify-content:space-between;">
+      <div style="font-size:11.5px; color:var(--clin-text-dim); display:flex; justify-content:space-between;">
         <span>${escHtml(c.user_phone || 'No phone')}</span>
         <span>${relTime(c.created_at)}</span>
       </div>
@@ -2090,17 +2223,31 @@ function selectChatSession(sid) {
   document.getElementById('cd-user-name').textContent = chat.user_name || 'Anonymous Visitor';
   document.getElementById('cd-user-meta').textContent = `📞 ${chat.user_phone || 'Unshared'} · Channel: ${chat.channel || 'website'} · Started: ${fmtDate(chat.created_at)}`;
 
-  // Actions bar
+  // Actions by stakeholder role
   const act = document.getElementById('cd-actions-bar');
-  const takeoverBtn = chat.is_taken_over
-    ? `<button class="btn btn-emerald btn-sm" onclick="handbackChat('${sid}')">🤖 Hand Back to Bot</button>`
-    : chat.is_live
-      ? `<button class="btn btn-warning btn-sm" onclick="takeoverChat('${sid}')">🛡️ Take Over Live Chat</button>`
+  let takeoverBtn = '';
+  let tagBtn = '';
+
+  if (CURRENT_USER?.role === 'admin') {
+    takeoverBtn = chat.is_taken_over
+      ? `<button class="btn btn-teal btn-sm" onclick="handbackChat('${sid}')">🤖 Hand Back to Bot</button>`
+      : chat.is_live
+        ? `<button class="btn btn-warning btn-sm" onclick="takeoverChat('${sid}')">🛡️ Take Over Live Chat</button>`
+        : '';
+    tagBtn = `<button class="btn btn-ghost btn-sm" onclick="tagForReview('${sid}', '', '')">🩺 Tag for Doctor Review</button>`;
+  } else if (CURRENT_USER?.role === 'doctor') {
+    takeoverBtn = chat.is_taken_over
+      ? `<span class="badge badge-edited">🛡️ Handled by Admin</span>`
       : '';
-  act.innerHTML = `
-    ${takeoverBtn}
-    <button class="btn btn-ghost btn-sm" onclick="tagForReview('${sid}', '', '')">🩺 Tag for Doctor Review</button>
-  `;
+    tagBtn = `<button class="btn btn-ghost btn-sm" onclick="tagForReview('${sid}', '', '')">🩺 Tag for Doctor Review</button>`;
+  } else {
+    // Viewer
+    takeoverBtn = chat.is_taken_over
+      ? `<span class="badge badge-edited">🛡️ Agent Handled</span>`
+      : chat.is_live ? `<span class="badge badge-live">🔴 Active</span>` : `<span class="badge badge-draft">Ended</span>`;
+    tagBtn = `<span class="badge badge-draft">👁️ Read-Only Session</span>`;
+  }
+  act.innerHTML = `${takeoverBtn} ${tagBtn}`;
 
   // Transcript
   const tr = document.getElementById('cd-transcript');
@@ -2110,16 +2257,16 @@ function selectChatSession(sid) {
   } else {
     tr.innerHTML = messages.map(m => {
       if (m.sender === 'system') return `<div class="bubble-system">${escHtml(m.message)}</div>`;
-      if (m.sender?.startsWith('admin:')) return `<div class="bubble bubble-admin"><div style="font-size:10px; font-weight:700; color:#34d399; margin-bottom:2px;">🛡️ Clinical Agent</div>${escHtml(m.message)}</div>`;
+      if (m.sender?.startsWith('admin:')) return `<div class="bubble bubble-admin"><div style="font-size:10px; font-weight:700; color:#5eead4; margin-bottom:2px;">🛡️ Clinical Agent</div>${escHtml(m.message)}</div>`;
       if (m.sender === 'user') return `<div class="bubble bubble-user">${escHtml(m.message)}</div>`;
-      return `<div class="bubble bubble-bot"><div style="font-size:10px; font-weight:700; color:#94a3b8; margin-bottom:2px;">🤖 Clinderma Assistant</div>${escHtml(m.message)}</div>`;
+      return `<div class="bubble bubble-bot"><div style="font-size:10px; font-weight:700; color:var(--clin-primary); margin-bottom:2px;">🤖 Clinderma Assistant</div>${escHtml(m.message)}</div>`;
     }).join('');
     tr.scrollTop = tr.scrollHeight;
   }
 
-  // Reply bar
+  // Reply bar (Admin only when taken over)
   const replyBar = document.getElementById('cd-reply-bar');
-  replyBar.style.display = chat.is_taken_over ? 'flex' : 'none';
+  replyBar.style.display = (CURRENT_USER?.role === 'admin' && chat.is_taken_over) ? 'flex' : 'none';
 }
 
 async function takeoverChat(sid) {
@@ -2170,7 +2317,7 @@ async function loadReviews() {
 
   const list = document.getElementById('reviews-list');
   if (reviewsData.length === 0) {
-    list.innerHTML = '<div style="text-align:center; color:var(--text-dim); padding:60px;">No medical review tasks in this status.</div>';
+    list.innerHTML = '<div style="text-align:center; color:var(--clin-text-dim); padding:60px;">No medical review tasks in this status.</div>';
     return;
   }
 
@@ -2179,21 +2326,21 @@ async function loadReviews() {
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; gap:10px;">
         <div>
           <div style="font-weight:700; font-size:15px; margin-bottom:3px;">Customer Question: "${escHtml(r.customer_question || '')}"</div>
-          <div style="font-size:12px; color:var(--text-dim);">
+          <div style="font-size:12px; color:var(--clin-text-dim);">
             Tagged by <strong>${escHtml(r.tagged_by || 'admin')}</strong> · ${relTime(r.created_at)}
-            ${r.tag_note ? ` · Note: <span style="color:#f59e0b;">"${escHtml(r.tag_note)}"</span>` : ''}
+            ${r.tag_note ? ` · Clinical Note: <span style="color:var(--clin-accent); font-weight:600;">"${escHtml(r.tag_note)}"</span>` : ''}
           </div>
         </div>
         ${badgeHtml(r.status)}
       </div>
 
-      <div style="background:rgba(239,68,68,0.06); border:1px solid rgba(239,68,68,0.2); border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px; color:#fca5a5;">
+      <div style="background:var(--clin-danger-light); border:1px solid rgba(220, 38, 38, 0.2); border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px; color:var(--clin-danger);">
         <div style="font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">Original Chatbot Answer</div>
         ${escHtml(r.chatbot_answer || '')}
       </div>
 
       ${r.status === 'edited' ? `
-        <div style="background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.25); border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px; color:#6ee7b7;">
+        <div style="background:var(--clin-success-light); border:1px solid #bbf7d0; border-radius:8px; padding:12px; margin-bottom:14px; font-size:13px; color:var(--clin-success);">
           <div style="font-size:11px; font-weight:700; text-transform:uppercase; margin-bottom:4px;">✓ Doctor Correction (by ${escHtml(r.reviewed_by || '')} · ${fmtDate(r.reviewed_at)})</div>
           ${escHtml(r.corrected_answer || '')}
         </div>
@@ -2201,11 +2348,11 @@ async function loadReviews() {
 
       ${r.status === 'pending' ? `
         <div style="display:flex; gap:10px;">
-          <button class="btn btn-emerald btn-sm" onclick="approveReview(${r.id})">✅ Approve Answer as Safe</button>
+          <button class="btn btn-teal btn-sm" onclick="approveReview(${r.id})">✅ Approve Answer as Safe</button>
           <button class="btn btn-primary btn-sm" onclick="openDocEdit(${r.id})">✏️ Correct Answer & Update KB</button>
         </div>
       ` : `
-        <div style="font-size:12px; color:var(--text-dim);">Reviewed by: <strong>${escHtml(r.reviewed_by || '—')}</strong> · ${fmtDate(r.reviewed_at)}</div>
+        <div style="font-size:12px; color:var(--clin-text-dim);">Reviewed by: <strong>${escHtml(r.reviewed_by || '—')}</strong> · ${fmtDate(r.reviewed_at)}</div>
       `}
     </div>
   `).join('');
@@ -2295,8 +2442,8 @@ async function loadAnalytics() {
     return `
     <div class="funnel-step">
       <div class="funnel-head">
-        <span style="font-weight:600;">${i + 1}. ${escHtml(stage.label)}</span>
-        <span style="font-weight:700;">${stage.count.toLocaleString()}</span>
+        <span style="font-weight:700;">${i + 1}. ${escHtml(stage.label)}</span>
+        <span style="font-weight:800; color:var(--clin-primary);">${stage.count.toLocaleString()}</span>
       </div>
       <div class="funnel-track">
         <div class="funnel-progress" style="width:${Math.max(pct, 4)}%;">${pct}%</div>
@@ -2322,17 +2469,17 @@ async function loadAnalytics() {
     data: {
       labels,
       datasets: [
-        { label: 'Orders Placed', data: orderVals, backgroundColor: 'rgba(99, 102, 241, 0.75)', borderRadius: 6 },
-        { label: 'Revenue (₹)', data: revVals, backgroundColor: 'rgba(16, 185, 129, 0.75)', borderRadius: 6, yAxisID: 'y2' }
+        { label: 'Orders Placed', data: orderVals, backgroundColor: 'rgba(15, 118, 110, 0.85)', borderRadius: 6 },
+        { label: 'Revenue (₹)', data: revVals, backgroundColor: 'rgba(2, 132, 199, 0.85)', borderRadius: 6, yAxisID: 'y2' }
       ]
     },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { labels: { color: '#94a3b8' } } },
+      plugins: { legend: { labels: { color: '#475569', font: { weight: '600' } } } },
       scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#94a3b8' } },
-        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#94a3b8' }, title: { display:true, text:'Orders', color:'#94a3b8' } },
-        y2: { position:'right', grid: { display:false }, ticks: { color:'#34d399' }, title: { display:true, text:'Revenue (₹)', color:'#34d399' } }
+        x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#64748b' } },
+        y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#64748b' }, title: { display:true, text:'Orders', color:'#64748b' } },
+        y2: { position:'right', grid: { display:false }, ticks: { color:'#0284c7' }, title: { display:true, text:'Revenue (₹)', color:'#0284c7' } }
       }
     }
   });
@@ -2369,19 +2516,19 @@ async function loadChangelog(page = 1) {
   const tbody = document.getElementById('changelog-tbody');
   const logs = data.logs || [];
   if (logs.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:36px; color:var(--text-dim);">No change log entries found.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:36px; color:var(--clin-text-dim);">No change log entries found.</td></tr>';
     return;
   }
 
   tbody.innerHTML = logs.map(l => `
     <tr>
-      <td style="color:var(--text-dim); font-size:12px;">#${l.id}</td>
-      <td><span style="font-size:11px; font-weight:700; background:rgba(99,102,241,0.12); color:#a5b4fc; padding:2px 8px; border-radius:4px;">${escHtml(l.action_type || '').replace(/_/g, ' ')}</span></td>
-      <td style="font-size:12.5px;">${escHtml(l.entity_name || l.entity_id || '')}</td>
-      <td style="font-size:11.5px; color:#f87171; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(l.old_value || '—')}</td>
-      <td style="font-size:11.5px; color:#34d399; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(l.new_value || '—')}</td>
-      <td><span style="font-size:11px; font-weight:600; color:var(--text-muted);">${escHtml(l.performed_by || 'admin')}</span></td>
-      <td style="font-size:11.5px; color:var(--text-dim);">${relTime(l.performed_at)}</td>
+      <td style="color:var(--clin-text-dim); font-size:12px;">#${l.id}</td>
+      <td><span style="font-size:11px; font-weight:700; background:var(--clin-primary-light); color:var(--clin-primary); padding:3px 8px; border-radius:4px; border:1px solid var(--clin-primary-border);">${escHtml(l.action_type || '').replace(/_/g, ' ')}</span></td>
+      <td style="font-size:12.5px; font-weight:600;">${escHtml(l.entity_name || l.entity_id || '')}</td>
+      <td style="font-size:11.5px; color:var(--clin-danger); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(l.old_value || '—')}</td>
+      <td style="font-size:11.5px; color:var(--clin-success); max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtml(l.new_value || '—')}</td>
+      <td><span style="font-size:11px; font-weight:700; color:var(--clin-text-muted);">${escHtml(l.performed_by || 'admin')}</span></td>
+      <td style="font-size:11.5px; color:var(--clin-text-dim);">${relTime(l.performed_at)}</td>
     </tr>
   `).join('');
 }
@@ -2393,12 +2540,12 @@ async function loadUsers() {
   const tbody = document.getElementById('users-tbody');
   tbody.innerHTML = users.map(u => `
     <tr>
-      <td style="color:var(--text-dim); font-size:12px;">#${u.id}</td>
+      <td style="color:var(--clin-text-dim); font-size:12px;">#${u.id}</td>
       <td style="font-weight:700;">${escHtml(u.username)}</td>
       <td>${escHtml(u.full_name || '')}</td>
-      <td><span class="role-tag ${u.role}">${escHtml(u.role)}</span></td>
-      <td>${u.is_active ? '<span style="color:#34d399; font-size:12px; font-weight:700;">● Active</span>' : '<span style="color:#f87171; font-size:12px;">● Inactive</span>'}</td>
-      <td style="font-size:11.5px; color:var(--text-dim);">${fmtDate(u.created_at)}</td>
+      <td><span class="role-badge ${u.role}">${escHtml(u.role)}</span></td>
+      <td>${u.is_active ? '<span style="color:var(--clin-success); font-size:12px; font-weight:700;">● Active</span>' : '<span style="color:var(--clin-danger); font-size:12px;">● Inactive</span>'}</td>
+      <td style="font-size:11.5px; color:var(--clin-text-dim);">${fmtDate(u.created_at)}</td>
       <td style="text-align:right;">
         <button class="btn btn-ghost btn-sm" onclick="toggleUserActive(${u.id}, ${u.is_active})">${u.is_active ? 'Deactivate' : 'Activate'}</button>
         <button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">Delete</button>
