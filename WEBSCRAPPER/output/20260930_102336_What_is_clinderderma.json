@@ -1,0 +1,59 @@
+{
+  "session_id": "session_1790743965",
+  "query": "What is clinderderma",
+  "full_text": "Clinderma is a dermatologist-led skin treatment platform by Naase Healthcare. It combines modern dermatology, Ayurveda, and nutrition to treat acne and pigmentation as medical conditions, not cosmetic issues.\n\nHere's what makes it different:\n- Personalized treatment plans reviewed by a qualified dermatologist\n- Root-cause approach (gut health, hormones, stress, sleep)\n- Free doctor consultations and Skin Coach follow-ups\n- Structured three-phase program (Restore → Remodel → Regenerate)\n\nWant to know more about how the treatment works or which plan might suit you?",
+  "products": [],
+  "follow_ups": [],
+  "thinking_history": [
+    {
+      "thinking": "THINKING",
+      "progress": 0
+    },
+    {
+      "thinking": "",
+      "progress": 0
+    }
+  ],
+  "raw_frames": [
+    "42[\"thinkingStateFromServer\",{\"thinking\":\"THINKING\",\"progress\":0}]",
+    "42[\"thinkingStateFromServer\",{\"thinking\":\"\",\"progress\":0}]",
+    "42[\"assistant-response\",{\"content\":\"Clinderma\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\" is a der\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"matologist-led skin tr\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"eatment platform by N\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"aase Healthcare. It com\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"bines modern dermato\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"logy, Ayurved\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"a, and nutrition to treat ac\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"ne \",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"and pigmentation as \",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"medical conditions, not cosme\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"tic issues.\\n\\nHere's what m\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"akes it different:\\n- Personalized treat\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"ment plans reviewed by a quali\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"fied dermatologist\\n- \",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"Root-cause a\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"pproach (g\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"ut health, hormon\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"es, stress, s\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"leep)\\n- Free d\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"octor consultations an\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"d Skin Coach foll\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"ow-ups\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"\\n- Structured three-phase\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\" program (Restore → R\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"emodel → R\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"egenerate)\\n\\nWant to \",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"know\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\" more about how the treat\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"ment \",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"works \",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"or which plan m\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"assistant-response\",{\"content\":\"ight suit you?\\n\\n\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"product-recommendations\",{\"products\":[],\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]",
+    "42[\"relevant-faqs\",{\"relevantFAQs\":[{\"query\":\"How does the Clinderma treatment process work?\",\"productId\":null},{\"query\":\"What skin concerns does Clinderma treat?\",\"productId\":null},{\"query\":\"How much does treatment cost?\",\"productId\":null}],\"message\":\"from line 92\",\"id\":\"g8AGZC5RpFbS5olVXbcFU\"}]"
+  ],
+  "events_count": 37,
+  "duration_seconds": 9.94,
+  "created_at": "2026-09-30T04:53:36.241048"
+}

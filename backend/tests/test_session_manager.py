@@ -53,7 +53,7 @@ class SessionManagerStateTests(unittest.TestCase):
         self.manager.set_phone_required("session-1", True)
         self.assertTrue(self.manager.is_phone_required("session-1"))
 
-        reloaded = SessionManager(self.db_path)
+        reloaded = SessionManager()
         self.assertTrue(reloaded.is_phone_required("session-1"))
         reloaded.set_phone_required("session-1", False)
         self.assertFalse(self.manager.is_phone_required("session-1"))

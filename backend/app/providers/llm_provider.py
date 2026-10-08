@@ -98,6 +98,8 @@ def compact_clinic_answer(text: str, fallback: str = "") -> str:
     cleaned = normalize_chat_answer(text).strip()
     if not cleaned:
         return compact_grounded_fallback(fallback) if fallback else ""
+    if fallback and cleaned and cleaned[-1] not in ".!?":
+        return compact_grounded_fallback(fallback)
     return cleaned
 
 OUT_OF_KB_MESSAGES = {

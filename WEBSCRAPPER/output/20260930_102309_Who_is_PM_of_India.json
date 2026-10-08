@@ -1,0 +1,36 @@
+{
+  "session_id": "session_1790743965",
+  "query": "Who is PM of India",
+  "full_text": "I'm here to help with questions about Clinderma's products, orders, and services. I can't assist with unrelated requests.",
+  "products": [],
+  "follow_ups": [],
+  "thinking_history": [
+    {
+      "thinking": "THINKING",
+      "progress": 0
+    },
+    {
+      "thinking": "",
+      "progress": 0
+    }
+  ],
+  "raw_frames": [
+    "42[\"thinkingStateFromServer\",{\"thinking\":\"THINKING\",\"progress\":0}]",
+    "42[\"thinkingStateFromServer\",{\"thinking\":\"\",\"progress\":0}]",
+    "42[\"assistant-response\",{\"content\":\"I'\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"m here to help with\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\" questions about C\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"linderma\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"'s products, or\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"ders, and services. \",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"I can't assist with\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\" un\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"rel\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"assistant-response\",{\"content\":\"ated requests.\\n\\n\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"product-recommendations\",{\"products\":[],\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]",
+    "42[\"relevant-faqs\",{\"relevantFAQs\":[{\"query\":\"What does Clinderma offer?\",\"productId\":null},{\"query\":\"Can you help me with my skin concerns?\",\"productId\":null},{\"query\":\"How do I check my order status?\",\"productId\":null}],\"message\":\"from line 92\",\"id\":\"L8cApLgGxD4M1WRNrboDb\"}]"
+  ],
+  "events_count": 14,
+  "duration_seconds": 16.71,
+  "created_at": "2026-09-30T04:53:09.108550"
+}

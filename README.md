@@ -188,9 +188,30 @@ python backend/main.py
 ### Step 6: Test in Your Web Browser
 Open your browser and visit:
 - 🌐 **Clinderma Website + Live Chat Widget**: `http://localhost:8000/`
+- ⚙️ **Admin Panel & Analytics Dashboard (PRD)**: `http://localhost:8000/admin` (or `http://localhost:8000/admin.html`)
+  - **Admin**: `admin` / `clinderma@admin2026` (Full access)
+  - **Doctor**: `doctor` / `doctor@clinderma2026` (Medical review + read chats + analytics)
+  - **Viewer**: `viewer` / `viewer@clinderma2026` (Read-only chats + analytics)
+- 🩺 **Skin Coach Clinical Dashboard**: `http://localhost:8000/dashboard.html`
 - 📋 **Skin Assessment Form (Widget Suppressed)**: `http://localhost:8000/assessment.html`
-- 🩺 **Skin Coach Dashboard**: `http://localhost:8000/dashboard.html`
 - 📖 **Interactive Swagger API Documentation**: `http://localhost:8000/docs`
+
+---
+
+## 🛠️ Admin Panel & Analytics Dashboard (PRD Implementation)
+
+Built to meet all requirements from the **Clinderma PRD (Chatbot Admin Panel & Analytics Dashboard)**:
+
+1. **📚 Knowledge Base & FAQs**: Full CRUD interface for chatbot FAQs, categories (Products, Treatment, Guarantee, Delivery, Payments), document uploads (`.pdf`, `.docx`, `.txt`, `.xlsx`), and draft-first publishing pipeline.
+2. **🏷️ Offers Management**: Create, schedule, and auto-switch monthly promotions (codes, percentage/flat discounts, product targets, terms). Chatbot dynamically injects active offers.
+3. **🧪 Test Chat & Push to Live**: Internal test sandbox to verify draft answers before customers see them. One-click "Push to Live" with live FAISS re-indexing and snapshot undo/restore.
+4. **💬 Customer Chats & Takeover**: Real-time view of customer sessions with newest first and Live badges. Admin can click **Take Over** to pause the bot and chat directly with customers, then **Hand Back to Bot**.
+5. **🩺 Doctor Review Queue**: Admins/doctors tag dubious answers. Doctors can **Approve** or **Edit & Correct** answers directly from the queue, automatically updating the knowledge base.
+6. **📋 Change Log (Audit Trail)**: Immutable log recording who changed what, before/after values, and timestamps across all operations. Filterable by date, user, and action type.
+7. **📊 Analytics Dashboard**: 
+   - **Chatbot Funnel**: 6 stages (*Visitors*, *Opened chat*, *Started chat*, *Engaged*, *Added to cart*, *Converted*) with drop-off percentages and non-openers statistics.
+   - **Orders & Revenue**: Track orders and revenue attributed to chatting customers across Daily, Weekly, and Monthly views with custom date range picker and spreadsheet CSV download.
+8. **👥 RBAC Permissions**: Strict 3-tier role enforcement across all APIs and frontend tabs.
 
 ---
 
