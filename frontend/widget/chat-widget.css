@@ -234,6 +234,25 @@
   border-bottom-right-radius: 4px;
 }
 
+.clin-msg-admin {
+  background: #ecfdf5;
+  color: #065f46;
+  align-self: flex-start;
+  border: 1px solid #a7f3d0;
+  border-bottom-left-radius: 4px;
+}
+
+.clin-msg-system {
+  align-self: center;
+  max-width: 95%;
+  padding: 7px 12px;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 12px;
+  font-size: 12px;
+  text-align: center;
+}
+
 /* Quick Action Chips */
 .clin-chips {
   display: flex;

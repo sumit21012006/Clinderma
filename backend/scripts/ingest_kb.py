@@ -18,6 +18,8 @@ import re
 import time
 import numpy as np
 import docx
+from google import genai
+from google.genai.errors import APIError
 
 # Ensure Windows terminal utf-8 support
 if sys.platform == "win32":
@@ -335,13 +337,13 @@ def parse_kandid_output_jsonl(file_path: str):
 
 
 def generate_embeddings(entries: list):
-    """Generate Gemini embeddings for all KB entries with automatic 429 backoff retry."""
-    from google import genai
-
+    """Generate Gemini embeddings for all KB entries with automatic exponential backoff."""
     client = genai.Client(api_key=settings.GEMINI_API_KEY)
     embedding_dim = 3072  # gemini-embedding-001 output dimension
     vectors = []
-    batch_size = 15
+    
+    # Reduced batch size to 5 to protect the 1,500 Tokens-Per-Minute (TPM) limit
+    batch_size = 5 
 
     print(f"Generating embeddings using {settings.EMBEDDING_MODEL} for {len(entries)} items...")
 
@@ -351,7 +353,8 @@ def generate_embeddings(entries: list):
 
         batch_embedded = False
         attempts = 0
-        while not batch_embedded and attempts < 5:
+        
+        while not batch_embedded and attempts < 6:
             attempts += 1
             try:
                 result = client.models.embed_content(
@@ -361,19 +364,27 @@ def generate_embeddings(entries: list):
                 for emb in result.embeddings:
                     vectors.append(emb.values)
                 batch_embedded = True
-            except Exception as e:
-                err_msg = str(e)
-                print(f"  Embedding batch {i//batch_size + 1} attempt {attempts} note: {err_msg[:80]}")
-                if "429" in err_msg or "RESOURCE_EXHAUSTED" in err_msg:
-                    print(f"  --> Pausing 25s for free tier rate quota reset...")
-                    time.sleep(25)
+                
+            except APIError as e:
+                # Catch specific 429 status codes or string matches
+                if e.code == 429 or "RESOURCE_EXHAUSTED" in str(e):
+                    # Exponential Backoff: Wait 30s, then 60s, then 120s...
+                    wait_time = 30 * attempts
+                    print(f"  [429 Quota Exceeded] Batch {i//batch_size + 1} | Attempt {attempts}. Pausing for {wait_time}s...")
+                    time.sleep(wait_time)
                 else:
+                    print(f"  [API Error] Batch {i//batch_size + 1} | Attempt {attempts}: {e.message[:80]}")
                     time.sleep(2)
+            except Exception as e:
+                print(f"  [Unexpected Error] Batch {i//batch_size + 1}: {str(e)[:80]}")
+                time.sleep(2)
 
+        # Fallback to single-item processing if the entire batch fails completely
         if not batch_embedded:
+            print(f"  --> Batch {i//batch_size + 1} failed. Falling back to item-by-item generation...")
             for e_item in batch:
                 item_done = False
-                for _ in range(3):
+                for item_attempt in range(1, 4):
                     try:
                         res_single = client.models.embed_content(
                             model=settings.EMBEDDING_MODEL,
@@ -382,13 +393,19 @@ def generate_embeddings(entries: list):
                         vectors.append(res_single.embeddings[0].values)
                         item_done = True
                         break
-                    except Exception:
-                        time.sleep(20)
+                    except Exception as single_err:
+                        if "429" in str(single_err) or "RESOURCE_EXHAUSTED" in str(single_err):
+                            wait_single = 40 * item_attempt
+                            time.sleep(wait_single)
+                        else:
+                            time.sleep(2)
                 if not item_done:
+                    print(f"  --> Warning: Failed to embed entry. Appending zero-vector padding.")
                     vectors.append([0.0] * embedding_dim)
 
+        # Steady state pacing spacing between successful batches to avoid TPM burst caps
         if i + batch_size < len(entries):
-            time.sleep(1.0)
+            time.sleep(2.5)
 
         print(f"  Embedded {len(vectors)}/{len(entries)} entries successfully.")
 

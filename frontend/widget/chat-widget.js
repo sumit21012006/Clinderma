@@ -35,6 +35,8 @@
   let phoneRequired = !savedPhone && localStorage.getItem('clinderma_phone_required') === 'true';
   let isOpen = false;
   let hasTrackedOpen = false;
+  let lastLiveUpdateId = Number(localStorage.getItem('clinderma_chat_last_live_update_id')) || 0;
+  let isSyncingLiveUpdates = false;
   const API_HOST = window.location.origin;
 
   const skinTestLinks = {
@@ -147,8 +149,10 @@
       localStorage.setItem('clinderma_chat_session_id', sessionId);
       localStorage.removeItem('clinderma_chat_html');
       localStorage.removeItem('clinderma_chat_phone');
+      localStorage.removeItem('clinderma_chat_last_live_update_id');
       savedPhone = '';
       phoneRequired = false;
+      lastLiveUpdateId = 0;
       localStorage.setItem('clinderma_phone_required', 'false');
       msgList.innerHTML = starterHTML();
       updatePhoneGate();
@@ -200,6 +204,7 @@
       container.classList.add('clin-open');
       inputField.focus();
       msgList.scrollTop = msgList.scrollHeight;
+      syncLiveUpdates();
       if (!hasTrackedOpen) {
         hasTrackedOpen = true;
         try {
@@ -239,6 +244,44 @@
     msgList.appendChild(div);
     msgList.scrollTop = msgList.scrollHeight;
     saveChatState();
+  }
+
+  function appendLiveMessage(text, type) {
+    const div = document.createElement('div');
+    div.className = `clin-msg ${type === 'admin' ? 'clin-msg-admin' : 'clin-msg-system'}`;
+    div.textContent = text;
+    msgList.appendChild(div);
+    msgList.scrollTop = msgList.scrollHeight;
+    saveChatState();
+  }
+
+  async function syncLiveUpdates() {
+    if (!isOpen || isSyncingLiveUpdates) return;
+    isSyncingLiveUpdates = true;
+    try {
+      const res = await fetch(
+        `${API_HOST}/api/chat/${encodeURIComponent(sessionId)}/updates?after_id=${lastLiveUpdateId}`
+      );
+      if (!res.ok) return;
+      const data = await res.json();
+      (data.updates || []).forEach((update) => {
+        const isAdmin = update.sender && update.sender.indexOf('admin:') === 0;
+        appendLiveMessage(
+          isAdmin ? `Clinderma Care Team: ${update.message}` : update.message,
+          isAdmin ? 'admin' : 'system'
+        );
+        lastLiveUpdateId = Math.max(lastLiveUpdateId, Number(update.id) || 0);
+      });
+      if (data.last_id !== undefined) {
+        lastLiveUpdateId = Math.max(lastLiveUpdateId, Number(data.last_id) || 0);
+      }
+      localStorage.setItem('clinderma_chat_last_live_update_id', String(lastLiveUpdateId));
+    } catch (err) {
+      // Live updates are supplementary; normal chat remains usable if polling fails.
+      console.warn('[Clinderma Chat] Could not fetch live updates:', err);
+    } finally {
+      isSyncingLiveUpdates = false;
+    }
   }
 
   function appendSuggestions(questions) {
@@ -324,7 +367,10 @@
       if (data && !phoneRequired) {
         appendSuggestions(data.suggested_questions);
       }
-      if (!data || (!data.answer && !data.phone_prompt)) {
+      if (data && data.taken_over) {
+        // The bot is intentionally silent while an admin is handling the chat.
+        syncLiveUpdates();
+      } else if (!data || (!data.answer && !data.phone_prompt)) {
         appendBotMsg(`I'm sorry, I am currently unable to process that. Please try again.<br><br>${skinTestCta()}`);
       }
     } catch (err) {
@@ -336,4 +382,5 @@
   }
 
   updatePhoneGate();
+  window.setInterval(syncLiveUpdates, 3500);
 })();

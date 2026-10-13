@@ -54,6 +54,10 @@ DARK_SPOT_WORDS = (
     "काले दाग", "दाग", "पिगमेंटेशन", "काळे डाग", "डाग",
 )
 ACNE_WORDS = ("acne", "pimple", "breakout", "मुँहास", "पिंपल", "एक्ने", "मुरुम")
+OFFER_INTENT_WORDS = (
+    "offer", "offers", "promo", "promotion", "discount", "coupon", "sale", "deal",
+    "ऑफर", "डिस्काउंट", "कूपन", "छूट", "सवलत", "कुपन",
+)
 
 
 def skin_test_cta(lang: str) -> str:
@@ -67,6 +71,107 @@ def phone_prompt(lang: str) -> str:
 def has_product_intent(message: str) -> bool:
     lowered = message.lower()
     return any(word in lowered for word in PRODUCT_INTENT_WORDS)
+
+
+def has_offer_intent(message: str) -> bool:
+    """Recognize direct questions about current promotions or coupon codes."""
+    lowered = message.lower()
+    return any(word in lowered for word in OFFER_INTENT_WORDS)
+
+
+def recommended_product_names(message: str) -> list[str]:
+    """Return catalog names named by the deterministic product-response path."""
+    lowered = message.lower()
+    if any(word in lowered for word in DARK_SPOT_WORDS):
+        return ["Epifade Cream", "Anti-Acne + Pigmentation Kit"]
+    if any(word in lowered for word in ACNE_WORDS):
+        return ["Acnetrol Moisturiser", "Anti-Acne Kit – Cleanse + Gut + Calm"]
+    return []
+
+
+def offer_product_names_from_message(message: str) -> list[str]:
+    """Narrow an offer question when it names a product or kit directly."""
+    lowered = message.lower()
+    catalog = {
+        "epifade": "Epifade Cream",
+        "acnetrol moisturiser": "Acnetrol Moisturiser",
+        "acnetrol moisturizer": "Acnetrol Moisturiser",
+        "anti-acne + pigmentation kit": "Anti-Acne + Pigmentation Kit",
+        "anti acne pigmentation kit": "Anti-Acne + Pigmentation Kit",
+        "anti-acne kit": "Anti-Acne Kit – Cleanse + Gut + Calm",
+        "anti acne kit": "Anti-Acne Kit – Cleanse + Gut + Calm",
+    }
+    named_products = [product for term, product in catalog.items() if term in lowered]
+    return named_products or recommended_product_names(message)
+
+
+def _normalise_offer_text(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", (value or "").lower()).strip()
+
+
+def applicable_active_offers(active_offers: list[dict], product_names: list[str]) -> list[dict]:
+    """Limit product replies to offers marked for those products or for all products."""
+    if not product_names:
+        return active_offers
+
+    product_tokens = set()
+    product_texts = []
+    for product in product_names:
+        normalised = _normalise_offer_text(product)
+        product_texts.append(normalised)
+        product_tokens.update(token for token in normalised.split() if len(token) > 2)
+
+    relevant = []
+    for offer in active_offers:
+        targets = offer.get("applicable_products") or []
+        if not targets:
+            relevant.append(offer)
+            continue
+        for target in targets:
+            normalised_target = _normalise_offer_text(str(target))
+            target_tokens = {token for token in normalised_target.split() if len(token) > 2}
+            if (
+                any(normalised_target in product or product in normalised_target for product in product_texts)
+                or bool(target_tokens.intersection(product_tokens))
+            ):
+                relevant.append(offer)
+                break
+    return relevant
+
+
+def format_active_offers(active_offers: list[dict], lang: str, product_names: list[str] = None) -> str:
+    """Render only database-backed offers; never infer discounts or codes."""
+    relevant = applicable_active_offers(active_offers, product_names or [])
+    if not relevant:
+        if product_names:
+            messages = {
+                "en": "I don’t see a valid active offer for these recommendations right now.",
+                "hi": "इन सुझावों के लिए अभी कोई वैध सक्रिय ऑफर नहीं दिख रहा है।",
+                "mr": "या शिफारशींसाठी सध्या कोणतीही वैध सक्रिय ऑफर दिसत नाही.",
+            }
+        else:
+            messages = {
+                "en": "I don’t see any valid active offers right now, so I won’t invent a discount or coupon code.",
+                "hi": "अभी कोई वैध सक्रिय ऑफर नहीं दिख रहा है, इसलिए मैं कोई छूट या कूपन कोड नहीं बताऊँगा।",
+                "mr": "सध्या कोणतीही वैध सक्रिय ऑफर दिसत नाही, त्यामुळे मी सवलत किंवा कूपन कोड सांगणार नाही.",
+            }
+        return messages.get(lang, messages["en"])
+
+    entries = []
+    for offer in relevant:
+        value = f"{offer.get('discount_value')}%" if offer.get("discount_type") == "percentage" else f"₹{offer.get('discount_value')}"
+        code = f" Use code {offer['discount_code']}." if offer.get("discount_code") else ""
+        conditions = offer.get("conditions") or {}
+        note = conditions.get("notes") if isinstance(conditions, dict) else ""
+        details = f" {note}." if note else ""
+        entries.append(f"{offer.get('name')}: {value} off{code} Valid until {offer.get('end_date')}.{details}")
+
+    prefixes = {
+        "en": "Current valid offer" if len(entries) == 1 else "Current valid offers",
+        "hi": "वर्तमान वैध ऑफर",
+        "mr": "सध्याच्या वैध ऑफर्स",
+    }
+    return f"{prefixes.get(lang, prefixes['en'])}: " + " ".join(entries)
 
 
 def has_order_intent(message: str) -> bool:
@@ -183,6 +288,9 @@ class RAGEngine:
         session_id = req.session_id
         detected_lang = LanguageService.detect_language(message)
         lang = req.language or detected_lang
+        # Populated by chat.py from the offers table for this request. This is
+        # deliberately runtime data, not part of the static/vector knowledge base.
+        active_offers = getattr(req, "_active_offers", []) or []
 
         # Restore a previously captured browser identity into a newly created chat session.
         captured_info = session_manager.get_captured_info(session_id)
@@ -318,8 +426,10 @@ class RAGEngine:
             )
 
         # ── 3. Explicit Clinderma Product / Shop Intent ──
-        if has_product_intent(message):
-            ans = product_recommendation(message, lang)
+        if has_offer_intent(message):
+            ans = format_active_offers(
+                active_offers, lang, offer_product_names_from_message(message)
+            )
             handoff_manager.add_transcript(session_id, "bot", ans)
             return self._build_response(
                 ans, True, 1.0, False, None, [], lang, session_id,
@@ -328,7 +438,22 @@ class RAGEngine:
                 suggestions=suggested_questions(message, lang),
             )
 
-        # ── 4. Order Queries (tracking integration is intentionally disabled in V1) ──
+        # ── 4. Explicit Clinderma Product / Shop Intent ──
+        if has_product_intent(message):
+            ans = product_recommendation(message, lang)
+            offer_note = format_active_offers(
+                active_offers, lang, recommended_product_names(message)
+            )
+            ans = f"{ans}\n\n{offer_note}"
+            handoff_manager.add_transcript(session_id, "bot", ans)
+            return self._build_response(
+                ans, True, 1.0, False, None, [], lang, session_id,
+                requires_phone=phone_gate_after_response,
+                phone_prompt_text=phone_prompt(lang) if phone_gate_after_response else None,
+                suggestions=suggested_questions(message, lang),
+            )
+
+        # ── 5. Order Queries (tracking integration is intentionally disabled in V1) ──
         if has_order_intent(message):
             ans = ("Order tracking isn’t connected in this first chatbot version, so I can’t safely show a live status here. "
                    "Please use the tracking link sent by SMS or email after dispatch, or contact Clinderma at help@theclinderma.com with your order number. "
@@ -348,7 +473,7 @@ class RAGEngine:
                 phone_prompt_text=phone_prompt(lang) if phone_gate_after_response else None,
             )
 
-        # ── 5. Human Agent / Skin Coach Handoff Intent ──
+        # ── 6. Human Agent / Skin Coach Handoff Intent ──
         # Includes both explicit requests AND medical emergency triggers per spec
         handoff_keywords = [
             # Explicit human-help requests
@@ -385,7 +510,7 @@ class RAGEngine:
                 phone_prompt_text=phone_prompt(lang) if not already_has_lead and not phone_no else None,
             )
 
-        # ── 6. Multi-Source Grounded RAG: Conversational Search → LLM Generation ──
+        # ── 7. Multi-Source Grounded RAG: Conversational Search → LLM Generation ──
         history = session_manager.get_history(session_id)
         prior_history = history[:-1] if len(history) > 1 else []
 

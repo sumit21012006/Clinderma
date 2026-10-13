@@ -28,6 +28,7 @@ class ChatResponse(BaseModel):
     phone_prompt: Optional[str] = None
     captured_phone: Optional[str] = None
     suggested_questions: List[str] = Field(default_factory=list)
+    taken_over: bool = False
 
 class LeadCreateRequest(BaseModel):
     name: Optional[str] = "Web Visitor"
