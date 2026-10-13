@@ -58,6 +58,9 @@ class _SQLiteConn:
     def commit(self):
         self._conn.commit()
 
+    def rollback(self):
+        self._conn.rollback()
+
     def close(self):
         self._conn.close()
 
@@ -69,6 +72,68 @@ class _SQLiteConn:
             self._conn.rollback()
         else:
             self._conn.commit()
+        self._conn.close()
+
+
+class _PostgresCursor:
+    """Normalize the SQLite-oriented auto-ID DDL for PostgreSQL."""
+
+    def __init__(self, cursor):
+        self._cursor = cursor
+        self._lastrowid = None
+
+    def execute(self, query, params=None):
+        query = query.replace(
+            "INTEGER PRIMARY KEY AUTOINCREMENT",
+            "SERIAL PRIMARY KEY",
+        )
+        normalized = " ".join(query.strip().lower().split())
+        id_tables = (
+            "admin_users", "doctor_reviews", "kb_entries",
+            "kb_documents", "offers",
+        )
+        captures_id = any(
+            normalized.startswith(f"insert into {table} ") for table in id_tables
+        ) and " returning " not in normalized
+        if captures_id:
+            query = f"{query.rstrip().rstrip(';')} RETURNING id"
+        self._cursor.execute(query, params or [])
+        if captures_id:
+            row = self._cursor.fetchone()
+            self._lastrowid = row["id"] if row else None
+
+    def fetchone(self):
+        return self._cursor.fetchone()
+
+    def fetchall(self):
+        return self._cursor.fetchall()
+
+    def close(self):
+        self._cursor.close()
+
+    @property
+    def rowcount(self):
+        return self._cursor.rowcount
+
+    @property
+    def lastrowid(self):
+        return self._lastrowid
+
+
+class _PostgresConn:
+    def __init__(self, conn):
+        self._conn = conn
+
+    def cursor(self):
+        return _PostgresCursor(self._conn.cursor())
+
+    def commit(self):
+        self._conn.commit()
+
+    def rollback(self):
+        self._conn.rollback()
+
+    def close(self):
         self._conn.close()
 
 
@@ -84,7 +149,7 @@ def get_conn():
         import psycopg2
         import psycopg2.extras
         conn = psycopg2.connect(url, cursor_factory=psycopg2.extras.RealDictCursor)
-        return conn
+        return _PostgresConn(conn)
 
     # --- Local dev fallback: SQLite ---
     db_path = os.path.join(os.path.dirname(__file__), "..", "..", "..", "data", "clinderma.db")
@@ -137,6 +202,34 @@ def run_migrations():
             sender TEXT,
             message TEXT,
             timestamp TEXT
+        )
+    """)
+
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS chat_session_state (
+            session_id TEXT PRIMARY KEY,
+            phone_required BOOLEAN NOT NULL DEFAULT FALSE,
+            chat_status TEXT NOT NULL DEFAULT 'live',
+            last_activity_at TEXT,
+            last_user_activity_at TEXT,
+            inactivity_prompted_at TEXT,
+            ended_at TEXT
+        )
+    """)
+
+    # Operational order store. Integrations can upsert fulfilment updates here;
+    # chatbot/API reads never need fabricated sample orders.
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS orders (
+            order_id TEXT PRIMARY KEY,
+            status TEXT NOT NULL,
+            customer_name TEXT DEFAULT '',
+            items TEXT DEFAULT '[]',
+            estimated_delivery TEXT DEFAULT '',
+            tracking_url TEXT DEFAULT '',
+            order_value REAL DEFAULT 0,
+            created_at TEXT,
+            updated_at TEXT
         )
     """)
 
@@ -241,6 +334,18 @@ def run_migrations():
         )
     """)
 
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS chat_metrics (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            session_id TEXT,
+            latency_ms REAL,
+            confidence REAL,
+            grounded INTEGER DEFAULT 0,
+            escalated INTEGER DEFAULT 0,
+            created_at TEXT
+        )
+    """)
+
     # Admin users with roles (JWT auth)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS admin_users (
@@ -254,6 +359,10 @@ def run_migrations():
         )
     """)
 
+    # Preserve new tables before idempotent ALTER statements. PostgreSQL marks
+    # a transaction failed after a duplicate-column error until rollback.
+    conn.commit()
+
     # ─── Safe column migrations for older deployments ─────────────────────────
     for col_def in [
         ("severity", "TEXT DEFAULT 'moderate'"),
@@ -265,7 +374,30 @@ def run_migrations():
             cursor.execute(f"ALTER TABLE handoffs ADD COLUMN {col_def[0]} {col_def[1]}")
             conn.commit()
         except Exception:
-            pass
+            conn.rollback()
+
+    for col_def in [
+        ("chat_status", "TEXT NOT NULL DEFAULT 'live'"),
+        ("last_activity_at", "TEXT"),
+        ("last_user_activity_at", "TEXT"),
+        ("inactivity_prompted_at", "TEXT"),
+        ("ended_at", "TEXT"),
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE chat_session_state ADD COLUMN {col_def[0]} {col_def[1]}")
+            conn.commit()
+        except Exception:
+            conn.rollback()
+
+    for col_def in [
+        ("order_value", "REAL DEFAULT 0"),
+        ("created_at", "TEXT"),
+    ]:
+        try:
+            cursor.execute(f"ALTER TABLE orders ADD COLUMN {col_def[0]} {col_def[1]}")
+            conn.commit()
+        except Exception:
+            conn.rollback()
 
     conn.commit()
     cursor.close()

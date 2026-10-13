@@ -25,6 +25,7 @@ class HandoffManager:
                 created_at TEXT
             )
         """)
+        conn.commit()
         # Safe migration for existing SQLite / Postgres tables
         for col_def in [
             ("severity", "TEXT DEFAULT 'moderate'"),
@@ -35,7 +36,7 @@ class HandoffManager:
                 cursor.execute(f"ALTER TABLE handoffs ADD COLUMN {col_def[0]} {col_def[1]}")
                 conn.commit()
             except Exception:
-                pass
+                conn.rollback()
 
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS transcripts (
@@ -121,7 +122,11 @@ class HandoffManager:
     def get_all_handoffs(self) -> List[Dict[str, Any]]:
         conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM handoffs ORDER BY created_at DESC")
+        cursor.execute("""
+            SELECT * FROM handoffs
+            WHERE LOWER(COALESCE(reason, '')) != 'lead captured in chat'
+            ORDER BY created_at DESC
+        """)
         rows = cursor.fetchall()
 
         handoffs = []

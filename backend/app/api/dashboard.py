@@ -2,13 +2,13 @@ import datetime
 from typing import Dict, Any, List
 from fastapi import APIRouter, Depends
 from app.core.db import get_conn
-from app.core.auth import verify_admin
+from app.core.auth import require_role
 
 router = APIRouter()
 
 
 @router.get("/dashboard/stats")
-def get_dashboard_stats(_admin: str = Depends(verify_admin)) -> Dict[str, Any]:
+def get_dashboard_stats(_user: dict = Depends(require_role("doctor", "admin"))) -> Dict[str, Any]:
     """
     Protected endpoint: aggregated metrics and analytics for the Skin Coach Command Dashboard.
     Provides live KPI counts, clinical concern breakdown, and 7-day consultation trends.
@@ -16,11 +16,10 @@ def get_dashboard_stats(_admin: str = Depends(verify_admin)) -> Dict[str, Any]:
     conn = get_conn()
     cursor = conn.cursor()
 
-    # 1. Total Leads & Kylas Sync
-    cursor.execute("SELECT count(*) as total, sum(CASE WHEN kylas_synced = 1 THEN 1 ELSE 0 END) as synced FROM leads")
+    # 1. Total patient intakes
+    cursor.execute("SELECT count(*) as total FROM leads")
     lead_row = cursor.fetchone()
     total_leads = lead_row["total"] if lead_row else 0
-    synced_leads = lead_row["synced"] if (lead_row and lead_row["synced"] is not None) else 0
 
     # 2. Handoff stats
     cursor.execute("""
@@ -30,6 +29,7 @@ def get_dashboard_stats(_admin: str = Depends(verify_admin)) -> Dict[str, Any]:
             sum(CASE WHEN status != 'resolved' AND severity = 'critical' THEN 1 ELSE 0 END) as critical,
             sum(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved
         FROM handoffs
+        WHERE LOWER(COALESCE(reason, '')) != 'lead captured in chat'
     """)
     handoff_row = cursor.fetchone()
     total_handoffs = handoff_row["total"] if handoff_row else 0
@@ -62,63 +62,46 @@ def get_dashboard_stats(_admin: str = Depends(verify_admin)) -> Dict[str, Any]:
         else:
             concern_counts["Routine & Product Layering"] += 1
 
-    # Base baseline for demo visualization if early in clinic lifecycle
-    baseline_concerns = {
-        "Acne & Blemishes": max(concern_counts["Acne & Blemishes"], 42),
-        "Pigmentation & Melasma": max(concern_counts["Pigmentation & Melasma"], 28),
-        "Barrier Repair & Eczema": max(concern_counts["Barrier Repair & Eczema"], 18),
-        "Anti-Aging & Fine Lines": max(concern_counts["Anti-Aging & Fine Lines"], 14),
-        "Routine & Product Layering": max(concern_counts["Routine & Product Layering"], 12),
-    }
-
-    # 4. Channel Breakdown
-    cursor.execute("""
-        SELECT channel, count(*) as count 
-        FROM leads 
-        GROUP BY channel
-    """)
-    channel_rows = cursor.fetchall()
-    channel_dist = {r["channel"]: r["count"] for r in channel_rows}
-
-    # 5. Last 7 Days consultation trend data
+    # 4. Last 7 days of real clinical case intake
     today = datetime.date.today()
+    days = [today - datetime.timedelta(days=(6 - i)) for i in range(7)]
+    escalation_counts = {day.isoformat(): 0 for day in days}
+    critical_counts = {day.isoformat(): 0 for day in days}
+
+    cursor.execute("""
+        SELECT created_at, severity FROM handoffs
+        WHERE LOWER(COALESCE(reason, '')) != 'lead captured in chat'
+    """)
+    for row in cursor.fetchall():
+        day_key = str(row["created_at"] or "")[:10]
+        if day_key in escalation_counts:
+            escalation_counts[day_key] += 1
+            if row["severity"] == "critical":
+                critical_counts[day_key] += 1
+
     daily_trends = []
-    # Generate realistic 7-day clinic volume
-    vol_weights = [18, 24, 29, 34, 41, 48, 56]
-    for i in range(7):
-        day = today - datetime.timedelta(days=(6 - i))
+    for day in days:
         day_label = day.strftime("%d %b")
-        total_q = vol_weights[i]
-        esc = int(total_q * 0.12) + (1 if i % 2 == 0 else 0)
-        resolved_ai = total_q - esc
+        esc = escalation_counts[day.isoformat()]
         daily_trends.append({
             "date": day_label,
-            "total_queries": total_q,
-            "ai_resolved": resolved_ai,
-            "escalated": esc
+            "new_cases": esc,
+            "critical_cases": critical_counts[day.isoformat()],
         })
 
     cursor.close()
     conn.close()
 
-    sync_rate = round((synced_leads / max(total_leads, 1)) * 100, 1)
-
     return {
         "kpis": {
-            "total_patients": total_leads + total_handoffs,
-            "total_leads": total_leads,
-            "synced_leads": synced_leads,
-            "sync_rate_percent": sync_rate,
+            "total_patients": total_leads,
             "total_handoffs": total_handoffs,
             "pending_handoffs": pending_handoffs,
             "critical_handoffs": critical_handoffs,
             "resolved_handoffs": resolved_handoffs,
-            "ai_triage_latency": "0.78s",
-            "grounding_confidence": "98.6%"
         },
         "concerns": [
-            {"name": k, "count": v} for k, v in baseline_concerns.items()
+            {"name": k, "count": v} for k, v in concern_counts.items()
         ],
-        "channels": channel_dist,
         "daily_trends": daily_trends
     }

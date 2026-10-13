@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Clinical Command Center & Skin Coach Dashboard — Clinderma</title>
+  <title>Skin Coach Dashboard — Clinderma</title>
   
   <!-- Modern Medical Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -203,7 +203,7 @@
     /* KPI Summary Cards Grid */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 20px;
       margin-bottom: 28px;
     }
@@ -721,7 +721,7 @@
       align-items: center;
       gap: 4px;
     }
-    .sync-mock {
+    .sync-local {
       color: #b45309;
       background: #fef3c7;
       padding: 3px 8px;
@@ -824,15 +824,51 @@
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+    .dashboard-login {
+      position: fixed; inset: 0; z-index: 1000;
+      display: flex; align-items: center; justify-content: center; padding: 24px;
+      background: radial-gradient(circle at 20% 10%, #0f766e 0%, #042f2e 45%, #020617 100%);
+    }
+    .dashboard-login.hidden { display: none; }
+    .dashboard-login-card {
+      width: min(430px, 100%); background: rgba(255,255,255,0.98);
+      border-radius: 22px; padding: 34px; box-shadow: 0 30px 80px rgba(0,0,0,0.35);
+    }
+    .dashboard-login-card h1 { margin: 0 0 7px; font-size: 25px; color: #0f172a; }
+    .dashboard-login-card p { margin: 0 0 24px; color: #64748b; font-size: 13px; line-height: 1.5; }
+    .dashboard-login-field { margin-bottom: 15px; }
+    .dashboard-login-field label { display:block; margin-bottom:6px; color:#475569; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.5px; }
+    .dashboard-login-field input { width:100%; box-sizing:border-box; padding:12px 13px; border:1px solid #cbd5e1; border-radius:9px; font:inherit; }
+    .dashboard-login-field input:focus { outline:none; border-color:#0f766e; box-shadow:0 0 0 3px rgba(15,118,110,.13); }
+    .dashboard-login-btn { width:100%; border:0; border-radius:10px; padding:13px; background:linear-gradient(135deg,#0f766e,#0284c7); color:white; font-weight:800; cursor:pointer; }
+    .dashboard-login-error { display:none; margin-top:12px; padding:9px; border-radius:8px; background:#fee2e2; color:#991b1b; font-size:12px; text-align:center; }
   </style>
 </head>
 <body>
+
+  <div class="dashboard-login" id="dashboard-login">
+    <form class="dashboard-login-card" onsubmit="loginDashboard(event)">
+      <div style="color:#0f766e; font-size:12px; font-weight:800; letter-spacing:.8px; margin-bottom:8px;">CLINDERMA CLINICAL ACCESS</div>
+      <h1>Doctor sign in</h1>
+      <p>Sign in once to access the Skin Coach clinical queue. Your session remains available while you switch between console pages.</p>
+      <div class="dashboard-login-field">
+        <label for="dashboard-username">Doctor ID</label>
+        <input id="dashboard-username" autocomplete="username" value="doctor" required>
+      </div>
+      <div class="dashboard-login-field">
+        <label for="dashboard-password">Password</label>
+        <input id="dashboard-password" type="password" autocomplete="current-password" value="doctor@clinderma2026" required>
+      </div>
+      <button class="dashboard-login-btn" id="dashboard-login-btn" type="submit">Open Clinical Dashboard</button>
+      <div class="dashboard-login-error" id="dashboard-login-error">Doctor credentials are required for this dashboard.</div>
+    </form>
+  </div>
 
   <!-- Top Navigation Header -->
   <header>
     <div class="brand">
       <div class="brand-logo">CLINDERMA</div>
-      <span class="brand-badge">Clinical Command Center</span>
+      <span class="brand-badge" id="dashboard-context-title">Skin Coach Dashboard</span>
     </div>
     <div class="header-actions">
       <div class="live-pulse">
@@ -841,7 +877,7 @@
       </div>
       <div class="user-pill">
         <div class="user-avatar">Dr</div>
-        <span>Dr. Consultant (Admin)</span>
+        <span id="dashboard-user-name">Doctor</span>
       </div>
       <button class="btn-header" onclick="openProtocolModal()">
         📚 Clinical Regimens
@@ -850,8 +886,9 @@
         🔄 Refresh
       </button>
       <a href="/admin.html" class="btn-header" style="background:#7c3aed; border-color:#a78bfa; color:#ffffff;">
-        ⚙️ Admin Panel ↗
+        <span id="console-link-label">⚙️ Console ↗</span>
       </a>
+      <button class="btn-header" onclick="logoutDashboard()">Sign Out</button>
       <a href="/" class="btn-header">
         🌐 Patient Website →
       </a>
@@ -861,10 +898,10 @@
   <!-- Sub-header Clinical Status Notice -->
   <div class="top-banner">
     <div>
-      🛡️ <strong>DPDP Act 2023 Compliant</strong>: Patient contact numbers masked in public telemetry logs. Real-time dual-write active with <strong>Kylas Enterprise CRM</strong>.
+      🛡️ <strong>Clinical workspace</strong>: Review escalated cases, document observations, and resolve completed consultations.
     </div>
     <div>
-      AI Engine: <strong>Groq LPU (qwen/qwen3.8-27b) + Gemini 2.5 Multi-Agent Failover</strong>
+      Access: <strong>Authorised doctors only</strong>
     </div>
   </div>
 
@@ -875,20 +912,19 @@
       <!-- KPI 1 -->
       <div class="kpi-card kpi-blue">
         <div class="kpi-title">
-          <span>Total Triaged Patients</span>
+          <span>Patient Intakes</span>
           <span>👥</span>
         </div>
         <div class="kpi-val" id="kpi-total-patients">--</div>
         <div class="kpi-desc">
-          <span class="badge-trend-up">↑ 24%</span>
-          <span>vs last week inflow</span>
+          <span>Captured for clinical follow-up</span>
         </div>
       </div>
 
       <!-- KPI 2 -->
       <div class="kpi-card kpi-danger">
         <div class="kpi-title">
-          <span>Active Escalations</span>
+          <span>Pending Clinical Reviews</span>
           <span>🚨</span>
         </div>
         <div class="kpi-val" id="kpi-pending-escalations">--</div>
@@ -899,42 +935,29 @@
       </div>
 
       <!-- KPI 3 -->
-      <div class="kpi-card kpi-success">
+      <div class="kpi-card kpi-accent">
         <div class="kpi-title">
-          <span>Kylas CRM Sync Rate</span>
-          <span>☁️</span>
+          <span>All Clinical Cases</span>
+          <span>🩺</span>
         </div>
-        <div class="kpi-val" id="kpi-sync-rate">--%</div>
+        <div class="kpi-val" id="kpi-total-escalations">--</div>
         <div class="kpi-desc">
-          <span style="color:#15803d; font-weight:700;">✓ Synced</span>
-          <span id="kpi-synced-count">0 / 0 leads</span>
+          <span>Total escalated conversations</span>
         </div>
       </div>
 
       <!-- KPI 4 -->
-      <div class="kpi-card kpi-accent">
+      <div class="kpi-card kpi-success">
         <div class="kpi-title">
-          <span>Avg AI Triage Latency</span>
-          <span>⚡</span>
+          <span>Resolved Cases</span>
+          <span>✅</span>
         </div>
-        <div class="kpi-val" id="kpi-latency">0.78s</div>
+        <div class="kpi-val" id="kpi-resolved-cases">--</div>
         <div class="kpi-desc">
-          <span>Groq LPU Inference Grounded</span>
+          <span style="color:#15803d; font-weight:700;">Completed clinical review</span>
         </div>
       </div>
 
-      <!-- KPI 5 -->
-      <div class="kpi-card">
-        <div class="kpi-title">
-          <span>Grounding Confidence</span>
-          <span>🎯</span>
-        </div>
-        <div class="kpi-val" id="kpi-grounding">98.6%</div>
-        <div class="kpi-desc">
-          <span class="badge-trend-up">Zero Hallucination</span>
-          <span>Medical Threshold</span>
-        </div>
-      </div>
     </div>
 
     <!-- Interactive Charts Section -->
@@ -943,10 +966,10 @@
       <div class="chart-panel">
         <div class="chart-header">
           <div>
-            <h3>7-Day Patient Consultation Inflow & AI Triage</h3>
-            <span class="section-subtitle">Real-time volume comparison: Autonomous AI resolutions vs Human escalation</span>
+            <h3>7-Day Clinical Review Workload</h3>
+            <span class="section-subtitle">New escalated cases and critical cases requiring urgent attention</span>
           </div>
-          <span class="chart-legend-tag">Autonomous Rate: 88.4%</span>
+          <span class="chart-legend-tag">Live case intake</span>
         </div>
         <div style="height: 220px; position: relative;">
           <canvas id="trendChart"></canvas>
@@ -997,7 +1020,7 @@
       <div class="panel">
         <div class="panel-header">
           <h3>
-            <span>📋 Patient Registry & Intake CRM</span>
+            <span>📋 Patient Intake Registry</span>
             <span style="font-size: 13px; font-weight: normal; color: var(--text-muted);" id="leads-header-count">(0)</span>
           </h3>
           <button class="btn-export" onclick="exportLeadsCSV()">
@@ -1023,7 +1046,7 @@
                 <th>Patient Details</th>
                 <th>Chief Concern</th>
                 <th>Channel</th>
-                <th>CRM Status</th>
+                <th>Received</th>
               </tr>
             </thead>
             <tbody id="leads-table-body">
@@ -1088,11 +1111,89 @@
   <!-- Dashboard JavaScript Application -->
   <script>
     // State Store
+    let DASHBOARD_TOKEN = localStorage.getItem('clin_doctor_token') || '';
     let allHandoffs = [];
     let allLeads = [];
     let currentHandoffFilter = 'all';
     let trendChartInstance = null;
     let concernChartInstance = null;
+    let dashboardPollingTimer = null;
+
+    function dashboardAuthHeaders(extra = {}) {
+      return { ...extra, 'Authorization': 'Bearer ' + DASHBOARD_TOKEN };
+    }
+
+    function dashboardFetch(url, options = {}) {
+      return fetch(url, {
+        ...options,
+        headers: dashboardAuthHeaders(options.headers || {})
+      });
+    }
+
+    function applyDashboardContext(user) {
+      const title = 'Skin Coach Dashboard';
+      document.getElementById('dashboard-context-title').textContent = title;
+      document.getElementById('console-link-label').textContent = '← Console';
+      document.getElementById('dashboard-user-name').textContent = user.full_name || (user.username === 'doctor' ? 'Dr. Consultant' : user.username) || 'Doctor';
+      document.title = `${title} — Clinderma`;
+    }
+
+    async function loginDashboard(event) {
+      event.preventDefault();
+      const button = document.getElementById('dashboard-login-btn');
+      const error = document.getElementById('dashboard-login-error');
+      button.disabled = true;
+      button.textContent = 'Signing in…';
+      error.style.display = 'none';
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('dashboard-username').value.trim(),
+          password: document.getElementById('dashboard-password').value
+        })
+      }).catch(() => null);
+      const result = response?.ok ? await response.json() : null;
+      button.disabled = false;
+      button.textContent = 'Open Clinical Dashboard';
+      if (!result?.access_token || result.role !== 'doctor') {
+        error.style.display = 'block';
+        return;
+      }
+      DASHBOARD_TOKEN = result.access_token;
+      localStorage.setItem('clin_doctor_token', DASHBOARD_TOKEN);
+      document.getElementById('dashboard-login').classList.add('hidden');
+      applyDashboardContext(result);
+      await initDashboard();
+    }
+
+    async function bootstrapDashboard() {
+      const consoleToken = localStorage.getItem('clin_admin_token') || '';
+      const candidates = [...new Set([DASHBOARD_TOKEN, consoleToken].filter(Boolean))];
+      for (const token of candidates) {
+        const response = await fetch('/api/auth/me', {
+          headers: { 'Authorization': 'Bearer ' + token }
+        }).catch(() => null);
+        const user = response?.ok ? await response.json() : null;
+        if (user?.role === 'doctor') {
+          DASHBOARD_TOKEN = token;
+          localStorage.setItem('clin_doctor_token', token);
+          document.getElementById('dashboard-login').classList.add('hidden');
+          applyDashboardContext(user);
+          await initDashboard();
+          return;
+        }
+      }
+      document.getElementById('dashboard-login').classList.remove('hidden');
+    }
+
+    function logoutDashboard() {
+      const consoleToken = localStorage.getItem('clin_admin_token');
+      if (consoleToken === DASHBOARD_TOKEN) localStorage.removeItem('clin_admin_token');
+      localStorage.removeItem('clin_doctor_token');
+      DASHBOARD_TOKEN = '';
+      window.location.reload();
+    }
 
     // Toast notification helper
     function showToast(msg) {
@@ -1119,16 +1220,18 @@
     // Initialize Dashboard
     async function initDashboard() {
       await refreshAllData();
-      setInterval(() => {
-        refreshAllData(false);
-      }, 8000); // 8-second live sync interval
+      if (!dashboardPollingTimer) {
+        dashboardPollingTimer = setInterval(() => {
+          refreshAllData(false);
+        }, 8000); // 8-second live sync interval
+      }
     }
 
     // Refresh Data from APIs
     async function refreshAllData(showNotification = false) {
       try {
         // 1. Fetch Stats & KPIs
-        const statsRes = await fetch('/api/dashboard/stats');
+        const statsRes = await dashboardFetch('/api/dashboard/stats');
         if (statsRes.status === 401) {
           showAuthError();
           return;
@@ -1140,7 +1243,7 @@
         }
 
         // 2. Fetch Handoff Escalations
-        const handoffsRes = await fetch('/api/handoff');
+        const handoffsRes = await dashboardFetch('/api/handoff');
         if (handoffsRes.ok) {
           const hData = await handoffsRes.json();
           allHandoffs = hData.handoffs || [];
@@ -1148,7 +1251,7 @@
         }
 
         // 3. Fetch Leads
-        const leadsRes = await fetch('/api/leads');
+        const leadsRes = await dashboardFetch('/api/leads');
         if (leadsRes.ok) {
           const lData = await leadsRes.json();
           allLeads = lData.leads || [];
@@ -1156,7 +1259,7 @@
         }
 
         if (showNotification) {
-          showToast('✓ Tele-Dermatology stream refreshed.');
+          showToast('Clinical dashboard refreshed.');
         }
       } catch (err) {
         console.error('Error refreshing dashboard data:', err);
@@ -1164,12 +1267,11 @@
     }
 
     function showAuthError() {
-      document.getElementById('handoff-list').innerHTML = `
-        <div style="background:#fee2e2; color:#991b1b; padding:16px; border-radius:8px; text-align:center;">
-          <strong>Authentication Required (401)</strong><br>
-          Please refresh and enter valid credentials (admin / clinderma@admin2026).
-        </div>
-      `;
+      localStorage.removeItem('clin_doctor_token');
+      DASHBOARD_TOKEN = '';
+      document.getElementById('dashboard-login-error').textContent = 'Your doctor session expired. Please sign in again.';
+      document.getElementById('dashboard-login-error').style.display = 'block';
+      document.getElementById('dashboard-login').classList.remove('hidden');
     }
 
     // Render KPI Metrics
@@ -1177,8 +1279,8 @@
       if (!kpis) return;
       document.getElementById('kpi-total-patients').textContent = kpis.total_patients || 0;
       document.getElementById('kpi-pending-escalations').textContent = kpis.pending_handoffs || 0;
-      document.getElementById('kpi-sync-rate').textContent = (kpis.sync_rate_percent || 0) + '%';
-      document.getElementById('kpi-synced-count').textContent = `${kpis.synced_leads || 0} / ${kpis.total_leads || 0} leads`;
+      document.getElementById('kpi-total-escalations').textContent = kpis.total_handoffs || 0;
+      document.getElementById('kpi-resolved-cases').textContent = kpis.resolved_handoffs || 0;
       
       const critCount = kpis.critical_handoffs || 0;
       const critEl = document.getElementById('kpi-critical-alert');
@@ -1196,13 +1298,13 @@
       // 1. Consultation Trend Chart (Area Chart)
       const trendCtx = document.getElementById('trendChart').getContext('2d');
       const trendLabels = data.daily_trends.map(d => d.date);
-      const totalData = data.daily_trends.map(d => d.total_queries);
-      const aiData = data.daily_trends.map(d => d.ai_resolved);
+      const totalData = data.daily_trends.map(d => d.new_cases);
+      const criticalData = data.daily_trends.map(d => d.critical_cases);
 
       if (trendChartInstance) {
         trendChartInstance.data.labels = trendLabels;
         trendChartInstance.data.datasets[0].data = totalData;
-        trendChartInstance.data.datasets[1].data = aiData;
+        trendChartInstance.data.datasets[1].data = criticalData;
         trendChartInstance.update();
       } else {
         trendChartInstance = new Chart(trendCtx, {
@@ -1211,7 +1313,7 @@
             labels: trendLabels,
             datasets: [
               {
-                label: 'Total Patient Inflow',
+                label: 'New Clinical Cases',
                 data: totalData,
                 borderColor: '#0284c7',
                 backgroundColor: 'rgba(2, 132, 199, 0.08)',
@@ -1222,15 +1324,15 @@
                 pointBackgroundColor: '#0284c7'
               },
               {
-                label: 'Autonomous AI Triage',
-                data: aiData,
-                borderColor: '#0f766e',
-                backgroundColor: 'rgba(15, 118, 110, 0.15)',
+                label: 'Critical / Urgent',
+                data: criticalData,
+                borderColor: '#dc2626',
+                backgroundColor: 'rgba(220, 38, 38, 0.10)',
                 fill: true,
                 tension: 0.35,
                 borderWidth: 2,
                 pointRadius: 4,
-                pointBackgroundColor: '#0f766e'
+                pointBackgroundColor: '#dc2626'
               }
             ]
           },
@@ -1463,7 +1565,7 @@
     async function saveNote(sid) {
       const noteVal = document.getElementById(`notes-${sid}`).value;
       try {
-        const res = await fetch('/api/handoff/note', {
+        const res = await dashboardFetch('/api/handoff/note', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ session_id: sid, doctor_notes: noteVal })
@@ -1482,7 +1584,7 @@
     async function resolveTicket(sid) {
       const noteVal = document.getElementById(`notes-${sid}`).value;
       try {
-        const res = await fetch('/api/handoff/resolve', {
+        const res = await dashboardFetch('/api/handoff/resolve', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ session_id: sid, doctor_notes: noteVal })
@@ -1496,7 +1598,7 @@
       }
     }
 
-    // Render Leads CRM Table
+    // Render patient intake table
     function renderLeads() {
       const tbody = document.getElementById('leads-table-body');
       const searchVal = (document.getElementById('lead-search').value || '').toLowerCase().trim();
@@ -1520,11 +1622,6 @@
       }
 
       tbody.innerHTML = filtered.map(l => {
-        const isSynced = (l.kylas_synced === 1 || l.kylas_synced === true);
-        const syncBadge = isSynced
-          ? `<span class="sync-live">✓ Kylas Synced</span>`
-          : `<span class="sync-mock">💾 Saved Locally</span>`;
-
         const channelLabel = l.channel === 'assessment_form' 
           ? `<span class="lead-channel">📋 Skin Quiz</span>` 
           : `<span class="lead-channel">💬 Web Chat</span>`;
@@ -1546,7 +1643,7 @@
               </div>
             </td>
             <td>${channelLabel}</td>
-            <td>${syncBadge}</td>
+            <td><span style="font-size:12px; color:var(--text-muted);">${formatDateTime(l.created_at)}</span></td>
           </tr>
         `;
       }).join('');
@@ -1562,14 +1659,13 @@
         showToast('No leads available to export.');
         return;
       }
-      const headers = ['Lead ID', 'Patient Name', 'Phone Number', 'Chief Concern', 'Intake Channel', 'Kylas Synced', 'Timestamp'];
+      const headers = ['Lead ID', 'Patient Name', 'Phone Number', 'Chief Concern', 'Intake Channel', 'Timestamp'];
       const rows = allLeads.map(l => [
         `"${l.lead_id}"`,
         `"${(l.name || '').replace(/"/g, '""')}"`,
         `"${l.phone_number}"`,
         `"${(l.concern || '').replace(/"/g, '""')}"`,
         `"${l.channel}"`,
-        `"${l.kylas_synced ? 'YES' : 'NO'}"`,
         `"${l.created_at}"`
       ]);
 
@@ -1600,6 +1696,16 @@
       }
     }
 
+    function formatDateTime(isoStr) {
+      if (!isoStr) return 'Not recorded';
+      const date = new Date(isoStr);
+      if (Number.isNaN(date.getTime())) return 'Not recorded';
+      return date.toLocaleString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      });
+    }
+
     function formatRelativeTime(isoStr) {
       if (!isoStr) return '';
       try {
@@ -1617,7 +1723,7 @@
     }
 
     // Start on DOM load
-    document.addEventListener('DOMContentLoaded', initDashboard);
+    document.addEventListener('DOMContentLoaded', bootstrapDashboard);
   </script>
 
 </body>

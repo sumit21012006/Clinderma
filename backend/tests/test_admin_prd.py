@@ -3,6 +3,7 @@ import sys
 import unittest
 import io
 import json
+import datetime
 
 # Ensure backend root is on sys.path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -56,6 +57,15 @@ class TestAdminPRDFeatures(unittest.TestCase):
         r = self.client.get("/api/auth/me", headers=self.viewer_headers)
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.json()["role"], "viewer")
+
+        # The HTML shell no longer triggers browser Basic Auth. Clinical data
+        # remains protected and is available through the doctor's saved JWT.
+        self.assertEqual(self.client.get("/dashboard.html").status_code, 200)
+        self.assertEqual(self.client.get("/api/dashboard/stats").status_code, 401)
+        self.assertEqual(
+            self.client.get("/api/dashboard/stats", headers=self.doc_headers).status_code,
+            200,
+        )
 
     # ── 2. Knowledge Base & FAQs CRUD ───────────────────────────────────────────
     def test_02_kb_crud_and_draft_workflow(self):
@@ -164,10 +174,35 @@ class TestAdminPRDFeatures(unittest.TestCase):
         r = self.client.get("/api/admin/chats", headers=self.admin_headers)
         self.assertEqual(r.status_code, 200)
 
+        # Date-wise filtering includes chats started today and excludes them
+        # when the requested window is in the distant future.
+        today = datetime.date.today().isoformat()
+        r = self.client.get(
+            f"/api/admin/chats?date_from={today}&date_to={today}",
+            headers=self.admin_headers,
+        )
+        self.assertEqual(r.status_code, 200)
+        self.assertIn(test_session, [chat["session_id"] for chat in r.json()["chats"]])
+
+        r = self.client.get(
+            "/api/admin/chats?date_from=2999-01-01&date_to=2999-01-31",
+            headers=self.admin_headers,
+        )
+        self.assertEqual(r.status_code, 200)
+        self.assertNotIn(test_session, [chat["session_id"] for chat in r.json()["chats"]])
+
         # Admin takes over
         r = self.client.post("/api/admin/chats/takeover", headers=self.admin_headers, json={"session_id": test_session})
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.json()["status"], "taken_over")
+
+        # Dashboard reports the real all-time escalated-chat total separately
+        # from the unresolved queue count.
+        r = self.client.get("/api/dashboard/stats", headers=self.admin_headers)
+        self.assertEqual(r.status_code, 200)
+        kpis = r.json()["kpis"]
+        self.assertGreaterEqual(kpis["total_handoffs"], 1)
+        self.assertGreaterEqual(kpis["total_handoffs"], kpis["pending_handoffs"])
 
         # Chatbot is silenced while under takeover
         r = self.client.post("/api/chat", json={
@@ -228,6 +263,8 @@ class TestAdminPRDFeatures(unittest.TestCase):
         r = self.client.get("/api/admin/analytics/orders?view=daily", headers=self.admin_headers)
         self.assertEqual(r.status_code, 200)
         self.assertIn("total_revenue", r.json())
+        self.assertIn("average_order_value", r.json())
+        self.assertIn("status_breakdown", r.json())
 
         # CSV Export
         r_funnel = self.client.get("/api/admin/analytics/export?type=funnel", headers=self.admin_headers)

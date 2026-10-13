@@ -1,6 +1,9 @@
+import json
 import re
 from typing import Dict, Any
 from app.providers.base import AbstractOrderProvider
+from app.core.config import settings
+from app.core.db import get_conn
 
 MOCK_ORDERS = {
     "CLIN-1001": {
@@ -63,5 +66,52 @@ class MockOrderProvider(AbstractOrderProvider):
             "found": False
         }
 
+
+class DatabaseOrderProvider(AbstractOrderProvider):
+    """Read real fulfilment state written to the operational orders table."""
+
+    @staticmethod
+    def _extract_order_id(query: str) -> str:
+        match = re.search(r"CLIN-?\d{4,}", (query or "").upper())
+        if match:
+            digits = re.search(r"\d+", match.group(0)).group(0)
+            return f"CLIN-{digits}"
+        return (query or "").strip().upper()
+
+    def get_order_status(self, query: str) -> Dict[str, Any]:
+        order_id = self._extract_order_id(query)
+        conn = get_conn()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT order_id, status, customer_name, items,
+                   estimated_delivery, tracking_url
+            FROM orders
+            WHERE UPPER(order_id) = %s
+        """, (order_id,))
+        row = cursor.fetchone()
+        cursor.close()
+        conn.close()
+
+        if not row:
+            return {
+                "order_id": order_id,
+                "status": "Order Not Found",
+                "customer_name": "",
+                "items": [],
+                "estimated_delivery": "",
+                "tracking_url": "",
+                "found": False,
+            }
+
+        data = dict(row)
+        try:
+            data["items"] = json.loads(data.get("items") or "[]")
+        except (TypeError, ValueError):
+            data["items"] = []
+        data["found"] = True
+        return data
+
 def get_order_provider() -> AbstractOrderProvider:
-    return MockOrderProvider()
+    if settings.ORDER_PROVIDER == "mock_orders":
+        return MockOrderProvider()
+    return DatabaseOrderProvider()

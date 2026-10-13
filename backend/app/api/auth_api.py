@@ -10,7 +10,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.core.db import get_conn
 from app.core.auth import (
-    hash_password, create_access_token, get_current_user
+    hash_password, verify_password, password_needs_rehash,
+    create_access_token, get_current_user
 )
 
 router = APIRouter()
@@ -44,18 +45,31 @@ def login(req: LoginRequest):
         (req.username.strip(),)
     )
     user = cursor.fetchone()
-    cursor.close()
-    conn.close()
-
     if not user:
+        cursor.close()
+        conn.close()
         raise HTTPException(status_code=401, detail="Invalid username or password.")
 
     user_dict = dict(user)
     if not user_dict.get("is_active", 1):
+        cursor.close()
+        conn.close()
         raise HTTPException(status_code=403, detail="Account is disabled.")
 
-    if user_dict["password_hash"] != hash_password(req.password):
+    if not verify_password(req.password, user_dict["password_hash"]):
+        cursor.close()
+        conn.close()
         raise HTTPException(status_code=401, detail="Invalid username or password.")
+
+    if password_needs_rehash(user_dict["password_hash"]):
+        cursor.execute(
+            "UPDATE admin_users SET password_hash = %s WHERE username = %s",
+            (hash_password(req.password), user_dict["username"]),
+        )
+        conn.commit()
+
+    cursor.close()
+    conn.close()
 
     token = create_access_token(user_dict["username"], user_dict["role"])
 

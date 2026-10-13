@@ -8,6 +8,14 @@ class Settings:
     PROJECT_NAME: str = "Clinderma Support Chatbot API"
     VERSION: str = "2.0.0"
     API_PREFIX: str = "/api"
+    CORS_ORIGINS: list[str] = [
+        origin.strip()
+        for origin in os.getenv(
+            "CORS_ORIGINS",
+            "http://localhost:8000,http://127.0.0.1:8000",
+        ).split(",")
+        if origin.strip()
+    ]
 
     # ── Gemini Configuration ──
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
@@ -20,8 +28,8 @@ class Settings:
     # ── Pluggable Provider Toggles (Environment Controlled) ──
     LLM_PROVIDER: str = os.getenv("LLM_PROVIDER", "gemini")             # 'gemini', 'groq', 'local_grounded'
     VECTOR_STORE_PROVIDER: str = os.getenv("VECTOR_STORE_PROVIDER", "faiss")  # 'local_json', 'faiss', 'qdrant', 'pinecone'
-    CRM_PROVIDER: str = os.getenv("CRM_PROVIDER", "mock_kylas")      # 'mock_kylas', 'kylas_api'
-    ORDER_PROVIDER: str = os.getenv("ORDER_PROVIDER", "mock_orders")  # 'mock_orders', 'clinderma_db'
+    CRM_PROVIDER: str = os.getenv("CRM_PROVIDER", "local_db")       # 'local_db', 'kylas_api'
+    ORDER_PROVIDER: str = os.getenv("ORDER_PROVIDER", "clinderma_db")  # 'mock_orders', 'clinderma_db'
 
     # ── Grounding & Guardrail Settings ──
     GROUNDING_THRESHOLD: float = float(os.getenv("GROUNDING_THRESHOLD", "0.60"))  # Cosine similarity threshold (0-1)
@@ -46,7 +54,7 @@ class Settings:
     ADMIN_PASSWORD: str = os.getenv("ADMIN_PASSWORD", "clinderma@admin2026")
 
     # ── Kylas CRM Configuration ──
-    KYLAS_API_KEY: str = os.getenv("KYLAS_API_KEY", "MOCK_KYLAS_KEY_12345")
+    KYLAS_API_KEY: str = os.getenv("KYLAS_API_KEY", "")
     KYLAS_API_URL: str = os.getenv("KYLAS_API_URL", "https://api.kylas.io/v1/leads")
 
 settings = Settings()

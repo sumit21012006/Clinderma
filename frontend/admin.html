@@ -640,20 +640,22 @@
     /* KPI Row */
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
       gap: 18px;
       margin-bottom: 26px;
     }
     @media (max-width: 1100px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
     .kpi-box {
-      background: var(--clin-card);
+      background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
       border: 1px solid var(--clin-border);
       border-radius: var(--radius-lg);
       padding: 22px;
       position: relative;
       overflow: hidden;
       box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
     }
+    .kpi-box:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
     .kpi-box::after {
       content: '';
       position: absolute;
@@ -667,6 +669,34 @@
     .kpi-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--clin-text-dim); margin-bottom: 6px; }
     .kpi-num { font-size: 34px; font-weight: 800; font-family: 'Outfit', sans-serif; color: var(--clin-text); }
     .kpi-trend { font-size: 12px; color: var(--clin-text-muted); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+    .analytics-hero {
+      background: linear-gradient(125deg, #042f2e 0%, #0f766e 58%, #0284c7 100%);
+      border-radius: var(--radius-xl);
+      padding: 24px 28px;
+      color: #ffffff;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      box-shadow: 0 14px 32px rgba(4, 47, 46, 0.2);
+    }
+    .analytics-hero h2 { font: 800 22px 'Outfit', sans-serif; margin: 0 0 5px; }
+    .analytics-hero p { margin: 0; color: #ccfbf1; font-size: 13px; }
+    .analytics-hero-stat { text-align: right; min-width: 180px; }
+    .analytics-hero-stat strong { display:block; font: 800 30px 'Outfit', sans-serif; }
+    .analytics-hero-stat span { color:#bae6fd; font-size:12px; }
+    .analytics-insight {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #fff7ed, #fffbeb);
+      border: 1px solid #fed7aa;
+      text-align: left;
+    }
+    .analytics-insight strong { display:block; color:#9a3412; margin-bottom:4px; }
+    .status-chips { display:flex; flex-wrap:wrap; gap:7px; margin-top:14px; }
+    .status-chip { background:#ecfeff; border:1px solid #a5f3fc; color:#155e75; border-radius:20px; padding:5px 9px; font-size:11px; font-weight:700; }
 
     /* Modals */
     .modal-backdrop {
@@ -862,17 +892,17 @@
     </div>
     <div class="login-sub">Internal clinical console for chatbot knowledge, offers, and patient chats.</div>
 
-    <div class="stakeholders-title">⚡ 1-Click Login for Stakeholders</div>
+    <div class="stakeholders-title">1-click demo login</div>
     <div class="stakeholder-cards">
-      <button class="stakeholder-btn" onclick="quickFill('admin')">
+      <button type="button" class="stakeholder-btn" onclick="quickLogin('admin')" aria-label="Sign in as demo administrator">
         <span>🛡️ Admin</span>
         <small>Full Control</small>
       </button>
-      <button class="stakeholder-btn" onclick="quickFill('doctor')">
+      <button type="button" class="stakeholder-btn" onclick="quickLogin('doctor')" aria-label="Sign in as demo doctor">
         <span>🩺 Doctor</span>
         <small>Medical Review</small>
       </button>
-      <button class="stakeholder-btn" onclick="quickFill('viewer')">
+      <button type="button" class="stakeholder-btn" onclick="quickLogin('viewer')" aria-label="Sign in as demo viewer">
         <span>👁️ Viewer</span>
         <small>Analytics Read</small>
       </button>
@@ -916,7 +946,7 @@
         <div class="pulse-dot"></div>
         <span>Live Tele-Dermatology Stream</span>
       </div>
-      <a href="/dashboard.html" class="btn-toplink" target="_blank">🩺 Skin Coach Center</a>
+      <a href="/dashboard.html" class="btn-toplink" id="clinical-dashboard-link" target="_blank">🩺 <span id="clinical-dashboard-link-label">Skin Coach Dashboard</span></a>
       <a href="/" class="btn-toplink" target="_blank">🌐 Patient Website ➔</a>
       <div class="user-pill">
         <div class="avatar-circle" id="user-avatar-initial">A</div>
@@ -966,8 +996,8 @@
 
       <div class="nav-group-title" id="nav-sec-analytics">Analytics & Audit</div>
       <div class="nav-btn" id="nav-analytics" onclick="switchTab('analytics')">
-        <span class="nav-icon">📊</span>
-        <span>Funnel & Revenue</span>
+        <span class="nav-icon" id="nav-analytics-icon">📊</span>
+        <span id="nav-analytics-label">Funnel & Revenue</span>
       </div>
       <div class="nav-btn" id="nav-changelog" onclick="switchTab('changelog')">
         <span class="nav-icon">📋</span>
@@ -1178,11 +1208,21 @@
             <h1 class="page-heading">💬 Customer Support & Live Takeover</h1>
             <p class="page-subtext">Monitor active patient conversations. Step in to take over the chat from the AI bot whenever necessary.</p>
           </div>
-          <div style="display:flex; gap:10px;">
+          <div style="display:flex; gap:10px; align-items:end; flex-wrap:wrap; justify-content:flex-end;">
+            <label style="font-size:11px; color:var(--clin-text-dim); display:flex; flex-direction:column; gap:4px;">
+              From date
+              <input type="date" class="input" id="chats-date-from" onchange="loadChats()" aria-label="Chats from date" style="padding:7px 10px;">
+            </label>
+            <label style="font-size:11px; color:var(--clin-text-dim); display:flex; flex-direction:column; gap:4px;">
+              To date
+              <input type="date" class="input" id="chats-date-to" onchange="loadChats()" aria-label="Chats to date" style="padding:7px 10px;">
+            </label>
+            <button class="btn btn-ghost btn-sm" id="chats-date-clear" onclick="clearChatDates()" style="display:none;">Clear dates</button>
             <select class="select" id="chats-status-filter" onchange="loadChats()" style="max-width:180px;">
               <option value="">All Conversations</option>
               <option value="live">🔴 Live (Active)</option>
-              <option value="ended">✅ Ended (Resolved)</option>
+              <option value="escalated">🚨 Clinically Escalated</option>
+              <option value="ended">✅ Ended Chats</option>
               <option value="takeover">🛡️ Taken Over</option>
             </select>
             <button class="btn btn-ghost btn-sm" onclick="loadChats()">🔄 Refresh</button>
@@ -1251,8 +1291,8 @@
       <section class="tab-panel" id="tab-analytics">
         <div class="page-header">
           <div>
-            <h1 class="page-heading">📊 Chatbot Conversion Funnel & Orders</h1>
-            <p class="page-subtext">Measure visitor drop-off across all 6 chatbot stages and track revenue attributed to chatting customers.</p>
+            <h1 class="page-heading">📊 Growth, Conversion & Revenue Intelligence</h1>
+            <p class="page-subtext">Understand acquisition quality, funnel leakage, purchase intent, realised orders, and attributed revenue.</p>
           </div>
           <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             <button class="btn btn-ghost btn-sm" onclick="setAnalyticsPreset(7)">Last 7 Days</button>
@@ -1271,27 +1311,48 @@
           </div>
         </div>
 
-        <!-- 4 KPI Cards -->
+        <div class="analytics-hero">
+          <div>
+            <h2>From website visit to completed purchase</h2>
+            <p>A decision-ready view of where customers progress, where they leave, and what each conversion is worth.</p>
+          </div>
+          <div class="analytics-hero-stat">
+            <strong id="hero-conversion-rate">—%</strong>
+            <span>visitor-to-order conversion</span>
+          </div>
+        </div>
+
+        <!-- Commercial KPI Cards -->
         <div class="kpi-row">
           <div class="kpi-box">
             <div class="kpi-title">Website Visitors</div>
             <div class="kpi-num" id="kpi-visitors">—</div>
-            <div class="kpi-trend">Stage 1: Arrived on website</div>
+            <div class="kpi-trend">Top-of-funnel reach</div>
           </div>
           <div class="kpi-box cyan">
-            <div class="kpi-title">Chat Opened</div>
-            <div class="kpi-num" id="kpi-opened">—</div>
-            <div class="kpi-trend" id="kpi-open-pct">—% open rate</div>
+            <div class="kpi-title">Chats Started</div>
+            <div class="kpi-num" id="kpi-started">—</div>
+            <div class="kpi-trend" id="kpi-chat-rate">—% of visitors</div>
+          </div>
+          <div class="kpi-box">
+            <div class="kpi-title">Engaged Patients</div>
+            <div class="kpi-num" id="kpi-engaged">—</div>
+            <div class="kpi-trend" id="kpi-lead-rate">—% lead capture rate</div>
           </div>
           <div class="kpi-box emerald">
             <div class="kpi-title">Orders Placed</div>
             <div class="kpi-num" id="kpi-orders">—</div>
-            <div class="kpi-trend">Converted from chat</div>
+            <div class="kpi-trend" id="kpi-order-rate">—% overall conversion</div>
           </div>
           <div class="kpi-box coral">
-            <div class="kpi-title">Chat Revenue</div>
+            <div class="kpi-title">Attributed Revenue</div>
             <div class="kpi-num" id="kpi-revenue">—</div>
-            <div class="kpi-trend">Attributed sales</div>
+            <div class="kpi-trend" id="kpi-aov">— average order value</div>
+          </div>
+          <div class="kpi-box cyan">
+            <div class="kpi-title">Checkout Intent</div>
+            <div class="kpi-num" id="kpi-checkouts">—</div>
+            <div class="kpi-trend" id="kpi-checkout-rate">—% of engaged patients</div>
           </div>
         </div>
 
@@ -1310,12 +1371,16 @@
           </div>
 
           <div class="card" style="display:flex; flex-direction:column; justify-content:center; text-align:center; padding:36px;">
-            <div class="card-title" style="margin-bottom:12px;">Visitors Who Never Opened Chat</div>
+            <div class="card-title" style="margin-bottom:12px;">Acquisition Leakage</div>
             <div id="non-openers-panel">
               <div style="font-size:54px; font-weight:800; color:var(--clin-danger); font-family:'Outfit',sans-serif;" id="non-openers-val">—</div>
               <div style="font-size:13px; color:var(--clin-text-muted); margin-top:4px;">Non-openers count</div>
               <div style="font-size:26px; font-weight:700; color:var(--clin-text); margin-top:14px;" id="non-openers-pct">—%</div>
               <div style="font-size:12px; color:var(--clin-text-dim);">of total website traffic</div>
+            </div>
+            <div class="analytics-insight">
+              <strong id="analytics-insight-title">Analysing largest drop-off…</strong>
+              <span id="analytics-insight-detail" style="font-size:12px; color:#7c2d12;">Conversion guidance will appear here.</span>
             </div>
           </div>
         </div>
@@ -1331,6 +1396,7 @@
           <div style="height:260px; position:relative;">
             <canvas id="ordersChart"></canvas>
           </div>
+          <div class="status-chips" id="order-status-summary"></div>
         </div>
       </section>
 
@@ -1602,6 +1668,8 @@ let currentTab = 'kb';
 let ordersChartInstance = null;
 let allChats = [];
 let activeSessionId = null;
+let chatsLoadInFlight = false;
+let chatsPollingStarted = false;
 
 // API Fetcher
 const API = (path, opts = {}) => {
@@ -1655,17 +1723,17 @@ function badgeHtml(status) {
 }
 
 // ── Auth & Stakeholder Quick Switcher ──────────────────────────────────────
-const CRED_MAP = {
-  admin:  { u: 'admin',  p: 'clinderma@admin2026' },
-  doctor: { u: 'doctor', p: 'doctor@clinderma2026' },
-  viewer: { u: 'viewer', p: 'viewer@clinderma2026' }
+const DEMO_CREDENTIALS = {
+  admin:  { username: 'admin',  password: 'clinderma@admin2026' },
+  doctor: { username: 'doctor', password: 'doctor@clinderma2026' },
+  viewer: { username: 'viewer', password: 'viewer@clinderma2026' }
 };
 
-function quickFill(role) {
-  const creds = CRED_MAP[role];
-  if (!creds) return;
-  document.getElementById('l-username').value = creds.u;
-  document.getElementById('l-password').value = creds.p;
+function quickLogin(role) {
+  const credentials = DEMO_CREDENTIALS[role];
+  if (!credentials) return;
+  document.getElementById('l-username').value = credentials.username;
+  document.getElementById('l-password').value = credentials.password;
   doLogin();
 }
 
@@ -1729,6 +1797,12 @@ function renderUserChip() {
   document.getElementById('btn-restore')?.style.setProperty('display', 'inline-flex');
   document.getElementById('btn-new-kb')?.style.setProperty('display', 'inline-flex');
   document.getElementById('btn-upload-doc')?.style.setProperty('display', 'inline-flex');
+  const analyticsNav = document.getElementById('nav-analytics');
+  analyticsNav?.setAttribute('onclick', "switchTab('analytics')");
+  document.getElementById('nav-analytics-label').textContent = 'Funnel & Revenue';
+  document.getElementById('nav-analytics-icon').textContent = '📊';
+  document.getElementById('clinical-dashboard-link').href = '/dashboard.html';
+  document.getElementById('clinical-dashboard-link-label').textContent = 'Skin Coach Dashboard';
 
   const banner = document.getElementById('stakeholder-banner');
   const bannerText = document.getElementById('stakeholder-banner-text');
@@ -1752,6 +1826,11 @@ function renderUserChip() {
     document.getElementById('nav-sec-admin')?.style.setProperty('display', 'none');
     document.getElementById('btn-push-live')?.style.setProperty('display', 'none');
     document.getElementById('btn-restore')?.style.setProperty('display', 'none');
+    analyticsNav?.setAttribute('onclick', 'openSkinCoachDashboard()');
+    document.getElementById('nav-analytics-label').textContent = 'Skin Coach Dashboard';
+    document.getElementById('nav-analytics-icon').textContent = '🩺';
+    document.getElementById('clinical-dashboard-link').href = '/dashboard.html';
+    document.getElementById('clinical-dashboard-link-label').textContent = 'Skin Coach Dashboard';
 
     // Default to doctor reviews
     if (['users', 'offers', 'changelog'].includes(currentTab) || currentTab === 'kb') {
@@ -1781,6 +1860,10 @@ function renderUserChip() {
       switchTab('analytics');
     }
   }
+}
+
+function openSkinCoachDashboard() {
+  window.location.href = '/dashboard.html';
 }
 
 // Auto-Login
@@ -1835,6 +1918,12 @@ function initApp() {
   loadDocuments();
   loadPendingReviewsBadge();
   setInterval(loadPendingReviewsBadge, 30000);
+  if (!chatsPollingStarted) {
+    chatsPollingStarted = true;
+    setInterval(() => {
+      if (currentTab === 'chats' && document.visibilityState === 'visible') loadChats();
+    }, 2500);
+  }
 }
 
 // ── Knowledge Base ─────────────────────────────────────────────────────────
@@ -2179,18 +2268,34 @@ async function deleteOffer(id) {
 
 // ── Customer Chats (Master-Detail) ─────────────────────────────────────────
 async function loadChats() {
+  if (chatsLoadInFlight) return;
+  chatsLoadInFlight = true;
   const status = document.getElementById('chats-status-filter').value;
   const search = document.getElementById('chats-search').value;
-  let url = '/admin/chats?';
-  if (status) url += 'status=' + status + '&';
-  if (search) url += 'search=' + encodeURIComponent(search);
+  const dateFrom = document.getElementById('chats-date-from').value;
+  const dateTo = document.getElementById('chats-date-to').value;
+  const params = new URLSearchParams();
+  if (status) params.set('status', status);
+  if (search) params.set('search', search);
+  if (dateFrom) params.set('date_from', dateFrom);
+  if (dateTo) params.set('date_to', dateTo);
+  document.getElementById('chats-date-clear').style.display = dateFrom || dateTo ? '' : 'none';
+  const url = '/admin/chats?' + params.toString();
 
-  const data = await API(url);
+  let data;
+  try {
+    data = await API(url);
+  } finally {
+    chatsLoadInFlight = false;
+  }
   allChats = data.chats || [];
 
   const listEl = document.getElementById('chats-list');
   if (allChats.length === 0) {
+    activeSessionId = null;
     listEl.innerHTML = '<div style="text-align:center; color:var(--clin-text-dim); padding:40px;">No sessions found.</div>';
+    document.getElementById('cd-actions-bar').innerHTML = '';
+    document.getElementById('cd-reply-bar').style.display = 'none';
     return;
   }
 
@@ -2198,18 +2303,26 @@ async function loadChats() {
     <div class="chat-session-card ${c.session_id === activeSessionId ? 'active' : ''}" onclick="selectChatSession('${escHtml(c.session_id)}')">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
         <span style="font-weight:700; font-size:13.5px;">${escHtml(c.user_name || 'Anonymous Visitor')}</span>
-        ${c.is_taken_over ? '<span class="badge badge-edited">🛡️ Agent</span>' : c.is_live ? '<span class="badge badge-live">🔴 Live</span>' : '<span class="badge badge-draft">Ended</span>'}
+        <span style="display:flex; gap:5px; align-items:center;">
+          ${c.severity === 'critical' ? '<span class="badge badge-live">🚨 Critical</span>' : c.is_escalated ? '<span class="badge badge-warning">⚠️ Review</span>' : ''}
+          ${c.is_taken_over ? '<span class="badge badge-edited">🛡️ Agent</span>' : c.chat_status === 'awaiting_confirmation' ? '<span class="badge badge-warning">⏳ Waiting</span>' : c.chat_status === 'idle' ? '<span class="badge badge-warning">⏱️ Inactive</span>' : c.is_live ? '<span class="badge badge-live">🔴 Live</span>' : '<span class="badge badge-draft">Ended</span>'}
+        </span>
       </div>
       <div style="font-size:11.5px; color:var(--clin-text-dim); display:flex; justify-content:space-between;">
-        <span>${escHtml(c.user_phone || 'No phone')}</span>
-        <span>${relTime(c.created_at)}</span>
+        <span>${escHtml(c.user_phone || 'No phone')} · ${escHtml(c.severity || 'routine')}</span>
+        <span>${relTime(c.last_activity_at || c.created_at)}</span>
       </div>
     </div>
   `).join('');
 
-  if (!activeSessionId && allChats.length > 0) {
-    selectChatSession(allChats[0].session_id);
-  }
+  const selectedStillVisible = allChats.some(c => c.session_id === activeSessionId);
+  selectChatSession(selectedStillVisible ? activeSessionId : allChats[0].session_id);
+}
+
+function clearChatDates() {
+  document.getElementById('chats-date-from').value = '';
+  document.getElementById('chats-date-to').value = '';
+  loadChats();
 }
 
 function selectChatSession(sid) {
@@ -2221,7 +2334,7 @@ function selectChatSession(sid) {
   document.getElementById('chats-list').querySelector(`[onclick*="${sid}"]`)?.classList.add('active');
 
   document.getElementById('cd-user-name').textContent = chat.user_name || 'Anonymous Visitor';
-  document.getElementById('cd-user-meta').textContent = `📞 ${chat.user_phone || 'Unshared'} · Channel: ${chat.channel || 'website'} · Started: ${fmtDate(chat.created_at)}`;
+  document.getElementById('cd-user-meta').textContent = `📞 ${chat.user_phone || 'Unshared'} · ${chat.severity || 'routine'} · ${chat.reason || 'General chat'} · Channel: ${chat.channel || 'website'} · Last activity: ${relTime(chat.last_activity_at || chat.created_at)}`;
 
   // Actions by stakeholder role
   const act = document.getElementById('cd-actions-bar');
@@ -2271,13 +2384,13 @@ function selectChatSession(sid) {
 
 async function takeoverChat(sid) {
   const res = await API('/admin/chats/takeover', { method: 'POST', body: JSON.stringify({ session_id: sid }) });
-  if (res.status === 'taken_over') { showToast('🛡️ You have taken over the live chat. Bot is paused.', 'success'); loadChats(); }
+  if (res.status === 'taken_over') { showToast('🛡️ You have taken over the live chat. Bot is paused.', 'success'); await loadChats(); }
   else showToast('Takeover failed.', 'error');
 }
 
 async function handbackChat(sid) {
   const res = await API('/admin/chats/handback', { method: 'POST', body: JSON.stringify({ session_id: sid }) });
-  if (res.status === 'handed_back') { showToast('🤖 Chat handed back to bot.', 'success'); loadChats(); }
+  if (res.status === 'handed_back') { showToast('🤖 Chat handed back to bot.', 'success'); await loadChats(); }
   else showToast('Handback failed.', 'error');
 }
 
@@ -2287,7 +2400,7 @@ async function sendActiveAdminMsg() {
   const msg = input.value.trim();
   if (!msg) return;
   const res = await API('/admin/chats/message', { method: 'POST', body: JSON.stringify({ session_id: activeSessionId, message: msg }) });
-  if (res.status === 'sent') { input.value = ''; showToast('✓ Message sent.', 'success'); loadChats(); }
+  if (res.status === 'sent') { input.value = ''; showToast('✓ Message sent.', 'success'); await loadChats(); }
   else showToast('Failed to send message.', 'error');
 }
 
@@ -2411,9 +2524,19 @@ function setAnalyticsPreset(days) {
 }
 
 async function loadAnalytics() {
-  const from = document.getElementById('analytics-from').value;
-  const to = document.getElementById('analytics-to').value;
+  let from = document.getElementById('analytics-from').value;
+  let to = document.getElementById('analytics-to').value;
   const view = document.getElementById('analytics-view').value;
+
+  if (!from && !to) {
+    const now = new Date();
+    const past = new Date();
+    past.setDate(now.getDate() - 30);
+    from = past.toISOString().split('T')[0];
+    to = now.toISOString().split('T')[0];
+    document.getElementById('analytics-from').value = from;
+    document.getElementById('analytics-to').value = to;
+  }
 
   let fUrl = '/admin/analytics/funnel?';
   if (from) fUrl += 'date_from=' + from + '&';
@@ -2426,13 +2549,25 @@ async function loadAnalytics() {
   const [funnel, orders] = await Promise.all([API(fUrl), API(oUrl)]);
 
   const visitors = funnel.funnel?.[0]?.count || 0;
-  const opened = funnel.funnel?.[1]?.count || 0;
+  const started = funnel.funnel?.[2]?.count || 0;
+  const engaged = funnel.funnel?.[3]?.count || 0;
+  const checkouts = funnel.funnel?.[4]?.count || 0;
   document.getElementById('kpi-visitors').textContent = visitors.toLocaleString();
-  document.getElementById('kpi-opened').textContent = opened.toLocaleString();
-  const openRate = visitors > 0 ? ((opened / visitors) * 100).toFixed(1) : '0';
-  document.getElementById('kpi-open-pct').textContent = `${openRate}% open rate`;
+  document.getElementById('kpi-started').textContent = started.toLocaleString();
+  document.getElementById('kpi-engaged').textContent = engaged.toLocaleString();
+  document.getElementById('kpi-checkouts').textContent = checkouts.toLocaleString();
+  const chatRate = visitors > 0 ? ((started / visitors) * 100).toFixed(1) : '0.0';
+  const leadRate = started > 0 ? ((engaged / started) * 100).toFixed(1) : '0.0';
+  const checkoutRate = engaged > 0 ? ((checkouts / engaged) * 100).toFixed(1) : '0.0';
+  const conversionRate = visitors > 0 ? (((orders.total_orders || 0) / visitors) * 100).toFixed(1) : '0.0';
+  document.getElementById('kpi-chat-rate').textContent = `${chatRate}% of visitors`;
+  document.getElementById('kpi-lead-rate').textContent = `${leadRate}% lead capture rate`;
+  document.getElementById('kpi-checkout-rate').textContent = `${checkoutRate}% of engaged patients`;
+  document.getElementById('kpi-order-rate').textContent = `${conversionRate}% overall conversion`;
+  document.getElementById('hero-conversion-rate').textContent = `${conversionRate}%`;
   document.getElementById('kpi-orders').textContent = (orders.total_orders || 0).toLocaleString();
-  document.getElementById('kpi-revenue').textContent = '₹' + (orders.total_revenue || 0).toLocaleString();
+  document.getElementById('kpi-revenue').textContent = '₹' + (orders.total_revenue || 0).toLocaleString('en-IN');
+  document.getElementById('kpi-aov').textContent = `₹${(orders.average_order_value || 0).toLocaleString('en-IN')} average order value`;
 
   // Funnel chart
   const funnelEl = document.getElementById('funnel-chart');
@@ -2455,6 +2590,21 @@ async function loadAnalytics() {
   // Non-openers
   document.getElementById('non-openers-val').textContent = (funnel.non_openers || 0).toLocaleString();
   document.getElementById('non-openers-pct').textContent = `${funnel.non_opener_percent || 0}%`;
+
+  const stages = funnel.funnel || [];
+  const largestDrop = stages.slice(1).reduce((largest, stage) =>
+    !largest || stage.dropoff_percent > largest.dropoff_percent ? stage : largest, null);
+  document.getElementById('analytics-insight-title').textContent = largestDrop
+    ? `Largest leakage: before ${largestDrop.label}`
+    : 'No funnel leakage detected';
+  document.getElementById('analytics-insight-detail').textContent = largestDrop
+    ? `${largestDrop.dropoff_percent}% of customers did not progress from the previous stage. Prioritise this transition for optimisation.`
+    : 'Customer progression is stable across the selected period.';
+
+  const statusEntries = Object.entries(orders.status_breakdown || {});
+  document.getElementById('order-status-summary').innerHTML = statusEntries.length
+    ? statusEntries.map(([status, count]) => `<span class="status-chip">${escHtml(status)}: ${count}</span>`).join('')
+    : '<span class="status-chip">No order statuses in this period</span>';
 
   // Chart.js
   const timeline = orders.timeline || [];
@@ -2485,17 +2635,24 @@ async function loadAnalytics() {
   });
 }
 
-function exportAnalytics(type) {
+async function exportAnalytics(type) {
   const from = document.getElementById('analytics-from').value;
   const to = document.getElementById('analytics-to').value;
   const view = document.getElementById('analytics-view').value;
   let url = `/api/admin/analytics/export?type=${type}&view=${view}`;
   if (from) url += '&date_from=' + from;
   if (to)   url += '&date_to=' + to;
+  const response = await fetch(url, { headers: { 'Authorization': 'Bearer ' + TOKEN } });
+  if (!response.ok) {
+    showToast('Analytics export failed.', 'error');
+    return;
+  }
+  const blobUrl = URL.createObjectURL(await response.blob());
   const a = document.createElement('a');
-  a.href = url;
-  a.setAttribute('download', '');
+  a.href = blobUrl;
+  a.download = type === 'funnel' ? 'clinderma_funnel_analytics.csv' : 'clinderma_orders_analytics.csv';
   a.click();
+  URL.revokeObjectURL(blobUrl);
 }
 
 // ── Change Log ─────────────────────────────────────────────────────────────

@@ -3,7 +3,10 @@ from fastapi import APIRouter, HTTPException, Depends
 from app.models.schemas import LeadCreateRequest, LeadResponse, AssessmentRequest, AssessmentResponse
 from app.providers.crm_provider import get_crm_provider
 from app.core.db import get_conn
-from app.core.auth import verify_admin
+from app.core.auth import require_role
+from app.services.clinical_triage import classify_clinical_escalation
+from app.services.handoff_manager import handoff_manager
+from app.services.session_manager import session_manager
 
 router = APIRouter()
 crm_provider = get_crm_provider()
@@ -59,6 +62,30 @@ def submit_assessment(req: AssessmentRequest):
             concern=full_concern,
             channel=req.channel or "assessment_form"
         )
+        assessment_session_id = f"assessment_{res['lead_id']}"
+        triage = classify_clinical_escalation(full_concern)
+        severity = triage.severity if triage else "moderate"
+        reason = triage.reason if triage else f"Skin Assessment Review: {req.concern}"
+        summary = (
+            triage.ai_summary if triage else
+            f"Skin assessment submitted. Concern: {req.concern}; duration: {req.duration}; skin type: {req.skin_type}."
+        )
+        handoff_manager.create_handoff(
+            session_id=assessment_session_id,
+            user_name=req.name.strip(),
+            user_phone=clean_num,
+            reason=reason,
+            channel=req.channel or "assessment_form",
+            severity=severity,
+            ai_summary=summary,
+        )
+        handoff_manager.add_transcript(
+            assessment_session_id,
+            "system",
+            "Skin assessment submitted and queued for clinical review.",
+        )
+        # An assessment is a queued clinical case, not an active browser chat.
+        session_manager.end_session(assessment_session_id)
         return AssessmentResponse(
             status="success",
             lead_id=res["lead_id"],
@@ -71,10 +98,9 @@ def submit_assessment(req: AssessmentRequest):
 
 
 @router.get("/leads")
-def get_all_leads(_admin: str = Depends(verify_admin)):
+def get_all_leads(_user: dict = Depends(require_role("doctor", "admin"))):
     """
-    Protected endpoint: returns all captured leads for the admin dashboard.
-    Requires HTTP Basic Authentication.
+    Protected endpoint: returns patient intakes for the clinical dashboard.
     """
     conn = get_conn()
     cursor = conn.cursor()

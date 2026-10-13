@@ -37,6 +37,14 @@
   let hasTrackedOpen = false;
   let lastLiveUpdateId = Number(localStorage.getItem('clinderma_chat_last_live_update_id')) || 0;
   let isSyncingLiveUpdates = false;
+  let inactivityTimer = null;
+  let inactivityEndTimer = null;
+  let awaitingContinuation = false;
+  let isPromptingContinuation = false;
+  let chatEnded = false;
+  let hasChatStarted = localStorage.getItem('clinderma_chat_started') === 'true';
+  const INACTIVITY_PROMPT_MS = 2 * 60 * 1000;
+  const INACTIVITY_END_MS = 30 * 1000;
   const API_HOST = window.location.origin;
 
   const skinTestLinks = {
@@ -153,10 +161,15 @@
       savedPhone = '';
       phoneRequired = false;
       lastLiveUpdateId = 0;
+      hasChatStarted = false;
+      awaitingContinuation = false;
+      setChatEnded(false);
+      localStorage.setItem('clinderma_chat_started', 'false');
       localStorage.setItem('clinderma_phone_required', 'false');
       msgList.innerHTML = starterHTML();
       updatePhoneGate();
       saveChatState();
+      resetInactivityCountdown();
     });
   }
 
@@ -255,6 +268,76 @@
     saveChatState();
   }
 
+  function setChatEnded(ended) {
+    chatEnded = ended;
+    inputField.disabled = ended;
+    sendBtn.disabled = ended;
+    if (ended) {
+      inputField.placeholder = 'Chat ended — select New to start again';
+      clearTimeout(inactivityTimer);
+      clearTimeout(inactivityEndTimer);
+      inactivityTimer = null;
+      inactivityEndTimer = null;
+    } else {
+      updatePhoneGate();
+    }
+  }
+
+  function resetInactivityCountdown() {
+    clearTimeout(inactivityTimer);
+    clearTimeout(inactivityEndTimer);
+    inactivityTimer = null;
+    inactivityEndTimer = null;
+    awaitingContinuation = false;
+    if (!hasChatStarted || chatEnded) return;
+    inactivityTimer = window.setTimeout(promptForContinuation, INACTIVITY_PROMPT_MS);
+  }
+
+  async function promptForContinuation() {
+    if (chatEnded || !hasChatStarted || awaitingContinuation || isPromptingContinuation) return;
+    isPromptingContinuation = true;
+    try {
+      const res = await fetch(`${API_HOST}/api/chat/${encodeURIComponent(sessionId)}/inactivity-prompt`, {
+        method: 'POST'
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.status === 'ended') {
+        setChatEnded(true);
+        return;
+      }
+      if (data.status === 'expired') {
+        awaitingContinuation = true;
+        await endChatForInactivity();
+        return;
+      }
+      if (data.status !== 'awaiting_confirmation') {
+        inactivityTimer = window.setTimeout(promptForContinuation, 1000);
+        return;
+      }
+      awaitingContinuation = true;
+      if (data.message) appendBotMsg(data.message);
+      inactivityEndTimer = window.setTimeout(endChatForInactivity, INACTIVITY_END_MS);
+    } catch (err) {
+      console.warn('[Clinderma Chat] Could not send inactivity prompt:', err);
+    } finally {
+      isPromptingContinuation = false;
+    }
+  }
+
+  async function endChatForInactivity() {
+    if (!awaitingContinuation || chatEnded) return;
+    try {
+      await fetch(`${API_HOST}/api/chat/${encodeURIComponent(sessionId)}/end`, { method: 'POST' });
+      await syncLiveUpdates();
+    } catch (err) {
+      console.warn('[Clinderma Chat] Could not close inactive chat:', err);
+    } finally {
+      awaitingContinuation = false;
+      setChatEnded(true);
+    }
+  }
+
   async function syncLiveUpdates() {
     if (!isOpen || isSyncingLiveUpdates) return;
     isSyncingLiveUpdates = true;
@@ -274,6 +357,21 @@
       });
       if (data.last_id !== undefined) {
         lastLiveUpdateId = Math.max(lastLiveUpdateId, Number(data.last_id) || 0);
+      }
+      if (data.chat_status === 'ended') {
+        setChatEnded(true);
+      } else if (data.chat_status === 'expired') {
+        awaitingContinuation = true;
+        await endChatForInactivity();
+      } else if (data.chat_status === 'idle') {
+        await promptForContinuation();
+      } else if (data.chat_status === 'awaiting_confirmation') {
+        awaitingContinuation = true;
+        if (!inactivityEndTimer) {
+          const promptedAt = data.inactivity_prompted_at ? new Date(data.inactivity_prompted_at).getTime() : Date.now();
+          const remaining = Math.max(0, INACTIVITY_END_MS - (Date.now() - promptedAt));
+          inactivityEndTimer = window.setTimeout(endChatForInactivity, remaining);
+        }
       }
       localStorage.setItem('clinderma_chat_last_live_update_id', String(lastLiveUpdateId));
     } catch (err) {
@@ -314,9 +412,14 @@
 
   async function handleSend() {
     const txt = inputField.value.trim();
-    if (!txt) return;
+    if (!txt || chatEnded) return;
 
-    if (phoneRequired && !validPhone(txt)) {
+    const isContinuationReply = awaitingContinuation;
+    hasChatStarted = true;
+    localStorage.setItem('clinderma_chat_started', 'true');
+    resetInactivityCountdown();
+
+    if (phoneRequired && !isContinuationReply && !validPhone(txt)) {
       appendBotMsg(`To help our Skin Coach connect with you, please share your 10-digit WhatsApp number (you can also include your name, e.g. "Ananya 9876543210").<br><br>${skinTestCta()}`);
       inputField.focus();
       return;
@@ -373,6 +476,7 @@
       } else if (!data || (!data.answer && !data.phone_prompt)) {
         appendBotMsg(`I'm sorry, I am currently unable to process that. Please try again.<br><br>${skinTestCta()}`);
       }
+      resetInactivityCountdown();
     } catch (err) {
       console.error('[Clinderma Chat Error]', err);
       const typingElem = document.getElementById('clin-typing');
@@ -382,5 +486,6 @@
   }
 
   updatePhoneGate();
+  resetInactivityCountdown();
   window.setInterval(syncLiveUpdates, 3500);
 })();

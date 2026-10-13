@@ -2,7 +2,7 @@ import os
 import sys
 import asyncio
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -11,7 +11,7 @@ from fastapi.staticfiles import StaticFiles
 sys.path.insert(0, os.path.dirname(__file__))
 
 from app.core.config import settings
-from app.core.auth import verify_admin, ensure_default_admin
+from app.core.auth import ensure_default_admin
 from app.core.db import run_migrations
 from app.api import chat, leads, orders, handoff, health, dashboard
 from app.api import auth_api, kb_admin, offers_admin, doctor_review, audit_log, analytics, admin_users
@@ -49,8 +49,8 @@ app = FastAPI(
 # Enable CORS for cross-origin widget integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=settings.CORS_ORIGINS,
+    allow_credentials="*" not in settings.CORS_ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -73,11 +73,13 @@ app.include_router(analytics.router,     prefix=settings.API_PREFIX, tags=["Anal
 app.include_router(admin_users.router,   prefix=settings.API_PREFIX, tags=["Admin Users"])
 
 
-# Protected Admin Dashboard routes (HTTP Basic Auth required for legacy dashboard)
+# The dashboard shell is public; its clinical APIs require a doctor/admin JWT.
+# Keeping authentication in the page avoids a new browser Basic-Auth prompt on
+# every navigation while still protecting all patient data.
 @app.get("/dashboard.html", include_in_schema=False)
 @app.get("/dashboard", include_in_schema=False)
-def serve_dashboard(_admin: str = Depends(verify_admin)):
-    """Serves the internal admin dashboard to authenticated administrators only."""
+def serve_dashboard():
+    """Serve the Skin Coach dashboard; client-side JWT login protects data."""
     dashboard_file = os.path.join(FRONTEND_DIR, "dashboard.html")
     return FileResponse(dashboard_file)
 

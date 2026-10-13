@@ -13,12 +13,11 @@ def _mask_phone(phone: str) -> str:
     return phone[:3] + "****" + phone[-2:]
 
 
-class MockKylasCRMProvider(AbstractCRMProvider):
+class LocalCRMProvider(AbstractCRMProvider):
     """
-    Development/testing CRM provider.
-    Saves leads to local SQLite / PostgreSQL only.
-    No real Kylas API call is made.
-    kylas_synced = 0 to indicate leads are NOT in real Kylas.
+    Durable local CRM provider backed by SQLite/PostgreSQL.
+    kylas_synced remains false because this mode intentionally has no external
+    Kylas dependency.
     """
 
     def __init__(self):
@@ -49,7 +48,7 @@ class MockKylasCRMProvider(AbstractCRMProvider):
     ) -> Dict[str, Any]:
         created_at = datetime.datetime.now().isoformat()
         clean_name = name.strip() if name and name.strip() else "Web Visitor"
-        new_lead_id = f"KYLAS_LEAD_{uuid.uuid4().hex[:8].upper()}"
+        new_lead_id = f"LOCAL_LEAD_{uuid.uuid4().hex[:8].upper()}"
 
         conn = get_conn()
         cursor = conn.cursor()
@@ -87,7 +86,7 @@ class MockKylasCRMProvider(AbstractCRMProvider):
         conn.close()
 
         # Safe log — phone masked
-        print(f"[CRM MOCK] Lead {lead_id} saved locally: {clean_name} ({_mask_phone(phone_number)})")
+        print(f"[CRM LOCAL] Lead {lead_id} saved locally: {clean_name} ({_mask_phone(phone_number)})")
 
         return {
             "lead_id": lead_id,
@@ -112,7 +111,7 @@ class LiveKylasCRMProvider(AbstractCRMProvider):
         self._init_db()
 
     def _init_db(self):
-        """Ensure leads table exists (same DDL as mock provider)."""
+        """Ensure leads table exists (same DDL as the local provider)."""
         conn = get_conn()
         cursor = conn.cursor()
         cursor.execute("""
@@ -227,4 +226,9 @@ class LiveKylasCRMProvider(AbstractCRMProvider):
 def get_crm_provider() -> AbstractCRMProvider:
     if settings.CRM_PROVIDER == "kylas_api":
         return LiveKylasCRMProvider()
-    return MockKylasCRMProvider()
+    return LocalCRMProvider()
+
+
+# Backwards-compatible import for integrations that used the old development
+# provider name. New configuration should use CRM_PROVIDER=local_db.
+MockKylasCRMProvider = LocalCRMProvider

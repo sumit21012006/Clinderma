@@ -21,7 +21,9 @@ from app.core.config import settings
 from app.providers.vector_provider import get_vector_store
 from app.providers.llm_provider import get_llm_provider
 from app.providers.crm_provider import get_crm_provider
+from app.providers.order_provider import get_order_provider
 from app.services.language_service import LanguageService
+from app.services.clinical_triage import classify_clinical_escalation, triage_response
 from app.services.handoff_manager import handoff_manager
 from app.services.session_manager import session_manager
 from app.models.schemas import ChatRequest, KBSource
@@ -270,6 +272,7 @@ class RAGEngine:
         self.vector_store = get_vector_store()
         self.llm_provider = get_llm_provider()
         self.crm_provider = get_crm_provider()
+        self.order_provider = get_order_provider()
 
     def warmup(self) -> None:
         """Prime query embedding and FAISS retrieval before the first visitor message."""
@@ -303,6 +306,45 @@ class RAGEngine:
             already_has_lead = True
 
         phone_no = extract_phone(message)
+        name_candidate = extract_name(message) or captured_info.get("name")
+
+        # Clinical triage is deliberately first. Emergency, prescription, and
+        # human escalation must never be hidden behind phone gating, product
+        # intent, order handling, retrieval confidence, or an LLM response.
+        triage = classify_clinical_escalation(message)
+        if triage:
+            if phone_no and not already_has_lead:
+                self.crm_provider.create_lead(
+                    phone_number=phone_no,
+                    name=name_candidate or "Web Visitor",
+                    concern=f"Clinical escalation via chat session {session_id}: {triage.reason}",
+                    channel=req.channel or "website",
+                )
+                already_has_lead = True
+
+            handoff_manager.add_transcript(session_id, "user", message)
+            handoff_manager.create_handoff(
+                session_id=session_id,
+                user_name=name_candidate or "Anonymous",
+                user_phone=req.user_phone or phone_no or captured_info.get("phone"),
+                reason=f"{triage.reason} [trigger: {triage.matched_trigger}]",
+                channel=req.channel or "website",
+                severity=triage.severity,
+                ai_summary=triage.ai_summary,
+            )
+
+            ans = triage_response(triage, lang)
+            needs_contact = triage.severity != "critical" and not already_has_lead and not phone_no
+            if needs_contact:
+                session_manager.set_phone_required(session_id, True)
+            handoff_manager.add_transcript(session_id, "bot", ans)
+            return self._build_response(
+                ans, True, 1.0, True, triage.reason, [], lang, session_id,
+                requires_phone=needs_contact,
+                phone_prompt_text=phone_prompt(lang) if needs_contact else None,
+                captured_phone=phone_no,
+            )
+
         if session_manager.is_phone_required(session_id) and not already_has_lead and not phone_no:
             return self._build_response(
                 "", True, 1.0, False, None, [], lang, session_id,
@@ -315,7 +357,6 @@ class RAGEngine:
         turn_count = session_manager.get_turn_count(session_id)
 
         # ── 1. Phone & Name Extraction → Kylas CRM Lead Sync ──
-        name_candidate = extract_name(message) or captured_info.get("name")
         dual_intent_ack = ""
 
         if phone_no:
@@ -453,19 +494,22 @@ class RAGEngine:
                 suggestions=suggested_questions(message, lang),
             )
 
-        # ── 5. Order Queries (tracking integration is intentionally disabled in V1) ──
+        # ── 5. Order Queries ──
         if has_order_intent(message):
-            ans = ("Order tracking isn’t connected in this first chatbot version, so I can’t safely show a live status here. "
-                   "Please use the tracking link sent by SMS or email after dispatch, or contact Clinderma at help@theclinderma.com with your order number. "
-                   "For general delivery guidance, standard orders are usually delivered within 5–7 business days after confirmation.")
-            if lang == "hi":
-                ans = ("इस पहले चैटबॉट वर्ज़न में लाइव ऑर्डर ट्रैकिंग जुड़ी नहीं है, इसलिए मैं यहाँ सही स्टेटस नहीं दिखा सकता। "
-                       "डिस्पैच के बाद SMS या ईमेल में मिला ट्रैकिंग लिंक देखें, या ऑर्डर नंबर के साथ help@theclinderma.com पर संपर्क करें। "
-                       "सामान्यतः कन्फर्मेशन के बाद डिलीवरी में 5–7 कार्यदिवस लगते हैं।")
-            elif lang == "mr":
-                ans = ("चॅटबॉटच्या या पहिल्या आवृत्तीत लाईव्ह ऑर्डर ट्रॅकिंग जोडलेले नाही, त्यामुळे मी येथे अचूक स्थिती दाखवू शकत नाही. "
-                       "डिस्पॅचनंतर SMS किंवा ईमेलमध्ये आलेली ट्रॅकिंग लिंक वापरा, किंवा ऑर्डर क्रमांकासह help@theclinderma.com वर संपर्क करा. "
-                       "सामान्यतः कन्फर्मेशननंतर डिलिव्हरीला 5–7 कामकाजाचे दिवस लागतात.")
+            order = self.order_provider.get_order_status(message)
+            if order.get("found"):
+                items = ", ".join(order.get("items") or [])
+                tracking = f" Tracking: {order['tracking_url']}" if order.get("tracking_url") else ""
+                ans = (
+                    f"Order {order['order_id']} is currently: {order['status']}. "
+                    f"Items: {items or 'Not listed'}. Estimated delivery: "
+                    f"{order.get('estimated_delivery') or 'Not available'}.{tracking}"
+                )
+            else:
+                ans = (
+                    "I couldn’t find that order in Clinderma’s order records. Please check the order ID "
+                    "(for example, CLIN-1234) or contact help@theclinderma.com with the confirmation details."
+                )
             handoff_manager.add_transcript(session_id, "bot", ans)
             return self._build_response(
                 ans, True, 1.0, False, None, [], lang, session_id,
@@ -473,44 +517,7 @@ class RAGEngine:
                 phone_prompt_text=phone_prompt(lang) if phone_gate_after_response else None,
             )
 
-        # ── 6. Human Agent / Skin Coach Handoff Intent ──
-        # Includes both explicit requests AND medical emergency triggers per spec
-        handoff_keywords = [
-            # Explicit human-help requests
-            "human", "agent", "skin coach", "talk to doctor", "call me",
-            "escalate", "representative", "real person", "speak to someone",
-            # Medical emergency escalation triggers
-            "cystic swelling", "severe pain", "infection", "extreme peeling",
-            "allergic reaction", "anaphylactic", "hives", "difficulty breathing",
-            "isotretinoin", "tretinoin dose", "prescription dosage",
-            # Hindi triggers
-            "डॉक्टर से बात", "गंभीर दर्द", "एलर्जी", "इन्फेक्शन",
-            # Marathi triggers
-            "डॉक्टरांशी बोला", "तीव्र वेदना", "ऍलर्जी",
-        ]
-        if any(w in message.lower() for w in handoff_keywords):
-            handoff_manager.create_handoff(
-                session_id=session_id,
-                user_phone=req.user_phone or phone_no,
-                reason=f"User requested human escalation: '{message}'",
-                channel=req.channel or "website"
-            )
-            ans = "I’ve noted that you’d like human help from Clinderma. A Skin Coach can review the conversation and follow up with you directly. 🩺"
-            if not already_has_lead and not phone_no:
-                session_manager.set_phone_required(session_id, True)
-            if lang == "hi":
-                ans = "मैंने नोट कर लिया है कि आप क्लिंडरमा टीम से मानवीय सहायता चाहते हैं। एक स्किन कोच इस बातचीत की समीक्षा करके आपसे सीधे संपर्क कर सकता है। 🩺"
-            elif lang == "mr":
-                ans = "तुम्हाला क्लिंडरमा टीमकडून मानवी मदत हवी आहे हे मी नोंदवले आहे. स्किन कोच हे संभाषण पाहून तुमच्याशी थेट संपर्क साधू शकतो. 🩺"
-
-            handoff_manager.add_transcript(session_id, "bot", ans)
-            return self._build_response(
-                ans, True, 1.0, True, "User requested human handoff", [], lang, session_id,
-                requires_phone=not already_has_lead and not phone_no,
-                phone_prompt_text=phone_prompt(lang) if not already_has_lead and not phone_no else None,
-            )
-
-        # ── 7. Multi-Source Grounded RAG: Conversational Search → LLM Generation ──
+        # ── 6. Multi-Source Grounded RAG: Conversational Search → LLM Generation ──
         history = session_manager.get_history(session_id)
         prior_history = history[:-1] if len(history) > 1 else []
 
@@ -556,6 +563,21 @@ class RAGEngine:
 
         requires_phone = phone_gate_after_response
         prompt_text = phone_prompt(lang) if phone_gate_after_response else None
+
+        if result.get("handoff_recommended"):
+            handoff_reason = result.get("handoff_reason") or "Human verification requested"
+            handoff_manager.create_handoff(
+                session_id=session_id,
+                user_name=name_candidate or captured_info.get("name") or "Anonymous",
+                user_phone=req.user_phone or phone_no or captured_info.get("phone"),
+                reason=f"AI confidence review: {handoff_reason}",
+                channel=req.channel or "website",
+                severity="moderate",
+                ai_summary=(
+                    f"The chatbot could not produce a sufficiently grounded answer. {handoff_reason} "
+                    f"Customer question: {message[:300]}"
+                ),
+            )
 
         handoff_manager.add_transcript(session_id, "bot", final_answer)
 

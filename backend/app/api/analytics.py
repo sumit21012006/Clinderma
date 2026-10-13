@@ -24,9 +24,6 @@ router = APIRouter()
 
 # ─── Public tracking endpoints ────────────────────────────────────────────────
 
-class EventRequest:
-    pass
-
 from pydantic import BaseModel
 
 class TrackEvent(BaseModel):
@@ -150,40 +147,36 @@ def get_orders_analytics(
     user: dict = Depends(require_role("admin", "doctor", "viewer"))
 ):
     """
-    Return orders and revenue from customers who chatted.
+    Return persisted operational orders and revenue.
     Groups by view: daily | weekly | monthly.
-    Falls back to funnel order_placed events for counts, leads table for revenue estimate.
     """
     conn = get_conn()
     cursor = conn.cursor()
 
-    # Get order events from funnel_events
-    query = "SELECT created_at, metadata FROM funnel_events WHERE event_type = 'order_placed'"
+    query = "SELECT order_id, status, created_at, updated_at, order_value FROM orders WHERE 1 = 1"
     params = []
     if date_from:
-        query += " AND created_at >= %s"
+        query += " AND COALESCE(created_at, updated_at) >= %s"
         params.append(date_from)
     if date_to:
-        query += " AND created_at <= %s"
+        query += " AND COALESCE(created_at, updated_at) <= %s"
         params.append(date_to + "T23:59:59")
     query += " ORDER BY created_at ASC"
     cursor.execute(query, params)
     rows = cursor.fetchall()
 
-    # Aggregate by view
     aggregated = {}
     total_orders = 0
     total_revenue = 0.0
+    status_breakdown = {}
 
     for r in rows:
         d = dict(r)
-        try:
-            meta = json.loads(d.get("metadata") or "{}")
-        except Exception:
-            meta = {}
-
-        order_value = float(meta.get("order_value", 0))
-        ts = d["created_at"][:10]   # YYYY-MM-DD
+        order_value = float(d.get("order_value") or 0)
+        timestamp = d.get("created_at") or d.get("updated_at")
+        if not timestamp:
+            continue
+        ts = str(timestamp)[:10]   # YYYY-MM-DD
 
         if view == "weekly":
             dt = datetime.date.fromisoformat(ts)
@@ -200,6 +193,8 @@ def get_orders_analytics(
         aggregated[key]["revenue"] += order_value
         total_orders += 1
         total_revenue += order_value
+        status_name = str(d.get("status") or "Unknown").strip() or "Unknown"
+        status_breakdown[status_name] = status_breakdown.get(status_name, 0) + 1
 
     # Sort by period
     timeline = sorted(aggregated.values(), key=lambda x: x["period"])
@@ -217,6 +212,8 @@ def get_orders_analytics(
         "date_to": date_to,
         "total_orders": total_orders,
         "total_revenue": round(total_revenue, 2),
+        "average_order_value": round(total_revenue / total_orders, 2) if total_orders else 0,
+        "status_breakdown": status_breakdown,
         "timeline": timeline,
     }
 
@@ -256,31 +253,35 @@ def export_analytics(
         # orders
         conn = get_conn()
         cursor = conn.cursor()
-        query = "SELECT created_at, metadata FROM funnel_events WHERE event_type = 'order_placed'"
+        query = """
+            SELECT order_id, created_at, updated_at, status,
+                   customer_name, order_value
+            FROM orders WHERE 1 = 1
+        """
         params = []
         if date_from:
-            query += " AND created_at >= %s"
+            query += " AND COALESCE(created_at, updated_at) >= %s"
             params.append(date_from)
         if date_to:
-            query += " AND created_at <= %s"
+            query += " AND COALESCE(created_at, updated_at) <= %s"
             params.append(date_to + "T23:59:59")
         cursor.execute(query, params)
         rows = cursor.fetchall()
         cursor.close()
         conn.close()
 
-        writer = csv.DictWriter(output, fieldnames=["Date & Time", "Session ID", "Order Value (INR)"])
+        writer = csv.DictWriter(output, fieldnames=[
+            "Date & Time", "Order ID", "Customer", "Status", "Order Value (INR)"
+        ])
         writer.writeheader()
         for r in rows:
             d = dict(r)
-            try:
-                meta = json.loads(d.get("metadata") or "{}")
-            except Exception:
-                meta = {}
             writer.writerow({
-                "Date & Time": d["created_at"],
-                "Session ID": meta.get("session_id", ""),
-                "Order Value (INR)": meta.get("order_value", 0),
+                "Date & Time": d.get("created_at") or d.get("updated_at") or "",
+                "Order ID": d.get("order_id", ""),
+                "Customer": d.get("customer_name", ""),
+                "Status": d.get("status", ""),
+                "Order Value (INR)": d.get("order_value", 0),
             })
         filename = "clinderma_orders_analytics.csv"
 

@@ -19,7 +19,7 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials, HTTPBearer, HTTPAu
 from app.core.config import settings
 
 # ── Token secret (use env var in production) ──────────────────────────────────
-JWT_SECRET = os.getenv("JWT_SECRET", "clinderma_jwt_secret_2026_changeme")
+JWT_SECRET = os.getenv("JWT_SECRET") or secrets.token_urlsafe(48)
 JWT_ALGORITHM = "HS256"
 JWT_EXPIRE_HOURS = 24
 
@@ -29,14 +29,58 @@ bearer_security = HTTPBearer(auto_error=False)
 
 
 # ── Password hashing (bcrypt-free: SHA256+salt for simplicity) ────────────────
+import base64
 import hashlib
+import hmac
+
+PBKDF2_ITERATIONS = 310_000
+PASSWORD_SCHEME = "pbkdf2_sha256"
+
+
+def _legacy_password_hash(password: str) -> str:
+    """Return the hash produced before per-user salts were added."""
+    return hashlib.sha256(f"clinderma_salt_2026{password}".encode()).hexdigest()
+
 
 def hash_password(password: str) -> str:
-    salt = "clinderma_salt_2026"
-    return hashlib.sha256(f"{salt}{password}".encode()).hexdigest()
+    """Create a slow, independently salted password hash for storage."""
+    salt = secrets.token_bytes(16)
+    digest = hashlib.pbkdf2_hmac(
+        "sha256", password.encode("utf-8"), salt, PBKDF2_ITERATIONS
+    )
+    return "$".join((
+        PASSWORD_SCHEME,
+        str(PBKDF2_ITERATIONS),
+        base64.urlsafe_b64encode(salt).decode("ascii"),
+        base64.urlsafe_b64encode(digest).decode("ascii"),
+    ))
+
 
 def verify_password(plain: str, hashed: str) -> bool:
-    return hash_password(plain) == hashed
+    if not isinstance(hashed, str):
+        return False
+    if not hashed.startswith(f"{PASSWORD_SCHEME}$"):
+        return hmac.compare_digest(_legacy_password_hash(plain), hashed)
+
+    try:
+        _, iterations, salt_encoded, digest_encoded = hashed.split("$", 3)
+        salt = base64.urlsafe_b64decode(salt_encoded.encode("ascii"))
+        expected = base64.urlsafe_b64decode(digest_encoded.encode("ascii"))
+        actual = hashlib.pbkdf2_hmac(
+            "sha256", plain.encode("utf-8"), salt, int(iterations)
+        )
+        return hmac.compare_digest(actual, expected)
+    except (TypeError, ValueError, UnicodeError):
+        return False
+
+
+def password_needs_rehash(hashed: str) -> bool:
+    """Flag legacy or lower-cost hashes for transparent migration on login."""
+    try:
+        scheme, iterations, _, _ = hashed.split("$", 3)
+        return scheme != PASSWORD_SCHEME or int(iterations) < PBKDF2_ITERATIONS
+    except (AttributeError, TypeError, ValueError):
+        return True
 
 
 # ── JWT helpers ───────────────────────────────────────────────────────────────
@@ -76,7 +120,7 @@ def _decode_token(token: str) -> Optional[dict]:
         body_padded = body_b + "=" * (-len(body_b) % 4)
         payload = json.loads(base64.urlsafe_b64decode(body_padded))
         # Check expiry
-        if payload.get("exp") and datetime.datetime.utcnow().timestamp() > payload["exp"]:
+        if payload.get("exp") and datetime.datetime.now(datetime.timezone.utc).timestamp() > payload["exp"]:
             return None
         return payload
     except Exception:
@@ -85,65 +129,58 @@ def _decode_token(token: str) -> Optional[dict]:
 
 def create_access_token(username: str, role: str) -> str:
     """Create a signed JWT access token."""
-    exp = datetime.datetime.utcnow() + datetime.timedelta(hours=JWT_EXPIRE_HOURS)
+    now = datetime.datetime.now(datetime.timezone.utc)
+    exp = now + datetime.timedelta(hours=JWT_EXPIRE_HOURS)
     payload = {
         "sub": username,
         "role": role,
         "exp": exp.timestamp(),
-        "iat": datetime.datetime.utcnow().timestamp(),
+        "iat": now.timestamp(),
     }
     return _encode_token(payload)
 
 
 # ── Seed default admin user ────────────────────────────────────────────────────
 def ensure_default_admin():
-    """Create seed admin user from .env config if admin_users table is empty."""
+    """Create each missing development seed account without overwriting users."""
     try:
         from app.core.db import get_conn
         conn = get_conn()
         cursor = conn.cursor()
-        cursor.execute("SELECT COUNT(*) as cnt FROM admin_users")
-        row = cursor.fetchone()
-        count = row["cnt"] if row else 0
-        if count == 0:
-            now = datetime.datetime.now().isoformat()
-            cursor.execute("""
-                INSERT INTO admin_users (username, password_hash, role, full_name, is_active, created_at)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (
+        now = datetime.datetime.now().isoformat()
+        seed_users = (
+            (
                 settings.ADMIN_USERNAME,
-                hash_password(settings.ADMIN_PASSWORD),
+                settings.ADMIN_PASSWORD,
                 "admin",
                 "Clinderma Admin",
-                1,
-                now
-            ))
-            # Also seed a demo doctor user
+            ),
+            ("doctor", "doctor@clinderma2026", "doctor", "Dr. Consultant"),
+            ("viewer", "viewer@clinderma2026", "viewer", "Analytics Viewer"),
+        )
+        created = []
+        for username, password, role, full_name in seed_users:
+            cursor.execute(
+                "SELECT username FROM admin_users WHERE username = %s",
+                (username,),
+            )
+            if cursor.fetchone():
+                continue
             cursor.execute("""
                 INSERT INTO admin_users (username, password_hash, role, full_name, is_active, created_at)
                 VALUES (%s, %s, %s, %s, %s, %s)
             """, (
-                "doctor",
-                hash_password("doctor@clinderma2026"),
-                "doctor",
-                "Dr. Consultant",
+                username,
+                hash_password(password),
+                role,
+                full_name,
                 1,
-                now
+                now,
             ))
-            # Also seed a viewer
-            cursor.execute("""
-                INSERT INTO admin_users (username, password_hash, role, full_name, is_active, created_at)
-                VALUES (%s, %s, %s, %s, %s, %s)
-            """, (
-                "viewer",
-                hash_password("viewer@clinderma2026"),
-                "viewer",
-                "Analytics Viewer",
-                1,
-                now
-            ))
-            conn.commit()
-            print("[AUTH] Seed users created: admin / doctor / viewer")
+            created.append(username)
+        conn.commit()
+        if created:
+            print(f"[AUTH] Missing seed users created: {', '.join(created)}")
         cursor.close()
         conn.close()
     except Exception as e:
@@ -182,6 +219,51 @@ def require_role(*allowed_roles: str):
 
 # ── Legacy HTTP Basic Auth (kept for /dashboard.html route backward-compat) ───
 _basic = HTTPBasic()
+
+
+def verify_clinical_user(
+    credentials: HTTPBasicCredentials = Depends(_basic),
+) -> dict:
+    """Allow active admin/doctor accounts into the legacy clinical console."""
+    from app.core.db import get_conn
+
+    conn = get_conn()
+    cursor = conn.cursor()
+    cursor.execute(
+        """
+        SELECT username, password_hash, role, is_active
+        FROM admin_users WHERE username = %s
+        """,
+        (credentials.username,),
+    )
+    row = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if row:
+        user = dict(row)
+        authenticated = (
+            bool(user.get("is_active", 1))
+            and user.get("role") in ("admin", "doctor")
+            and verify_password(credentials.password, user.get("password_hash"))
+        )
+        if authenticated:
+            return {"username": user["username"], "role": user["role"]}
+
+    # Preserve access for a configured admin on deployments created before
+    # role-based users were introduced.
+    configured_admin = (
+        secrets.compare_digest(credentials.username, settings.ADMIN_USERNAME)
+        and secrets.compare_digest(credentials.password, settings.ADMIN_PASSWORD)
+    )
+    if configured_admin:
+        return {"username": credentials.username, "role": "admin"}
+
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Admin or doctor credentials required",
+        headers={"WWW-Authenticate": "Basic realm=\"Clinderma Clinical Console\""},
+    )
 
 def verify_admin(credentials: HTTPBasicCredentials = Depends(_basic)) -> str:
     """Legacy: Verify HTTP Basic Auth credentials for admin dashboard.

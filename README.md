@@ -164,10 +164,17 @@ LLM_MODEL=gemini-2.0-flash
 EMBEDDING_MODEL=gemini-embedding-001
 LLM_PROVIDER=gemini
 VECTOR_STORE_PROVIDER=faiss
-CRM_PROVIDER=mock_kylas
-ORDER_PROVIDER=mock_orders
+CRM_PROVIDER=local_db
+ORDER_PROVIDER=clinderma_db
 GROUNDING_THRESHOLD=0.35
+JWT_SECRET=replace-with-a-long-random-production-secret
+CORS_ORIGINS=http://localhost:8000,http://127.0.0.1:8000
 ```
+
+`local_db` persists real lead changes without an external CRM. For Kylas sync, set
+`CRM_PROVIDER=kylas_api` and provide a valid `KYLAS_API_KEY`. Operational order
+updates are persisted through `PUT /api/admin/orders/{order_id}` and are then
+used by both chatbot order tracking and order analytics.
 
 ### Step 3: Install Python Dependencies
 ```bash
@@ -192,7 +199,16 @@ Open your browser and visit:
   - **Admin**: `admin` / `clinderma@admin2026` (Full access)
   - **Doctor**: `doctor` / `doctor@clinderma2026` (Medical review + read chats + analytics)
   - **Viewer**: `viewer` / `viewer@clinderma2026` (Read-only chats + analytics)
-- 🩺 **Skin Coach Clinical Dashboard**: `http://localhost:8000/dashboard.html`
+
+These are development seed accounts and are available through the admin page's
+one-click demo login buttons. Change or disable them from **Users & Roles** and
+remove the demo shortcuts before exposing the console publicly.
+- 🩺 **Skin Coach Dashboard**: `http://localhost:8000/dashboard.html`
+  - Uses the seeded **Doctor** account (`doctor` / `doctor@clinderma2026`).
+  - The doctor JWT is retained in the browser, so switching between the Doctor
+    Console and clinical dashboard does not trigger another login prompt.
+  - The Doctor Console and its navbar both open this exact same dashboard under
+    the single name **Skin Coach Dashboard**.
 - 📋 **Skin Assessment Form (Widget Suppressed)**: `http://localhost:8000/assessment.html`
 - 📖 **Interactive Swagger API Documentation**: `http://localhost:8000/docs`
 
@@ -205,13 +221,23 @@ Built to meet all requirements from the **Clinderma PRD (Chatbot Admin Panel & A
 1. **📚 Knowledge Base & FAQs**: Full CRUD interface for chatbot FAQs, categories (Products, Treatment, Guarantee, Delivery, Payments), document uploads (`.pdf`, `.docx`, `.txt`, `.xlsx`), and draft-first publishing pipeline.
 2. **🏷️ Offers Management**: Create, schedule, and auto-switch monthly promotions (codes, percentage/flat discounts, product targets, terms). Chatbot dynamically injects active offers.
 3. **🧪 Test Chat & Push to Live**: Internal test sandbox to verify draft answers before customers see them. One-click "Push to Live" with live FAISS re-indexing and snapshot undo/restore.
-4. **💬 Customer Chats & Takeover**: Real-time view of customer sessions with newest first and Live badges. Admin can click **Take Over** to pause the bot and chat directly with customers, then **Hand Back to Bot**.
+4. **💬 Customer Chats & Takeover**: Polling live view of customer sessions with activity-backed statuses. Admin can **Take Over**, reply directly, and **Hand Back to Bot**; transcript and control-state updates appear without a manual refresh.
 5. **🩺 Doctor Review Queue**: Admins/doctors tag dubious answers. Doctors can **Approve** or **Edit & Correct** answers directly from the queue, automatically updating the knowledge base.
 6. **📋 Change Log (Audit Trail)**: Immutable log recording who changed what, before/after values, and timestamps across all operations. Filterable by date, user, and action type.
 7. **📊 Analytics Dashboard**: 
    - **Chatbot Funnel**: 6 stages (*Visitors*, *Opened chat*, *Started chat*, *Engaged*, *Added to cart*, *Converted*) with drop-off percentages and non-openers statistics.
    - **Orders & Revenue**: Track orders and revenue attributed to chatting customers across Daily, Weekly, and Monthly views with custom date range picker and spreadsheet CSV download.
 8. **👥 RBAC Permissions**: Strict 3-tier role enforcement across all APIs and frontend tabs.
+
+---
+
+## Clinical escalation and chat lifecycle
+
+- Clinical triage runs before phone collection, product/order handling, retrieval, and LLM generation. It composes symptom concepts, intensity, persistence, progression, visible skin changes, and negation instead of requiring one exact keyword phrase.
+- Deterministic emergency overrides still place breathing difficulty, facial/throat swelling, blistering, severe burns, severe infection signs, and dangerous tretinoin/strong-peel combinations in the Critical/Urgent queue immediately.
+- Prescription retinoid or dosage questions are placed in clinician review; explicit human requests enter the support queue.
+- A chat is **Live** only while customer activity is under two minutes old. At two minutes the widget asks whether to continue; after another 30 seconds without a customer reply, it persists the chat as ended without resolving its clinical ticket.
+- The clinical queue is available at `/dashboard.html` to active admin and doctor accounts. The JWT admin console exposes all conversations at `/admin.html` under **Customer Chats**, including a **Clinically Escalated** filter.
 
 ---
 
@@ -223,7 +249,7 @@ Built to meet all requirements from the **Clinderma PRD (Chatbot Admin Panel & A
 | **Grounded FAQ** | Type *"What is purging?"* | Bot gives accurate dermatological explanation from FAQ doc. |
 | **Paraphrased FAQ** | Type *"my face is breaking out badly after starting, is this normal?"* | Semantic search matches the purging FAQ and provides grounded answer. |
 | **Multi-lingual** | Type *"acne ka treatment kitna time lagta hai?"* | Bot responds in Hindi with treatment timeline details. |
-| **Order Tracking** | Type *"Track order CLIN-1001"* | Bot displays live order status, customer name, items, and tracking link. |
+| **Order Tracking** | Upsert an order through `PUT /api/admin/orders/{order_id}`, then ask to track it | Bot displays the persisted fulfilment status, customer name, items, and tracking link. |
 | **Lead Collection** | Type *"9022905913"* | Bot captures phone number, confirms lead creation, and syncs to Kylas CRM. |
 | **Human Escalation** | Type *"I want to talk to a skin coach"* | Bot transfers chat session to human queue. |
 | **Out-of-Scope Query** | Type *"What is the capital of France?"* | Bot declines to answer ungrounded queries and offers Skin Coach handoff. |

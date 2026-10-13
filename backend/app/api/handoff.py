@@ -7,7 +7,8 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from app.services.handoff_manager import handoff_manager
-from app.core.auth import verify_admin, require_role
+from app.services.session_manager import session_manager
+from app.core.auth import require_role
 
 router = APIRouter()
 
@@ -34,27 +35,25 @@ class AdminMessageRequest(BaseModel):
 # ─── Existing endpoints (unchanged) ──────────────────────────────────────────
 
 @router.get("/handoff")
-def get_handoffs(_admin: str = Depends(verify_admin)):
+def get_handoffs(_user: dict = Depends(require_role("doctor", "admin"))):
     """
-    Protected endpoint: returns all human escalation tickets for the admin dashboard.
-    Requires HTTP Basic Authentication.
+    Protected endpoint: returns all human escalation tickets for the clinical dashboard.
     """
     handoffs = handoff_manager.get_all_handoffs()
     return {"handoffs": handoffs, "count": len(handoffs)}
 
 
 @router.post("/handoff/resolve")
-def resolve_handoff(req: ResolveRequest, _admin: str = Depends(verify_admin)):
+def resolve_handoff(req: ResolveRequest, _user: dict = Depends(require_role("doctor", "admin"))):
     """
     Protected endpoint: resolves an escalation ticket.
-    Requires HTTP Basic Authentication.
     """
     handoff_manager.resolve_handoff(req.session_id, doctor_notes=req.doctor_notes)
     return {"status": "success", "session_id": req.session_id}
 
 
 @router.post("/handoff/note")
-def save_doctor_note(req: NoteRequest, _admin: str = Depends(verify_admin)):
+def save_doctor_note(req: NoteRequest, _user: dict = Depends(require_role("doctor", "admin"))):
     """
     Protected endpoint: saves clinical observations/notes on an escalation ticket.
     """
@@ -68,28 +67,67 @@ def save_doctor_note(req: NoteRequest, _admin: str = Depends(verify_admin)):
 def get_all_chats(
     status: Optional[str] = None,
     search: Optional[str] = None,
+    date_from: Optional[datetime.date] = None,
+    date_to: Optional[datetime.date] = None,
     user: dict = Depends(require_role("admin", "doctor", "viewer"))
 ):
     """
     JWT-protected: Returns ALL chat sessions (escalated + general), newest first.
-    Supports status filter: 'live' | 'ended' | 'takeover'
-    and text search by customer name/phone.
+    Supports status filter: 'live' | 'ended' | 'escalated' | 'takeover',
+    text search by customer name/phone, and an inclusive chat-start date range.
     """
+    if date_from and date_to and date_from > date_to:
+        raise HTTPException(
+            status_code=400,
+            detail="date_from must be on or before date_to",
+        )
+
     from app.core.db import get_conn
     conn = get_conn()
     cursor = conn.cursor()
 
-    query = "SELECT * FROM handoffs WHERE 1=1"
+    query = """
+        SELECT sessions.session_id,
+               COALESCE(h.user_name, 'Anonymous') AS user_name,
+               h.user_phone,
+               COALESCE(h.reason, 'General chat') AS reason,
+               COALESCE(h.channel, 'website') AS channel,
+               COALESCE(h.status, 'unassigned') AS status,
+               COALESCE(h.severity, 'routine') AS severity,
+               COALESCE(h.doctor_notes, '') AS doctor_notes,
+               COALESCE(h.ai_summary, '') AS ai_summary,
+               h.takeover_by,
+               COALESCE(t.started_at, h.created_at, s.last_activity_at) AS created_at
+        FROM (
+            SELECT session_id FROM chat_session_state
+            UNION
+            SELECT session_id FROM handoffs
+        ) sessions
+        LEFT JOIN chat_session_state s ON s.session_id = sessions.session_id
+        LEFT JOIN handoffs h ON h.session_id = sessions.session_id
+        LEFT JOIN (
+            SELECT session_id, MIN(timestamp) AS started_at
+            FROM transcripts
+            GROUP BY session_id
+        ) t ON t.session_id = sessions.session_id
+        WHERE 1=1
+    """
     params = []
 
-    if status == "live":
-        query += " AND status = 'pending'"
-    elif status == "ended":
-        query += " AND status = 'resolved'"
-    elif status == "takeover":
-        query += " AND takeover_by IS NOT NULL"
+    if status == "takeover":
+        query += " AND h.takeover_by IS NOT NULL"
 
-    query += " ORDER BY created_at DESC"
+    chat_started_at = "COALESCE(t.started_at, h.created_at, s.last_activity_at)"
+    if date_from:
+        query += f" AND {chat_started_at} >= %s"
+        params.append(date_from.isoformat())
+    if date_to:
+        # An exclusive next-day boundary includes every time on date_to and
+        # works for both SQLite and Postgres ISO timestamps.
+        query += f" AND {chat_started_at} < %s"
+        params.append((date_to + datetime.timedelta(days=1)).isoformat())
+
+    query += " ORDER BY COALESCE(s.last_activity_at, h.created_at) DESC"
     cursor.execute(query, params)
     rows = cursor.fetchall()
 
@@ -108,9 +146,23 @@ def get_all_chats(
                       for t in t_rows]
 
         d["transcript"] = transcript
-        d["is_live"] = d.get("status") == "pending"
+        lifecycle = session_manager.get_session_state(sid)
+        d["chat_status"] = lifecycle["status"]
+        d["last_activity_at"] = lifecycle["last_activity_at"]
+        d["is_live"] = lifecycle["status"] == "live"
         d["is_taken_over"] = bool(d.get("takeover_by"))
+        d["is_escalated"] = (
+            d.get("severity") in ("critical", "moderate")
+            and not str(d.get("reason") or "").lower().startswith("lead captured")
+        )
         d["message_count"] = len(transcript)
+
+        if status == "live" and not d["is_live"]:
+            continue
+        if status == "ended" and lifecycle["status"] not in ("ended", "expired"):
+            continue
+        if status == "escalated" and not d["is_escalated"]:
+            continue
 
         # Apply search filter
         if search:
@@ -156,6 +208,7 @@ def take_over_chat(req: TakeoverRequest, user: dict = Depends(require_role("admi
         )
 
     conn.commit()
+    session_manager.touch_session(req.session_id, user_activity=False)
 
     # Log the admin "took over" message in transcript
     cursor.execute("""
@@ -215,6 +268,7 @@ def hand_back_to_bot(req: TakeoverRequest, user: dict = Depends(require_role("ad
     """, ("chat_handback", req.session_id, req.session_id, user["username"], "bot",
           user["username"], datetime.datetime.now().isoformat()))
     conn.commit()
+    session_manager.touch_session(req.session_id, user_activity=False)
     cursor.close()
     conn.close()
 
@@ -254,6 +308,7 @@ def send_admin_message(req: AdminMessageRequest, user: dict = Depends(require_ro
         VALUES (%s, %s, %s, %s)
     """, (req.session_id, f"admin:{user['username']}", req.message, datetime.datetime.now().isoformat()))
     conn.commit()
+    session_manager.touch_session(req.session_id, user_activity=False)
     cursor.close()
     conn.close()
 
